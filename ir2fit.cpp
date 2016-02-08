@@ -1,6 +1,7 @@
 #include <ctime>
 #include <iostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include <fit_encode.hpp>
@@ -35,8 +36,13 @@ main()
     encode.Open(output);
     encode.Write(fileIdMesg());
 
-    while (std::getline(std::cin, line, '\n')) {
-        // TODO
+    try {
+        while (std::getline(std::cin, line, '\n')) {
+            // TODO
+        }
+    } catch (const std::exception& exn) {
+        std::cerr << exn.what() << std::endl;
+        return 1;
     }
 
     if (!encode.Close()) {
