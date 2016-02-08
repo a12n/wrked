@@ -12,6 +12,11 @@ set(WRKED_VERSION
   "${WRKED_MAJOR_VERSION}.${WRKED_MINOR_VERSION}.${WRKED_PATCH_VERSION}")
 
 #------------------------------------------------------------------------------
+# Find packages
+
+find_path(FIT_ROOT_DIR FitGen.exe ${PROJECT_BINARY_DIR})
+
+#------------------------------------------------------------------------------
 # Compiler-specific
 
 if(CMAKE_COMPILER_IS_GNUCXX)
@@ -44,6 +49,8 @@ configure_file(
   ${PROJECT_BINARY_DIR}/defs.h
   )
 include_directories(${PROJECT_BINARY_DIR})
+
+include_directories(${FIT_ROOT_DIR}/c)
 
 add_executable(workoued workoued.c)
 
