@@ -50,9 +50,16 @@ configure_file(
   )
 include_directories(${PROJECT_BINARY_DIR})
 
+set(FIT_C_SRCS
+  ${FIT_ROOT_DIR}/c/fit.c
+  ${FIT_ROOT_DIR}/c/fit_convert.c
+  ${FIT_ROOT_DIR}/c/fit_crc.c
+  ${FIT_ROOT_DIR}/c/fit_product.c
+  ${FIT_ROOT_DIR}/c/fit_ram.c
+  )
 include_directories(${FIT_ROOT_DIR}/c)
 
-add_executable(workoued workoued.c)
+add_executable(workoued workoued.c ${FIT_C_SRCS})
 
 #------------------------------------------------------------------------------
 # Installation
