@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 
+include(CheckIncludeFile)
+
 #------------------------------------------------------------------------------
 # Project variables
 
@@ -15,6 +17,11 @@ set(WRKED_VERSION
 # Find packages
 
 find_path(FIT_ROOT_DIR FitGen.exe ${PROJECT_BINARY_DIR})
+
+check_include_file(stdint.h HAVE_STDINT_H)
+if(HAVE_STDINT_H)
+  add_definitions(-DFIT_USE_STDINT_H)
+endif(HAVE_STDINT_H)
 
 #------------------------------------------------------------------------------
 # Compiler-specific
