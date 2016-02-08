@@ -59,9 +59,9 @@ set(FIT_C_SRCS
   )
 include_directories(${FIT_ROOT_DIR}/c)
 
-add_executable(workoued workoued.c ${FIT_C_SRCS})
+add_executable(workoued-ir2fit ir2fit.c ${FIT_C_SRCS})
 
 #------------------------------------------------------------------------------
 # Installation
 
-install(TARGETS workoued DESTINATION bin)
+install(TARGETS workoued-ir2fit DESTINATION bin)
