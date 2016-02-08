@@ -40,12 +40,12 @@ endif(EXISTS ${PROJECT_SOURCE_DIR}/.hg)
 # Targets
 
 configure_file(
-  ${PROJECT_SOURCE_DIR}/defs.hpp.in
-  ${PROJECT_BINARY_DIR}/defs.hpp
+  ${PROJECT_SOURCE_DIR}/defs.h.in
+  ${PROJECT_BINARY_DIR}/defs.h
   )
 include_directories(${PROJECT_BINARY_DIR})
 
-add_executable(workoued workoued.cpp)
+add_executable(workoued workoued.c)
 
 #------------------------------------------------------------------------------
 # Installation
