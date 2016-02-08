@@ -27,11 +27,12 @@ endif(HAVE_STDINT_H)
 # Compiler-specific
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wextra")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pedantic")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pipe")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-gnu-keywords")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 #------------------------------------------------------------------------------
@@ -56,16 +57,21 @@ configure_file(
   )
 include_directories(${PROJECT_BINARY_DIR})
 
-set(FIT_C_SRCS
-  ${FIT_ROOT_DIR}/c/fit.c
-  ${FIT_ROOT_DIR}/c/fit_convert.c
-  ${FIT_ROOT_DIR}/c/fit_crc.c
-  ${FIT_ROOT_DIR}/c/fit_product.c
-  ${FIT_ROOT_DIR}/c/fit_ram.c
+set(FIT_CXX_SRCS
+  ${FIT_ROOT_DIR}/cpp/fit.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_crc.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_encode.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_field.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_field_definition.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_mesg.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_mesg_definition.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_profile.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_unicode.cpp
   )
 include_directories(${FIT_ROOT_DIR}/c)
+include_directories(${FIT_ROOT_DIR}/cpp)
 
-add_executable(workoued-ir2fit ir2fit.c ${FIT_C_SRCS})
+add_executable(workoued-ir2fit ir2fit.cpp ${FIT_CXX_SRCS})
 
 #------------------------------------------------------------------------------
 # Installation
