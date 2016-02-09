@@ -39,10 +39,10 @@ DEF_EXCEPTION(input_failed, "I/O error");
 //----------------------------------------------------------------------------
 // Input functions
 
-std::string
+string
 readLine(std::istream& input)
 {
-    std::string line;
+    string line;
     if (!std::getline(input, line, '\n')) {
         if (input.eof()) {
             throw end_of_file();
