@@ -77,6 +77,17 @@ match(istream& input, const T& pattern)
 //----------------------------------------------------------------------------
 // value<T> specializations
 
+template <class T>
+T
+value<T>(istream& input, const std::vector<std::pair<string, T> >& table)
+{
+    const string token = value<string>(input);
+    for (auto i = table.begin(); i != table.end(); ++i) {
+        if (token == i->first) return i->second;
+    }
+    throw bad_syntax();
+}
+
 template <>
 FIT_SPORT
 value<FIT_SPORT>(istream& input)
