@@ -15,7 +15,7 @@ rule read = parse
 | "rest" | "recovery" { INTENSITY Intensity.Rest }
 | "cool down"         { INTENSITY Intensity.Cool_down }
 
-| "cycling" { CYCLING }
+| "cycling" { SPORT Sport.Cycling }
 
 | "cadence"  { CADENCE }
 | "calories" { CALORIES }

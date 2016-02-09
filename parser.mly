@@ -5,7 +5,7 @@
 %token L_PAREN R_PAREN
 %token LESS GREATER
 
-%token CYCLING
+%token <Workout.Sport.t> SPORT
 
 %token COLON
 %token COMMA
