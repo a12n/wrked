@@ -11,6 +11,9 @@
 
 namespace {
 
+//----------------------------------------------------------------------------
+// Exceptions
+
 #define DEF_EXCEPTION(_name, _descr)            \
 struct _name : public std::exception            \
 {                                               \
@@ -32,9 +35,11 @@ DEF_EXCEPTION(InputFailed, "I/O error");
 
 
 //----------------------------------------------------------------------------
+// State functions
 
-#define DEF_STATE(_name)                                \
-void _name (std::istream& input, fit::Encode& encode)
+#define DEF_STATE(_name) void _name (std::istream& input, fit::Encode& encode)
+#define DECL_STATE(_name) DEF_STATE(_name)
+#define NEXT_STATE(_name) _name(input, encode); return
 
 #define DECL_STATE(_name) DEF_STATE(_name)
 
@@ -85,6 +90,7 @@ DEF_STATE(finish)
 #undef DEF_STATE
 
 //----------------------------------------------------------------------------
+// Main
 
 void
 ir2fit(std::istream& input, std::iostream& output)
