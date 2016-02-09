@@ -288,6 +288,18 @@ workout_step_value(istream& input)
         } else if (token == "repeat_time") {
             // TODO: restrict by range?
             ans.SetRepeatTime(value<FIT_FLOAT32>(input)); // s
+        } else if (token == "repeat_distance") {
+            // TODO: restrict by range?
+            ans.SetRepeatDistance(value<FIT_FLOAT32>(input)); // m
+        } else if (token == "repeat_calories") {
+            // TODO: restrict by range?
+            ans.SetRepeatCalories(value<FIT_UINT32>(input)); // kcal
+        } else if (token == "repeat_hr") {
+            // TODO: restrict by range?
+            ans.SetRepeatHr(value<FIT_WORKOUT_HR>(input)); // % or bpm
+        } else if (token == "repeat_power") {
+            // TODO: range?
+            ans.SetRepeatPower(value<FIT_WORKOUT_POWER>(input)); // % or W
         } else if (token == "end_step") {
             break;
         } else {
