@@ -275,6 +275,8 @@ workout_step_value(istream& input)
             ans.SetDurationPower(value<FIT_WORKOUT_POWER>(input)); // % or W
         } else if (token == "target_type") {
             ans.SetTargetType(step_target_value(input));
+        } else if (token == "target_value") {
+            ans.SetTargetValue(value<FIT_UINT32>(input));
         } else if (token == "end_step") {
             break;
         } else {
