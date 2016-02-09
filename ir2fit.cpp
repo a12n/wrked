@@ -255,4 +255,19 @@ TEST_CASE("Fails on trailing garbage", "[ir2fit]")
     CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
 }
 
+TEST_CASE("Sport and name properties", "[ir2fit]")
+{
+    std::istringstream input(
+        "begin_workout\n"
+        "name foo bar\n"
+        "sport cycling\n"
+        "num_steps 1\n"
+        "begin_step\n"
+        "end_step\n"
+        "end_workout\n"
+        );
+    std::stringstream output;
+    CHECK_NOTHROW(ir2fit(input, output));
+}
+
 #endif  // _WITH_TESTS
