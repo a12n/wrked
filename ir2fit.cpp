@@ -159,6 +159,8 @@ ir2fit(std::istream& input, std::iostream& output)
 
 } // namespace
 
+#ifndef _WITH_TESTS
+
 int
 main()
 {
@@ -175,3 +177,12 @@ main()
 
     return 0;
 }
+
+#else  // _WITH_TESTS
+
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
+
+// TODO
+
+#endif  // _WITH_TESTS
