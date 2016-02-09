@@ -77,9 +77,13 @@ DEF_STATE(start)
 
     encode.Write(mesg);
 
-    // TODO
-
-    NEXT_STATE(finish);
+    STATE_LOOP() {
+        if (inputLine == "begin workout") {
+            NEXT_STATE(workout);
+        } else {
+            throw BadSyntax();
+        }
+    }
 }
 
 DEF_STATE(workout)
