@@ -24,7 +24,7 @@ namespace {
     {                                                   \
         explicit                                        \
         _name(const string& mesg = (_defMesg)) :        \
-            std::runtime_error(mesg)                    \
+            runtime_error(mesg)                         \
         {                                               \
         }                                               \
     }
