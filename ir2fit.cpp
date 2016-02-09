@@ -103,6 +103,26 @@ value<fit::FileIdMesg>(istream& input)
     return ans;
 }
 
+template <>
+fit::WorkoutMesg
+value<fit::WorkoutMesg>(istream& input)
+{
+    fit::WorkoutMesg ans;
+
+    match<string>(input, "workout");
+    FOR_EACH_TOKEN(token, input) {
+        if (token == "sport") {
+            ans.SetSport(value<FIT_SPORT>(input));
+        } else if (token == "end_workout") {
+            break;
+        } else {
+            throw bad_syntax();
+        }
+    }
+
+    return ans;
+}
+
 //----------------------------------------------------------------------------
 // Readers
 
