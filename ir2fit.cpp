@@ -257,7 +257,22 @@ workout_step_value(istream& input)
         } else if (token == "duration_value") {
             ans.SetDurationValue(value<FIT_UINT32>(input));
         } else if (token == "duration_time") {
-            ans.SetDurationTime(value<FIT_FLOAT32>(input));
+            // TODO: restrict by range?
+            ans.SetDurationTime(value<FIT_FLOAT32>(input)); // s
+        } else if (token == "duration_distance") {
+            // TODO: restrict by range?
+            ans.SetDurationDistance(value<FIT_FLOAT32>(input)); // m
+        } else if (token == "duration_hr") {
+            // TODO: restrict by range?
+            ans.SetDurationHr(value<FIT_WORKOUT_HR>(input)); // % or bpm
+        } else if (token == "duration_calories") {
+            // TODO: restrict by range?
+            ans.SetDurationCalories(value<FIT_UINT32>(input)); // kcal
+        } else if (token == "duration_step") {
+            ans.SetDurationStep(value<FIT_UINT32>(input));
+        } else if (token == "duration_power") {
+            // TODO: restrict by range?
+            ans.SetDurationPower(value<FIT_WORKOUT_POWER>(input)); // % or W
         } else if (token == "target_type") {
             ans.SetTargetType(step_target_value(input));
         } else if (token == "end_step") {
