@@ -17,20 +17,20 @@ namespace {
 //----------------------------------------------------------------------------
 // Exceptions
 
-#define DEF_EXCEPTION(_name, _descr)            \
-    struct _name : public std::exception        \
-    {                                           \
-        virtual const char*                     \
-        what() const noexcept                   \
-        {                                       \
-            return _descr;                      \
-        }                                       \
+#define DEF_EXCEPTION(_name, _defMesg)                  \
+    struct _name : public std::runtime_error            \
+    {                                                   \
+        explicit                                        \
+        _name(const string& mesg = (_defMesg)) :        \
+            std::runtime_error(mesg)                    \
+        {                                               \
+        }                                               \
     }
 
-DEF_EXCEPTION(BadSyntax, "Syntax error");
-DEF_EXCEPTION(EncodeFailed, "FIT encoder failed");
-DEF_EXCEPTION(EndOfFile, "End of file");
-DEF_EXCEPTION(InputFailed, "I/O error");
+DEF_EXCEPTION(bad_syntax, "Syntax error");
+DEF_EXCEPTION(encode_failed, "FIT encoder failed");
+DEF_EXCEPTION(end_of_file, "End of file");
+DEF_EXCEPTION(input_failed, "I/O error");
 
 #undef DEF_EXCEPTION
 
@@ -43,9 +43,9 @@ readLine(std::istream& input)
     std::string line;
     if (!std::getline(input, line, '\n')) {
         if (input.eof()) {
-            throw EndOfFile();
+            throw end_of_file();
         } else {
-            throw InputFailed();
+            throw input_failed();
         }
     }
     return line;
@@ -57,9 +57,9 @@ value(std::istream& input)
 {
     T ans;
     input >> ans;
-    if (input.bad()) throw InputFailed();
-    if (input.eof()) throw EndOfFile();
-    if (input.fail()) throw BadSyntax();
+    if (input.bad()) throw input_failed();
+    if (input.eof()) throw end_of_file();
+    if (input.fail()) throw bad_syntax();
     return ans;
 }
 
@@ -68,7 +68,7 @@ void
 match(std::istream& input, const T& pattern)
 {
     if (pattern != value<T>(input)) {
-        throw BadSyntax();
+        throw bad_syntax();
     }
 }
 
@@ -123,7 +123,7 @@ ir2fit(std::istream& input, std::iostream& output)
         encode.Write(workoutStep(input));
     }
     if (!encode.Close()) {
-        throw EncodeFailed();
+        throw encode_failed();
     }
 }
 
@@ -156,21 +156,21 @@ main()
 TEST_CASE("EOF on empty input", "[readLine]")
 {
     std::istringstream input;
-    CHECK_THROWS_AS(readLine(input), EndOfFile);
+    CHECK_THROWS_AS(readLine(input), end_of_file);
 }
 
 TEST_CASE("Read an incomplete line", "[readLine]")
 {
     std::istringstream input("a");
     CHECK(readLine(input) == "a");
-    CHECK_THROWS_AS(readLine(input), EndOfFile);
+    CHECK_THROWS_AS(readLine(input), end_of_file);
 }
 
 TEST_CASE("Read full line", "[readLine]")
 {
     std::istringstream input("abc\n");
     CHECK(readLine(input) == "abc");
-    CHECK_THROWS_AS(readLine(input), EndOfFile);
+    CHECK_THROWS_AS(readLine(input), end_of_file);
 }
 
 TEST_CASE("Read multiple lines", "[readLine]")
@@ -178,14 +178,14 @@ TEST_CASE("Read multiple lines", "[readLine]")
     std::istringstream input("abc\ndef\n");
     CHECK(readLine(input) == "abc");
     CHECK(readLine(input) == "def");
-    CHECK_THROWS_AS(readLine(input), EndOfFile);
+    CHECK_THROWS_AS(readLine(input), end_of_file);
 }
 
 TEST_CASE("Empty input", "[ir2fit]")
 {
     std::istringstream input;
     std::stringstream output;
-    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+    CHECK_THROWS_AS(ir2fit(input, output), bad_syntax);
 }
 
 TEST_CASE("Empty steps list", "[ir2fit]")
@@ -195,7 +195,7 @@ TEST_CASE("Empty steps list", "[ir2fit]")
         "end_workout\n"
         );
     std::stringstream output;
-    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+    CHECK_THROWS_AS(ir2fit(input, output), bad_syntax);
 }
 
 TEST_CASE("Invalid number of steps", "[ir2fit]")
@@ -208,7 +208,7 @@ TEST_CASE("Invalid number of steps", "[ir2fit]")
         "end_workout\n"
         );
     std::stringstream output;
-    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+    CHECK_THROWS_AS(ir2fit(input, output), bad_syntax);
 }
 
 TEST_CASE("Fails on trailing garbage", "[ir2fit]")
@@ -222,7 +222,7 @@ TEST_CASE("Fails on trailing garbage", "[ir2fit]")
         "xyz\n"
         );
     std::stringstream output;
-    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+    CHECK_THROWS_AS(ir2fit(input, output), bad_syntax);
 }
 
 TEST_CASE("Sport and name properties", "[ir2fit]")
