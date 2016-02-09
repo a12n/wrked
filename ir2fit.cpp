@@ -186,6 +186,12 @@ workout_hr(istream& input)
     return value<FIT_WORKOUT_HR>(input, 0, 355);
 }
 
+FIT_WORKOUT_POWER
+workout_power(istream& input)
+{
+    return value<FIT_WORKOUT_POWER>(input, 0, 11000);
+}
+
 fit::FileIdMesg
 file_id_value(istream& input)
 {
@@ -278,7 +284,7 @@ workout_step_value(istream& input)
             ans.SetDurationStep(value<FIT_UINT32>(input));
         } else if (token == "duration_power") {
             // TODO: restrict by range?
-            ans.SetDurationPower(value<FIT_WORKOUT_POWER>(input)); // % or W
+            ans.SetDurationPower(workout_power(input)); // % or W
         } else if (token == "target_type") {
             ans.SetTargetType(step_target_value(input));
         } else if (token == "target_value") {
@@ -305,7 +311,7 @@ workout_step_value(istream& input)
             ans.SetRepeatHr(workout_hr(input)); // % or bpm
         } else if (token == "repeat_power") {
             // TODO: range?
-            ans.SetRepeatPower(value<FIT_WORKOUT_POWER>(input)); // % or W
+            ans.SetRepeatPower(workout_power(input)); // % or W
         } else if (token == "custom_target_value_low") {
             ans.SetCustomTargetValueLow(value<FIT_UINT32>(input));
         } else if (token == "custom_target_speed_low") {
@@ -315,8 +321,7 @@ workout_step_value(istream& input)
         } else if (token == "custom_target_cadence_low") {
             ans.SetCustomTargetCadenceLow(value<FIT_UINT32>(input)); // rpm
         } else if (token == "custom_target_power_low") {
-            ans.SetCustomTargetPowerLow(
-                value<FIT_WORKOUT_POWER>(input)); // % or W
+            ans.SetCustomTargetPowerLow(workout_power(input)); // % or W
         } else if (token == "custom_target_value_high") {
             ans.SetCustomTargetValueHigh(value<FIT_UINT32>(input));
         } else if (token == "custom_target_speed_high") {
@@ -326,8 +331,7 @@ workout_step_value(istream& input)
         } else if (token == "custom_target_cadence_high") {
             ans.SetCustomTargetCadenceHigh(value<FIT_UINT32>(input)); // rpm
         } else if (token == "custom_target_power_high") {
-            ans.SetCustomTargetPowerHigh(
-                value<FIT_WORKOUT_POWER>(input)); // % or W
+            ans.SetCustomTargetPowerHigh(workout_power(input)); // % or W
         } else if (token == "end_step") {
             break;
         } else {
