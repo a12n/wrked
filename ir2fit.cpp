@@ -183,6 +183,32 @@ main()
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-// TODO
+TEST_CASE("EOF on empty input", "[readLine]")
+{
+    std::istringstream input;
+    CHECK_THROWS_AS(readLine(input), EndOfFile);
+}
+
+TEST_CASE("Read an incomplete line", "[readLine]")
+{
+    std::istringstream input("a");
+    CHECK(readLine(input) == "a");
+    CHECK_THROWS_AS(readLine(input), EndOfFile);
+}
+
+TEST_CASE("Read full line", "[readLine]")
+{
+    std::istringstream input("abc\n");
+    CHECK(readLine(input) == "abc");
+    CHECK_THROWS_AS(readLine(input), EndOfFile);
+}
+
+TEST_CASE("Read multiple lines", "[readLine]")
+{
+    std::istringstream input("abc\ndef\n");
+    CHECK(readLine(input) == "abc");
+    CHECK(readLine(input) == "def");
+    CHECK_THROWS_AS(readLine(input), EndOfFile);
+}
 
 #endif  // _WITH_TESTS
