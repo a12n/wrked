@@ -41,6 +41,11 @@ let lexer_tests =
   ; "Step header" >::
     (fun ctxt -> assert_tokens ~ctxt
         "\"B\", cool down" [NAME "B"; COMMA; INTENSITY Intensity.Cool_down])
+  ; "Invalid intensity" >::
+    (fun ctxt -> assert_raises
+        (Syntax_error {Lexing.pos_fname = ""; pos_lnum = 1;
+                       pos_bol = 0; pos_cnum = 0})
+        (fun () -> tokens "cool warm down up"))
   ]
 
 let () = run_test_tt_main
