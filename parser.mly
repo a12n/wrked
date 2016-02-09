@@ -9,7 +9,7 @@ open Workout
 %token L_PAREN R_PAREN
 %token LESS GREATER
 
-%token <Sport.t> SPORT
+%token <Workout.Sport.t> SPORT
 
 %token COLON
 %token COMMA
@@ -36,9 +36,9 @@ open Workout
 
 %token IN
 
-%token <Intensity.t> INTENSITY
+%token <Workout.Intensity.t> INTENSITY
 
-%start <t> parse
+%start <Workout.t> parse
 
 %%
 
