@@ -10,7 +10,12 @@
 #include <fit_workout_mesg.hpp>
 #include <fit_workout_step_mesg.hpp>
 
+using std::cerr;
+using std::cin;
+using std::cout;
+using std::endl;
 using std::exception;
+using std::ios;
 using std::istream;
 using std::istringstream;
 using std::ostringstream;
@@ -378,16 +383,16 @@ ir2fit(std::istream& input, std::iostream& output)
 int
 main()
 {
-    std::stringstream output(std::ios::out | std::ios::binary);
+    stringstream output(ios::out | ios::binary);
 
     try {
-        ir2fit(std::cin, output);
+        ir2fit(cin, output);
     } catch (const exception& exn) {
-        std::cerr << exn.what() << std::endl;
+        cerr << exn.what() << endl;
         return 1;
     }
 
-    std::cout << output.str();
+    cout << output.str();
 
     return 0;
 }
