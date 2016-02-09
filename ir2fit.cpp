@@ -48,6 +48,27 @@ readLine(std::istream& input)
     return line;
 }
 
+template <class T>
+T
+value(std::istream& input)
+{
+    T ans;
+    input >> ans;
+    if (input.bad()) throw InputFailed();
+    if (input.eof()) throw EndOfFile();
+    if (input.fail()) throw BadSyntax();
+    return ans;
+}
+
+template <class T>
+void
+match(std::istream& input, const T& pattern)
+{
+    if (pattern != value<T>(input)) {
+        throw BadSyntax();
+    }
+}
+
 //----------------------------------------------------------------------------
 // Readers
 
