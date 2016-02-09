@@ -94,8 +94,11 @@ DEF_STATE(workout)
 DEF_STATE(finish)
 {
     try {
-        // TODO
-        throw EndOfFile();
+        STATE_LOOP() {
+            if (inputLine != "") {
+                throw BadSyntax();
+            }
+        }
     } catch (const EndOfFile&) {
         if (!encode.Close()) {
             throw EncodeFailed();
