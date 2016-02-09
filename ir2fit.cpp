@@ -140,14 +140,21 @@ value<fit::WorkoutMesg>(istream& input)
     return ans;
 }
 
-//----------------------------------------------------------------------------
-// Readers
-
+template <>
 fit::WorkoutStepMesg
-workoutStep(std::istream& input)
+value<fit::WorkoutStepMesg>(istream& input)
 {
     fit::WorkoutStepMesg ans;
-    // TODO
+
+    match<string>(input, "step");
+    FOR_EACH_TOKEN(token, input) {
+        if (token == "end_step") {
+            break;
+        } else {
+            throw bad_syntax();
+        }
+    }
+
     return ans;
 }
 
@@ -164,7 +171,7 @@ ir2fit(std::istream& input, std::iostream& output)
     const size_t n = workout.GetNumValidSteps();
     encode.Write(workout);
     for (size_t i = 0; i < n; ++i) {
-        encode.Write(workoutStep(input));
+        encode.Write(value<fit::WorkoutStepMesg>(input));
     }
     if (!encode.Close()) {
         throw encode_failed();
