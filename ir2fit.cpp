@@ -101,11 +101,11 @@ value(istream& input, const T& min, const T& max)
 
 template <class T>
 T
-value(istream& input, const vector<pair<string, T> >& table)
+value(istream& input, const vector<pair<string, T> >& map)
 {
-    const string token = value<string>(input);
-    for (const pair<string, T>& p : table) {
-        if (token == p.first) return p.second;
+    const string val = value<string>(input);
+    for (const pair<string, T>& p : map) {
+        if (p.first == val) return p.second;
     }
     throw bad_syntax();
 }
