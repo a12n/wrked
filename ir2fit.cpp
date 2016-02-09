@@ -12,6 +12,8 @@
 
 using std::exception;
 using std::istream;
+using std::istringstream;
+using std::ostringstream;
 using std::pair;
 using std::runtime_error;
 using std::string;
