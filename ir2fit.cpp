@@ -211,4 +211,34 @@ TEST_CASE("Read multiple lines", "[readLine]")
     CHECK_THROWS_AS(readLine(input), EndOfFile);
 }
 
+TEST_CASE("Empty input", "[ir2fit]")
+{
+    std::istringstream input;
+    std::stringstream output;
+    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+}
+
+TEST_CASE("Empty steps list", "[ir2fit]")
+{
+    std::istringstream input(
+        "begin workout\n"
+        "end workout\n"
+        );
+    std::stringstream output;
+    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+}
+
+TEST_CASE("Invalid number of steps", "[ir2fit]")
+{
+    std::istringstream input(
+        "begin_workout\n"
+        "num_steps 2\n"
+        "begin step\n"
+        "end step\n"
+        "end_workout\n"
+        );
+    std::stringstream output;
+    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+}
+
 #endif  // _WITH_TESTS
