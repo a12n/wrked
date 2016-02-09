@@ -32,10 +32,7 @@
 
 %token IN
 
-%token WARM_UP
-%token ACTIVE
-%token REST
-%token COOL_DOWN
+%token <Workout.Intensity.t> INTENSITY
 
 %start <string> parse
 

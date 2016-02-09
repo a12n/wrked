@@ -1,5 +1,6 @@
 {
 open Parser
+open Workout
 exception Syntax_error of string
 }
 
@@ -9,10 +10,10 @@ rule read = parse
 | ['0'-'9']+ as i        { NUMBER (int_of_string i) }
 | '"' ([^'"']+ as s) '"' { NAME s }
 
-| "warm up"           { WARM_UP }
-| "active"            { ACTIVE }
-| "rest" | "recovery" { REST }
-| "cool down"         { COOL_DOWN }
+| "warm up"           { INTENSITY Intensity.Warm_up }
+| "active"            { INTENSITY Intensity.Active }
+| "rest" | "recovery" { INTENSITY Intensity.Rest }
+| "cool down"         { INTENSITY Intensity.Cool_down }
 
 | "cycling" { CYCLING }
 
