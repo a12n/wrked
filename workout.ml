@@ -62,6 +62,10 @@ module Sport = struct
          | Rafting
          | Windsurfing
          | Kitesurfing
+
+  let to_string = function
+      Cycling -> "cycling"
+    | _ -> "generic"
 end
 
 module Heart_rate = struct
