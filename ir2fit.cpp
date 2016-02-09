@@ -106,19 +106,6 @@ value<fit::FileIdMesg>(istream& input)
 //----------------------------------------------------------------------------
 // Readers
 
-fit::FileIdMesg
-fileId(std::istream& input)
-{
-    fit::FileIdMesg ans;
-    // TODO: read manufacturer, product, serial number, time created?
-    ans.SetType(FIT_FILE_WORKOUT);
-    ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
-    ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
-    ans.SetSerialNumber(54321);
-    ans.SetTimeCreated(0);
-    return ans;
-}
-
 fit::WorkoutMesg
 workout(std::istream& input, size_t& nSteps)
 {
@@ -144,7 +131,7 @@ ir2fit(std::istream& input, std::iostream& output)
 {
     fit::Encode encode;
     encode.Open(output);
-    encode.Write(fileId(input));
+    encode.Write(value<fit::FileIdMesg>(input));
     size_t nSteps = 0;
     encode.Write(workout(input, nSteps));
     for (size_t i = 0; i < nSteps; ++i) {
