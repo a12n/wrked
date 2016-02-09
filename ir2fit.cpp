@@ -233,12 +233,14 @@ ir2fit(std::istream& input, std::iostream& output)
     encode.Write(file_id_value(input));
 
     const fit::WorkoutMesg workout = workout_value(input);
-    const size_t n = static_cast<size_t>(workout.GetNumValidSteps());
+    const FIT_UINT16 n = workout.GetNumValidSteps();
 
     encode.Write(workout);
 
-    for (size_t i = 0; i < n; ++i) {
-        encode.Write(workout_step_value(input));
+    for (FIT_UINT16 i = 0; i < n; ++i) {
+        fit::WorkoutStepMesg workout_step = workout_step_value(input);
+        workout_step.SetMessageIndex(i);
+        encode.Write(workout_step);
     }
 
     if (!encode.Close()) {
