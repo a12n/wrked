@@ -28,6 +28,9 @@ let lexer_tests =
   ; "HR condition" >::
     (fun ctxt -> assert_tokens ~ctxt
         "hr in zone 1" [HR; IN; ZONE; NUMBER 1])
+  ; "Workout header" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "\"A\", cycling" [NAME "A"; COMMA; SPORT Sport.Cycling])
   ]
 
 let () = run_test_tt_main
