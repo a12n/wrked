@@ -41,7 +41,7 @@ DEF_EXCEPTION(input_failed, "I/O error");
 
 template <class T>
 T
-value(std::istream& input)
+value(istream& input)
 {
     T ans;
     input >> ans;
@@ -53,7 +53,7 @@ value(std::istream& input)
 
 template <class T>
 void
-match(std::istream& input, const T& pattern)
+match(istream& input, const T& pattern)
 {
     if (pattern != value<T>(input)) {
         throw bad_syntax();
