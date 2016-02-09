@@ -21,6 +21,10 @@ using std::vector;
 
 namespace {
 
+#define STRING_STREAM(_expr)                                            \
+    static_cast<ostringstream&>(                                        \
+        ostringstream().flush() << _expr).str()
+
 //----------------------------------------------------------------------------
 // Exceptions
 
