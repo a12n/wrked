@@ -61,6 +61,18 @@ match(istream& input, const T& pattern)
 }
 
 //----------------------------------------------------------------------------
+// value<T> specializations
+
+template <>
+FIT_SPORT
+value<FIT_SPORT>(istream& input)
+{
+    const string token = value<string>(input);
+    if (token == "cycling") return FIT_SPORT_CYCLING;
+    throw bad_syntax();
+}
+
+//----------------------------------------------------------------------------
 // Readers
 
 #define FOR_EACH_TOKEN(_token, _input)                          \
