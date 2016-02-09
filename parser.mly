@@ -35,6 +35,7 @@ open Workout
 %token W
 
 %token IN
+%token ZONE
 
 %token <Workout.Intensity.t> INTENSITY
 

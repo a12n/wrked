@@ -25,7 +25,8 @@ rule read = parse
 | "speed"    { SPEED }
 | "time"     { TIME }
 
-| "in" { IN }
+| "in"   { IN }
+| "zone" { ZONE }
 
 | "bpm"  { BPM }
 | "h"    { H }
