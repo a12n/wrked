@@ -252,7 +252,7 @@ workout_step_value(istream& input)
         } else if (token == "name") {
             // ans.SetWktStepName(value<FIT_WSTRING>(input));
         } else if (token == "duration_type") {
-            ans.SetDurationType(value<FIT_WKT_STEP_DURATION>(input));
+            ans.SetDurationType(step_duration_value(input));
         } else if (token == "duration_value") {
             ans.SetDurationValue(value<FIT_UINT32>(input));
         } else if (token == "duration_time") {
