@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 
 #include <fit_encode.hpp>
 #include <fit_file_id_mesg.hpp>
@@ -11,8 +12,10 @@
 
 using std::exception;
 using std::istream;
+using std::pair;
 using std::runtime_error;
 using std::string;
+using std::vector;
 
 namespace {
 
@@ -63,6 +66,17 @@ value(istream& input, const T& min, const T& max)
 }
 
 template <class T>
+T
+value<T>(istream& input, const vector<pair<string, T> >& table)
+{
+    const string token = value<string>(input);
+    for (const pair<string, T>& p : table) {
+        if (token == p.first) return p.second;
+    }
+    throw bad_syntax();
+}
+
+template <class T>
 void
 match(istream& input, const T& pattern)
 {
@@ -76,17 +90,6 @@ match(istream& input, const T& pattern)
 
 //----------------------------------------------------------------------------
 // value<T> specializations
-
-template <class T>
-T
-value<T>(istream& input, const std::vector<std::pair<string, T> >& table)
-{
-    const string token = value<string>(input);
-    for (auto i = table.begin(); i != table.end(); ++i) {
-        if (token == i->first) return i->second;
-    }
-    throw bad_syntax();
-}
 
 template <>
 FIT_INTENSITY
