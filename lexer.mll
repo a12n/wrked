@@ -48,4 +48,6 @@ rule read = parse
 | ':'       { COLON }
 | '*' | 'x' { TIMES }
 
+| _ { raise (Syntax_error (Lexing.lexeme lexbuf)) }
+
 | eof             { raise End_of_file }
