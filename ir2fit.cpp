@@ -147,6 +147,20 @@ step_duration_value(istream& input)
         });
 }
 
+FIT_WKT_STEP_TARGET
+step_target_value(istream& input)
+{
+    return value<FIT_WKT_STEP_TARGET>(input, {
+            {"speed"      , FIT_WKT_STEP_TARGET_SPEED      },
+            {"heart_rate" , FIT_WKT_STEP_TARGET_HEART_RATE },
+            {"open"       , FIT_WKT_STEP_TARGET_OPEN       },
+            {"cadence"    , FIT_WKT_STEP_TARGET_CADENCE    },
+            {"power"      , FIT_WKT_STEP_TARGET_POWER      },
+            {"grade"      , FIT_WKT_STEP_TARGET_GRADE      },
+            {"resistance" , FIT_WKT_STEP_TARGET_RESISTANCE }
+        });
+}
+
 FIT_INTENSITY
 intensity_value(istream& input)
 {
