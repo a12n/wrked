@@ -46,6 +46,11 @@ let lexer_tests =
         (Syntax_error {Lexing.pos_fname = ""; pos_lnum = 1;
                        pos_bol = 0; pos_cnum = 0})
         (fun () -> tokens "cool warm down up"))
+  ; "Complete step" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "\"A\", warm up, time < 1 min, hr < 80 %"
+        [NAME "A"; COMMA; INTENSITY Intensity.Warm_up; COMMA;
+         TIME; LESS; NUMBER 1; MIN; COMMA; HR; LESS; NUMBER 80; PERCENT])
   ]
 
 let () = run_test_tt_main
