@@ -15,14 +15,14 @@ namespace {
 // Exceptions
 
 #define DEF_EXCEPTION(_name, _descr)            \
-struct _name : public std::exception            \
-{                                               \
-    virtual const char*                         \
-    what() const noexcept                       \
+    struct _name : public std::exception        \
     {                                           \
-        return _descr;                          \
-    }                                           \
-}
+        virtual const char*                     \
+        what() const noexcept                   \
+        {                                       \
+            return _descr;                      \
+        }                                       \
+    }
 
 DEF_EXCEPTION(BadSyntax, "Syntax error");
 DEF_EXCEPTION(EncodeFailed, "FIT encoder failed");
@@ -48,15 +48,18 @@ readLine(std::istream& input)
 //----------------------------------------------------------------------------
 // State functions
 
-#define DEF_STATE(_name) void _name (std::istream& input, fit::Encode& encode)
-#define DECL_STATE(_name) DEF_STATE(_name)
-#define NEXT_STATE(_name) _name(input, encode); return
+#define DEF_STATE(_name)                                \
+    void                                                \
+    _name (std::istream& input, fit::Encode& encode)
 
 #define DECL_STATE(_name) DEF_STATE(_name)
 
 #define NEXT_STATE(_name)                       \
-_name(input, encode);                           \
-return
+    _name(input, encode);                       \
+    return
+
+#define STATE_LOOP(_name)                                           \
+    for (std::string inputLine; inputLine = readLine(input), true;)
 
 DECL_STATE(start);
 DECL_STATE(workout);
