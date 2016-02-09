@@ -209,6 +209,8 @@ workout_step_value(istream& input)
         // TODO
         if (token == "intensity") {
             ans.SetIntensity(intensity_value(input));
+        } else if (token == "name") {
+            // ans.SetWktStepName(value<FIT_WSTRING>(input));
         } else if (token == "end_step") {
             break;
         } else {
