@@ -37,6 +37,9 @@ let lexer_tests =
   ; "*N" >::
     (fun ctxt -> assert_tokens ~ctxt
         "(4 *) [ ]" [L_PAREN; NUMBER 4; TIMES; R_PAREN; L_BRACKET; R_BRACKET])
+  ; "Step header" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "\"B\", cool down" [NAME "B"; COMMA; INTENSITY Intensity.Cool_down])
   ]
 
 let () = run_test_tt_main
