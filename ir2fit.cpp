@@ -48,6 +48,16 @@ DEF_EXCEPTION(input_failed, "I/O error");
 //----------------------------------------------------------------------------
 // Input functions
 
+string
+line(istream& input)
+{
+    string ans;
+    getline(input, ans, '\n');
+    if (input.bad()) throw input_failed();
+    if (input.eof()) throw end_of_file();
+    return ans;
+}
+
 template <class T>
 T
 value(istream& input)
@@ -238,32 +248,32 @@ main()
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
-TEST_CASE("EOF on empty input", "[readLine]")
+TEST_CASE("EOF on empty input", "[line]")
 {
-    std::istringstream input;
-    CHECK_THROWS_AS(readLine(input), end_of_file);
+    istringstream input;
+    CHECK_THROWS_AS(line(input), end_of_file);
 }
 
-TEST_CASE("Read an incomplete line", "[readLine]")
+TEST_CASE("Read an incomplete line", "[line]")
 {
-    std::istringstream input("a");
-    CHECK(readLine(input) == "a");
-    CHECK_THROWS_AS(readLine(input), end_of_file);
+    istringstream input("a");
+    CHECK(line(input) == "a");
+    CHECK_THROWS_AS(line(input), end_of_file);
 }
 
-TEST_CASE("Read full line", "[readLine]")
+TEST_CASE("Read full line", "[line]")
 {
-    std::istringstream input("abc\n");
-    CHECK(readLine(input) == "abc");
-    CHECK_THROWS_AS(readLine(input), end_of_file);
+    istringstream input("abc\n");
+    CHECK(line(input) == "abc");
+    CHECK_THROWS_AS(line(input), end_of_file);
 }
 
-TEST_CASE("Read multiple lines", "[readLine]")
+TEST_CASE("Read multiple lines", "[line]")
 {
-    std::istringstream input("abc\ndef\n");
-    CHECK(readLine(input) == "abc");
-    CHECK(readLine(input) == "def");
-    CHECK_THROWS_AS(readLine(input), end_of_file);
+    istringstream input("abc\ndef\n");
+    CHECK(line(input) == "abc");
+    CHECK(line(input) == "def");
+    CHECK_THROWS_AS(line(input), end_of_file);
 }
 
 TEST_CASE("Empty input", "[ir2fit]")
