@@ -141,9 +141,8 @@ sport_value(istream& input)
         });
 }
 
-template <>
 fit::FileIdMesg
-value<fit::FileIdMesg>(istream& input)
+file_id_value(istream& input)
 {
     fit::FileIdMesg ans;
 
@@ -171,9 +170,8 @@ value<fit::FileIdMesg>(istream& input)
     return ans;
 }
 
-template <>
 fit::WorkoutMesg
-value<fit::WorkoutMesg>(istream& input)
+workout_value(istream& input)
 {
     fit::WorkoutMesg ans;
 
@@ -200,9 +198,8 @@ value<fit::WorkoutMesg>(istream& input)
     return ans;
 }
 
-template <>
 fit::WorkoutStepMesg
-value<fit::WorkoutStepMesg>(istream& input)
+workout_step_value(istream& input)
 {
     fit::WorkoutStepMesg ans;
 
@@ -230,14 +227,19 @@ void
 ir2fit(std::istream& input, std::iostream& output)
 {
     fit::Encode encode;
+
     encode.Open(output);
-    encode.Write(value<fit::FileIdMesg>(input));
-    const fit::WorkoutMesg workout = value<fit::WorkoutMesg>(input);
-    const size_t n = workout.GetNumValidSteps();
+    encode.Write(file_id_value(input));
+
+    const fit::WorkoutMesg workout = workout_value(input);
+    const size_t n = static_cast<size_t>(workout.GetNumValidSteps());
+
     encode.Write(workout);
+
     for (size_t i = 0; i < n; ++i) {
-        encode.Write(value<fit::WorkoutStepMesg>(input));
+        encode.Write(workout_step_value(input));
     }
+
     if (!encode.Close()) {
         throw encode_failed();
     }
