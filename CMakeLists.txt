@@ -78,7 +78,7 @@ set(FIT_CXX_SRCS
 include_directories(${FIT_ROOT_DIR}/c)
 include_directories(${FIT_ROOT_DIR}/cpp)
 
-add_executable(workoued-ir2fit ir2fit.cpp ${FIT_CXX_SRCS})
+add_executable(ir2fit ir2fit.cpp ${FIT_CXX_SRCS})
 
 if(WRKED_WITH_TESTS)
   file(DOWNLOAD
@@ -86,12 +86,12 @@ if(WRKED_WITH_TESTS)
     ${PROJECT_BINARY_DIR}/catch.hpp
     EXPECTED_MD5 "f21d005ecf1e5c576d4f8abad0a08ace" SHOW_PROGRESS
     )
-  add_executable(workoued-ir2fit-test ir2fit.cpp ${FIT_CXX_SRCS})
-  set_target_properties(workoued-ir2fit-test PROPERTIES
+  add_executable(ir2fit-test ir2fit.cpp ${FIT_CXX_SRCS})
+  set_target_properties(ir2fit-test PROPERTIES
     COMPILE_DEFINITIONS "_WITH_TESTS=1")
 endif(WRKED_WITH_TESTS)
 
 #------------------------------------------------------------------------------
 # Installation
 
-install(TARGETS workoued-ir2fit DESTINATION bin)
+install(TARGETS ir2fit DESTINATION bin)
