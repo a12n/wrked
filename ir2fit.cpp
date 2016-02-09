@@ -180,6 +180,12 @@ sport_value(istream& input)
         });
 }
 
+FIT_WORKOUT_HR
+workout_hr(istream& input)
+{
+    return value<FIT_WORKOUT_HR>(input, 0, 355);
+}
+
 fit::FileIdMesg
 file_id_value(istream& input)
 {
@@ -264,7 +270,7 @@ workout_step_value(istream& input)
             ans.SetDurationDistance(value<FIT_FLOAT32>(input)); // m
         } else if (token == "duration_hr") {
             // TODO: restrict by range?
-            ans.SetDurationHr(value<FIT_WORKOUT_HR>(input)); // % or bpm
+            ans.SetDurationHr(workout_hr(input)); // % or bpm
         } else if (token == "duration_calories") {
             // TODO: restrict by range?
             ans.SetDurationCalories(value<FIT_UINT32>(input)); // kcal
@@ -296,7 +302,7 @@ workout_step_value(istream& input)
             ans.SetRepeatCalories(value<FIT_UINT32>(input)); // kcal
         } else if (token == "repeat_hr") {
             // TODO: restrict by range?
-            ans.SetRepeatHr(value<FIT_WORKOUT_HR>(input)); // % or bpm
+            ans.SetRepeatHr(workout_hr(input)); // % or bpm
         } else if (token == "repeat_power") {
             // TODO: range?
             ans.SetRepeatPower(value<FIT_WORKOUT_POWER>(input)); // % or W
@@ -305,8 +311,7 @@ workout_step_value(istream& input)
         } else if (token == "custom_target_speed_low") {
             ans.SetCustomTargetSpeedLow(value<FIT_FLOAT32>(input)); // m/s
         } else if (token == "custom_target_heart_rate_low") {
-            ans.SetCustomTargetHeartRateLow(
-                value<FIT_WORKOUT_HR>(input)); // % or bpm
+            ans.SetCustomTargetHeartRateLow(workout_hr(input)); // % or bpm
         } else if (token == "custom_target_cadence_low") {
             ans.SetCustomTargetCadenceLow(value<FIT_UINT32>(input)); // rpm
         } else if (token == "custom_target_power_low") {
@@ -317,8 +322,7 @@ workout_step_value(istream& input)
         } else if (token == "custom_target_speed_high") {
             ans.SetCustomTargetSpeedHigh(value<FIT_FLOAT32>(input)); // m/s
         } else if (token == "custom_target_heart_rate_high") {
-            ans.SetCustomTargetHeartRateHigh(
-                value<FIT_WORKOUT_HR>(input)); // % or bpm
+            ans.SetCustomTargetHeartRateHigh(workout_hr(input)); // % or bpm
         } else if (token == "custom_target_cadence_high") {
             ans.SetCustomTargetCadenceHigh(value<FIT_UINT32>(input)); // rpm
         } else if (token == "custom_target_power_high") {
