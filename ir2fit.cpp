@@ -75,6 +75,34 @@ value<FIT_SPORT>(istream& input)
     throw bad_syntax();
 }
 
+template <>
+fit::FileIdMesg
+value<fit::FileIdMesg>(istream& input)
+{
+    fit::FileIdMesg ans;
+
+    ans.SetType(FIT_FILE_WORKOUT);
+    ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
+    ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
+    ans.SetSerialNumber(54321);
+    ans.SetTimeCreated(0);
+
+    match<string>(input, "file_id");
+    FOR_EACH_TOKEN(token, input) {
+        if (token == "serial_number") {
+            ans.SetSerialNumber(value<FIT_UINT32Z>(input));
+        } else if (token == "time_created") {
+            ans.SetTimeCreated(value<FIT_DATE_TIME>(input));
+        } else if (token == "end_of_file") {
+            break;
+        } else {
+            throw bad_syntax();
+        }
+    }
+
+    return ans;
+}
+
 //----------------------------------------------------------------------------
 // Readers
 
