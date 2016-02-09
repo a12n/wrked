@@ -153,7 +153,8 @@ value<fit::WorkoutMesg>(istream& input)
         } else if (token == "num_valid_steps") {
             ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000));
         } else if (token == "name") {
-            ans.SetWktName(value<FIT_WSTRING>(input));
+            // TODO
+            // ans.SetWktName(value<FIT_WSTRING>(input));
         } else if (token == "end_workout") {
             break;
         } else {
