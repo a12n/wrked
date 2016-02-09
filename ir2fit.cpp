@@ -171,7 +171,10 @@ value<fit::WorkoutStepMesg>(istream& input)
 
     match<string>(input, "step");
     FOR_EACH_TOKEN(token, input) {
-        if (token == "end_step") {
+        // TODO
+        if (token == "intensity") {
+            ans.SetIntensity(value<FIT_INTENSITY>(input));
+        } else if (token == "end_step") {
             break;
         } else {
             throw bad_syntax();
