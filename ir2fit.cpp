@@ -49,100 +49,37 @@ readLine(std::istream& input)
 }
 
 //----------------------------------------------------------------------------
-// State functions
+// Readers
 
-#define DEF_STATE(_name)                                \
-    void                                                \
-    _name (std::istream& input, fit::Encode& encode)
-
-#define DECL_STATE(_name) DEF_STATE(_name)
-
-#define NEXT_STATE(_name)                       \
-    _name(input, encode);                       \
-    return
-
-#define STATE_LOOP(_name)                                           \
-    for (std::string inputLine; inputLine = readLine(input), true;)
-
-DECL_STATE(start);
-DECL_STATE(workout);
-DECL_STATE(workoutStep);
-DECL_STATE(finish);
-
-DEF_STATE(start)
+fit::FileIdMesg
+fileId(std::istream& input)
 {
-    fit::FileIdMesg mesg;
-
-    mesg.SetType(FIT_FILE_WORKOUT);
-    mesg.SetManufacturer(FIT_MANUFACTURER_GARMIN);
-    mesg.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
-    mesg.SetSerialNumber(54321);
-    mesg.SetTimeCreated(0);
-
-    encode.Write(mesg);
-
-    STATE_LOOP() {
-        if (inputLine == "begin_workout") {
-            NEXT_STATE(workout);
-        } else {
-            throw BadSyntax();
-        }
-    }
+    fit::FileIdMesg ans;
+    // TODO: read manufacturer, product, serial number, time created?
+    ans.SetType(FIT_FILE_WORKOUT);
+    ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
+    ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
+    ans.SetSerialNumber(54321);
+    ans.SetTimeCreated(0);
+    return ans;
 }
 
-DEF_STATE(workout)
+fit::WorkoutMesg
+workout(std::istream& input, size_t& nSteps)
 {
-    fit::WorkoutMesg mesg;
-
+    fit::WorkoutMesg ans;
     // TODO
-
-    STATE_LOOP() {
-        if (inputLine == "begin_step") {
-            // TODO
-            NEXT_STATE(workoutStep);
-        } else if (inputLine == "end_workout") {
-            // TODO
-            NEXT_STATE(finish);
-        } else {
-            throw BadSyntax();
-        }
-        // TODO
-    }
+    nSteps = 0;
+    return ans;
 }
 
-DEF_STATE(workoutStep)
+fit::WorkoutStepMesg
+workoutStep(std::istream& input)
 {
-    fit::WorkoutStepMesg mesg;
-
+    fit::WorkoutStepMesg ans;
     // TODO
-
-    STATE_LOOP() {
-        if (inputLine == "end_step") {
-            // TODO
-            NEXT_STATE(workout);
-        } else {
-            throw BadSyntax();
-        }
-        // TODO
-    }
+    return ans;
 }
-
-DEF_STATE(finish)
-{
-    try {
-        STATE_LOOP() {
-            throw BadSyntax();
-        }
-    } catch (const EndOfFile&) {
-        if (!encode.Close()) {
-            throw EncodeFailed();
-        }
-    }
-}
-
-#undef NEXT_STATE
-#undef DECL_STATE
-#undef DEF_STATE
 
 //----------------------------------------------------------------------------
 // Main
@@ -151,10 +88,16 @@ void
 ir2fit(std::istream& input, std::iostream& output)
 {
     fit::Encode encode;
-
     encode.Open(output);
-
-    start(input, encode);
+    encode.Write(fileId(input));
+    size_t nSteps = 0;
+    encode.Write(workout(input, nSteps));
+    for (size_t i = 0; i < nSteps; ++i) {
+        encode.Write(workoutStep(input));
+    }
+    if (!encode.Close()) {
+        throw EncodeFailed();
+    }
 }
 
 } // namespace
