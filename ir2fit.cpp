@@ -89,6 +89,18 @@ value<T>(istream& input, const std::vector<std::pair<string, T> >& table)
 }
 
 template <>
+FIT_INTENSITY
+value<FIT_INTENSITY>(istream& input)
+{
+    return value<FIT_INTENSITY>(input, {
+            {"active"   , FIT_INTENSITY_ACTIVE   },
+            {"rest"     , FIT_INTENSITY_REST     },
+            {"warmup"   , FIT_INTENSITY_WARMUP   },
+            {"cooldown" , FIT_INTENSITY_COOLDOWN }
+        });
+}
+
+template <>
 FIT_SPORT
 value<FIT_SPORT>(istream& input)
 {
