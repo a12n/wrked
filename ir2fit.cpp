@@ -243,6 +243,7 @@ workout_step_value(istream& input)
     fit::WorkoutStepMesg ans;
 
     ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
+    ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
 
     match<string>(input, "step");
     FOR_EACH_TOKEN(token, input) {
@@ -257,6 +258,8 @@ workout_step_value(istream& input)
             ans.SetDurationValue(value<FIT_UINT32>(input));
         } else if (token == "duration_time") {
             ans.SetDurationTime(value<FIT_FLOAT32>(input));
+        } else if (token == "target_type") {
+            ans.SetTargetType(step_target_value(input));
         } else if (token == "end_step") {
             break;
         } else {
