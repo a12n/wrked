@@ -63,11 +63,29 @@ T
 value(istream& input)
 {
     T ans;
-    input >> ans;
-    if (input.bad()) throw input_failed();
-    if (input.eof()) throw end_of_file();
-    if (input.fail()) throw bad_syntax();
+    istringstream iss(line(input));
+    iss >> ans;
+    if (iss.fail()) {
+        throw bad_syntax();
+    }
     return ans;
+}
+
+template <>
+string
+value<string>(istream& input)
+{
+    return line(input);
+}
+
+template <class T>
+void
+match(istream& input, const T& pattern)
+{
+    const T val = value<T>(input);
+    if (pattern != val) {
+        throw bad_syntax();
+    }
 }
 
 template <class T>
@@ -90,15 +108,6 @@ value(istream& input, const vector<pair<string, T> >& table)
         if (token == p.first) return p.second;
     }
     throw bad_syntax();
-}
-
-template <class T>
-void
-match(istream& input, const T& pattern)
-{
-    if (pattern != value<T>(input)) {
-        throw bad_syntax();
-    }
 }
 
 #define FOR_EACH_TOKEN(_token, _input)                          \
