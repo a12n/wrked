@@ -1,3 +1,21 @@
+module Capability = struct
+  type t = Speed
+         | Heart_rate
+         | Distance
+         | Cadence
+         | Power
+         | Grade
+         | Resistance
+         (* ? *)
+         | Interval
+         | Custom
+         | Fitness_equipment
+         | Firstbeat
+         | New_leaf
+         | Tcx
+         | Protected
+end
+
 module Sport = struct
   type t = Generic
          | Running
