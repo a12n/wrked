@@ -241,4 +241,18 @@ TEST_CASE("Invalid number of steps", "[ir2fit]")
     CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
 }
 
+TEST_CASE("Fails on trailing garbage", "[ir2fit]")
+{
+    std::istringstream input(
+        "begin_workout\n"
+        "num_steps 1\n"
+        "begin_step\n"
+        "end_step\n"
+        "end_workout\n"
+        "xyz\n"
+        );
+    std::stringstream output;
+    CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
+}
+
 #endif  // _WITH_TESTS
