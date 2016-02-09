@@ -14,6 +14,7 @@ let assert_tokens ~ctxt str toks =
   assert_equal ~ctxt (tokens str) toks
 
 let lexer_tests =
+  let open Lexer in
   let open Parser in
   let open Workout in
   "Lexer" >::: [
