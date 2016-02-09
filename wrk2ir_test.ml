@@ -15,6 +15,7 @@ let assert_tokens ~ctxt str toks =
 
 let lexer_tests =
   let open Parser in
+  let open Workout in
   "Lexer" >::: [
     "Empty input" >:: (fun ctxt -> assert_tokens ~ctxt "" [])
   ; "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " [])
@@ -24,7 +25,7 @@ let lexer_tests =
   ; "Brackets" >::
     (fun ctxt -> assert_tokens ~ctxt
         "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET])
-  ; "hr in zone 1" >::
+  ; "HR condition" >::
     (fun ctxt -> assert_tokens ~ctxt
         "hr in zone 1" [HR; IN; ZONE; NUMBER 1])
   ]
