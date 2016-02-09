@@ -120,6 +120,8 @@ value<fit::WorkoutMesg>(istream& input)
 {
     fit::WorkoutMesg ans;
 
+    ans.SetNumValidSteps(1);
+
     match<string>(input, "workout");
     FOR_EACH_TOKEN(token, input) {
         if (token == "sport") {
