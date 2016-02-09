@@ -16,15 +16,15 @@ let assert_tokens ~ctxt str toks =
 let lexer_tests =
   let open Parser in
   "Lexer" >::: [
-    "Empty input" >:: (fun ctxt -> assert_tokens ~ctxt "" []);
-    "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " []);
-    "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [NUMBER 123]);
-    "Name" >:: (fun ctxt -> assert_tokens
-                   ~ctxt " \"xyz foo %%%\"" [NAME "xyz foo %%%"]);
-    "Brackets" >::
+    "Empty input" >:: (fun ctxt -> assert_tokens ~ctxt "" [])
+  ; "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " [])
+  ; "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [NUMBER 123])
+  ; "Name" >:: (fun ctxt -> assert_tokens
+                   ~ctxt " \"xyz foo %%%\"" [NAME "xyz foo %%%"])
+  ; "Brackets" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET]);
-    "hr in zone 1" >::
+        "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET])
+  ; "hr in zone 1" >::
     (fun ctxt -> assert_tokens ~ctxt
         "hr in zone 1" [HR; IN; ZONE; NUMBER 1])
   ]
