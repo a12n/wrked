@@ -86,6 +86,9 @@ if(WRKED_WITH_TESTS)
     ${PROJECT_BINARY_DIR}/catch.hpp
     EXPECTED_MD5 "f21d005ecf1e5c576d4f8abad0a08ace" SHOW_PROGRESS
     )
+  add_executable(workoued-ir2fit-test ir2fit.cpp ${FIT_CXX_SRCS})
+  set_target_properties(workoued-ir2fit-test PROPERTIES
+    COMPILE_DEFINITIONS "_WITH_TESTS=1")
 endif(WRKED_WITH_TESTS)
 
 #------------------------------------------------------------------------------
