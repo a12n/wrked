@@ -241,6 +241,8 @@ workout_step_value(istream& input)
             ans.SetDurationType(value<FIT_WKT_STEP_DURATION>(input));
         } else if (token == "duration_value") {
             ans.SetDurationValue(value<FIT_UINT32>(input));
+        } else if (token == "duration_time") {
+            ans.SetDurationTime(value<FIT_FLOAT32>(input));
         } else if (token == "end_step") {
             break;
         } else {
