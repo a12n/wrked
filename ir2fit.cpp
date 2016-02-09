@@ -257,7 +257,7 @@ workout_step_value(istream& input)
     ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
     ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
 
-    match<string>(input, "step");
+    match<string>(input, "workout_step");
     FOR_EACH_TOKEN(token, input) {
         // TODO
         if (token == "intensity") {
@@ -332,7 +332,7 @@ workout_step_value(istream& input)
             ans.SetCustomTargetCadenceHigh(value<FIT_UINT32>(input)); // rpm
         } else if (token == "custom_target_power_high") {
             ans.SetCustomTargetPowerHigh(workout_power(input)); // % or W
-        } else if (token == "end_step") {
+        } else if (token == "end_workout_step") {
             break;
         } else {
             throw bad_syntax(
