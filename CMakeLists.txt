@@ -14,6 +14,13 @@ set(WRKED_VERSION
   "${WRKED_MAJOR_VERSION}.${WRKED_MINOR_VERSION}.${WRKED_PATCH_VERSION}")
 
 #------------------------------------------------------------------------------
+# Build options
+
+option(WRKED_WITH_TESTS
+  "Build tests."
+  OFF)
+
+#------------------------------------------------------------------------------
 # Find packages
 
 find_path(FIT_ROOT_DIR FitGen.exe ${PROJECT_BINARY_DIR})
