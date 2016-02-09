@@ -300,6 +300,18 @@ workout_step_value(istream& input)
         } else if (token == "repeat_power") {
             // TODO: range?
             ans.SetRepeatPower(value<FIT_WORKOUT_POWER>(input)); // % or W
+        } else if (token == "custom_target_value_low") {
+            ans.SetCustomTargetValueLow(value<FIT_UINT32>(input));
+        } else if (token == "custom_target_speed_low") {
+            ans.SetCustomTargetSpeedLow(value<FIT_FLOAT32>(input)); // m/s
+        } else if (token == "custom_target_heart_rate_low") {
+            ans.SetCustomTargetHeartRateLow(
+                value<FIT_WORKOUT_HR>(input)); // % or bpm
+        } else if (token == "custom_target_cadence_low") {
+            ans.SetCustomTargetCadenceLow(value<FIT_UINT32>(input)); // rpm
+        } else if (token == "custom_target_power_low") {
+            ans.SetCustomTargetPowerLow(
+                value<FIT_WORKOUT_POWER>(input)); // % or W
         } else if (token == "end_step") {
             break;
         } else {
