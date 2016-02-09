@@ -204,6 +204,8 @@ workout_step_value(istream& input)
 {
     fit::WorkoutStepMesg ans;
 
+    ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
+
     match<string>(input, "step");
     FOR_EACH_TOKEN(token, input) {
         // TODO
