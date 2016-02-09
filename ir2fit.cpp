@@ -74,6 +74,9 @@ match(std::istream& input, const T& pattern)
 //----------------------------------------------------------------------------
 // Readers
 
+#define FOR_EACH_TOKEN(_token, _input)                          \
+    for (string _token; _token = value<string>(_input), true;)
+
 fit::FileIdMesg
 fileId(std::istream& input)
 {
