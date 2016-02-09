@@ -80,6 +80,14 @@ include_directories(${FIT_ROOT_DIR}/cpp)
 
 add_executable(workoued-ir2fit ir2fit.cpp ${FIT_CXX_SRCS})
 
+if(WRKED_WITH_TESTS)
+  file(DOWNLOAD
+    https://raw.githubusercontent.com/philsquared/Catch/v1.3.3/single_include/catch.hpp
+    ${PROJECT_BINARY_DIR}/catch.hpp
+    EXPECTED_MD5 "f21d005ecf1e5c576d4f8abad0a08ace" SHOW_PROGRESS
+    )
+endif(WRKED_WITH_TESTS)
+
 #------------------------------------------------------------------------------
 # Installation
 
