@@ -91,9 +91,8 @@ match(istream& input, const T& pattern)
 //----------------------------------------------------------------------------
 // value<T> specializations
 
-template <>
 FIT_INTENSITY
-value<FIT_INTENSITY>(istream& input)
+intensity_value(istream& input)
 {
     return value<FIT_INTENSITY>(input, {
             {"active"   , FIT_INTENSITY_ACTIVE   },
@@ -103,9 +102,8 @@ value<FIT_INTENSITY>(istream& input)
         });
 }
 
-template <>
 FIT_SPORT
-value<FIT_SPORT>(istream& input)
+sport_value(istream& input)
 {
     return value<FIT_SPORT>(input, {
             {"cycling", FIT_SPORT_CYCLING}
@@ -151,7 +149,7 @@ value<fit::WorkoutMesg>(istream& input)
     match<string>(input, "workout");
     FOR_EACH_TOKEN(token, input) {
         if (token == "sport") {
-            ans.SetSport(value<FIT_SPORT>(input));
+            ans.SetSport(sport_value(input));
         } else if (token == "num_valid_steps") {
             ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000));
         } else if (token == "name") {
@@ -176,7 +174,7 @@ value<fit::WorkoutStepMesg>(istream& input)
     FOR_EACH_TOKEN(token, input) {
         // TODO
         if (token == "intensity") {
-            ans.SetIntensity(value<FIT_INTENSITY>(input));
+            ans.SetIntensity(intensity_value(input));
         } else if (token == "end_step") {
             break;
         } else {
