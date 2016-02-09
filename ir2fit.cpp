@@ -11,6 +11,25 @@
 
 namespace {
 
+#define DEF_EXCEPTION(_name, _descr)            \
+struct _name : public std::exception            \
+{                                               \
+    virtual const char*                         \
+    what() const noexcept                       \
+    {                                           \
+        return _descr;                          \
+    }                                           \
+}
+
+DEF_EXCEPTION(BadSyntax, "Syntax error");
+DEF_EXCEPTION(EncodeFailed, "FIT encoder failed");
+DEF_EXCEPTION(EndOfFile, "End of file");
+DEF_EXCEPTION(InputFailed, "I/O error");
+
+#undef DEF_EXCEPTION
+
+//----------------------------------------------------------------------------
+
 fit::FileIdMesg
 fileIdMesg()
 {
