@@ -14,6 +14,8 @@ rule read = parse
 | "rest" | "recovery" { REST }
 | "cool down"         { COOL_DOWN }
 
+| "cycling" { CYCLING }
+
 | "cadence"  { CADENCE }
 | "calories" { CALORIES }
 | "distance" { DISTANCE }

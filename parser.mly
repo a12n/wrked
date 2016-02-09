@@ -5,6 +5,8 @@
 %token L_PAREN R_PAREN
 %token LESS GREATER
 
+%token CYCLING
+
 %token COLON
 %token COMMA
 %token PERCENT
