@@ -31,6 +31,9 @@ let lexer_tests =
   ; "Workout header" >::
     (fun ctxt -> assert_tokens ~ctxt
         "\"A\", cycling" [NAME "A"; COMMA; SPORT Sport.Cycling])
+  ; "xN" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "(3x) [ ]" [L_PAREN; NUMBER 3; TIMES; R_PAREN; L_BRACKET; R_BRACKET])
   ]
 
 let () = run_test_tt_main
