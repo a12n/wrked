@@ -89,7 +89,22 @@ DEF_STATE(start)
 
 DEF_STATE(workout)
 {
+    fit::WorkoutMesg mesg;
+
     // TODO
+
+    STATE_LOOP() {
+        if (inputLine == "begin step") {
+            // TODO
+            NEXT_STATE(workoutStep);
+        } else if (inputLine == "end workout") {
+            // TODO
+            NEXT_STATE(finish);
+        } else {
+            throw BadSyntax();
+        }
+        // TODO
+    }
 }
 
 DEF_STATE(workoutStep)
