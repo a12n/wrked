@@ -63,6 +63,7 @@ readLine(std::istream& input)
 
 DECL_STATE(start);
 DECL_STATE(workout);
+DECL_STATE(workoutStep);
 DECL_STATE(finish);
 
 DEF_STATE(start)
@@ -89,6 +90,23 @@ DEF_STATE(start)
 DEF_STATE(workout)
 {
     // TODO
+}
+
+DEF_STATE(workoutStep)
+{
+    fit::WorkoutStepMesg mesg;
+
+    // TODO
+
+    STATE_LOOP() {
+        if (inputLine == "end step") {
+            // TODO
+            NEXT_STATE(workout);
+        } else {
+            throw BadSyntax();
+        }
+        // TODO
+    }
 }
 
 DEF_STATE(finish)
