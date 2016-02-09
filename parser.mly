@@ -5,7 +5,10 @@
 %token L_PAREN R_PAREN
 %token LESS GREATER
 
-%token PERCENT COLON TIMES
+%token COLON
+%token COMMA
+%token PERCENT
+%token TIMES
 
 %token CADENCE
 %token CALORIES

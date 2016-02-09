@@ -40,6 +40,7 @@ rule read = parse
 | ')'       { R_PAREN }
 | '<'       { LESS }
 | '>'       { GREATER }
+| ','       { COMMA }
 | '%'       { PERCENT }
 | ':'       { COLON }
 | '*' | 'x' { TIMES }
