@@ -17,6 +17,7 @@ using std::ostringstream;
 using std::pair;
 using std::runtime_error;
 using std::string;
+using std::stringstream;
 using std::vector;
 
 namespace {
@@ -301,8 +302,8 @@ TEST_CASE("Read multiple lines", "[line]")
 
 TEST_CASE("Empty input", "[ir2fit]")
 {
-    std::istringstream input;
-    std::stringstream output;
+    istringstream input;
+    stringstream output;
     CHECK_THROWS_AS(ir2fit(input, output), bad_syntax);
 }
 
