@@ -66,7 +66,8 @@ value(istream& input)
     istringstream iss(line(input));
     iss >> ans;
     if (iss.fail()) {
-        throw bad_syntax();
+        throw bad_syntax(
+            STRING_STREAM("Syntax error near \"" << iss.str() << "\""));
     }
     return ans;
 }
@@ -84,7 +85,9 @@ match(istream& input, const T& pattern)
 {
     const T val = value<T>(input);
     if (pattern != val) {
-        throw bad_syntax();
+        throw bad_syntax(
+            STRING_STREAM("Expected \"" << pattern << "\", "
+                          "got \"" << val << "\""));
     }
 }
 
@@ -94,7 +97,9 @@ value(istream& input, const T& min, const T& max)
 {
     const T ans = value<T>(input);
     if (ans < min || ans > max) {
-        throw bad_syntax();
+        throw bad_syntax(
+            STRING_STREAM("Value \"" << ans << "\" is "
+                          "out of range [" << min << ", " << max << "]"));
     }
     return ans;
 }
@@ -107,7 +112,8 @@ value(istream& input, const vector<pair<string, T> >& map)
     for (const pair<string, T>& p : map) {
         if (p.first == val) return p.second;
     }
-    throw bad_syntax();
+    throw bad_syntax(
+        STRING_STREAM("Invalid enum value \"" << val << "\""));
 }
 
 #define FOR_EACH_TOKEN(_token, _input)                          \
@@ -156,7 +162,9 @@ value<fit::FileIdMesg>(istream& input)
         } else if (token == "end_of_file") {
             break;
         } else {
-            throw bad_syntax();
+            throw bad_syntax(
+                STRING_STREAM("Unexpected token \"" << token <<
+                              "\" in \"file_id\" message"));
         }
     }
 
@@ -183,7 +191,9 @@ value<fit::WorkoutMesg>(istream& input)
         } else if (token == "end_workout") {
             break;
         } else {
-            throw bad_syntax();
+            throw bad_syntax(
+                STRING_STREAM("Unexpected token \"" << token <<
+                              "\" in \"workout\" message"));
         }
     }
 
@@ -204,7 +214,9 @@ value<fit::WorkoutStepMesg>(istream& input)
         } else if (token == "end_step") {
             break;
         } else {
-            throw bad_syntax();
+            throw bad_syntax(
+                STRING_STREAM("Unexpected token \"" << token <<
+                              "\" in \"workout_step\" message"));
         }
     }
 
