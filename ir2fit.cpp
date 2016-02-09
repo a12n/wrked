@@ -9,6 +9,8 @@
 #include <fit_workout_mesg.hpp>
 #include <fit_workout_step_mesg.hpp>
 
+using std::string;
+
 namespace {
 
 //----------------------------------------------------------------------------
