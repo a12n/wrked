@@ -214,7 +214,7 @@ file_id_value(istream& input)
             ans.SetSerialNumber(value<FIT_UINT32Z>(input));
         } else if (token == "time_created") {
             ans.SetTimeCreated(value<FIT_DATE_TIME>(input));
-        } else if (token == "end_of_file") {
+        } else if (token == "end_file_id") {
             break;
         } else {
             throw bad_syntax(
