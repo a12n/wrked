@@ -82,7 +82,7 @@ DEF_STATE(start)
     encode.Write(mesg);
 
     STATE_LOOP() {
-        if (inputLine == "begin workout") {
+        if (inputLine == "begin_workout") {
             NEXT_STATE(workout);
         } else {
             throw BadSyntax();
@@ -97,10 +97,10 @@ DEF_STATE(workout)
     // TODO
 
     STATE_LOOP() {
-        if (inputLine == "begin step") {
+        if (inputLine == "begin_step") {
             // TODO
             NEXT_STATE(workoutStep);
-        } else if (inputLine == "end workout") {
+        } else if (inputLine == "end_workout") {
             // TODO
             NEXT_STATE(finish);
         } else {
@@ -117,7 +117,7 @@ DEF_STATE(workoutStep)
     // TODO
 
     STATE_LOOP() {
-        if (inputLine == "end step") {
+        if (inputLine == "end_step") {
             // TODO
             NEXT_STATE(workout);
         } else {
@@ -221,8 +221,8 @@ TEST_CASE("Empty input", "[ir2fit]")
 TEST_CASE("Empty steps list", "[ir2fit]")
 {
     std::istringstream input(
-        "begin workout\n"
-        "end workout\n"
+        "begin_workout\n"
+        "end_workout\n"
         );
     std::stringstream output;
     CHECK_THROWS_AS(ir2fit(input, output), BadSyntax);
@@ -233,8 +233,8 @@ TEST_CASE("Invalid number of steps", "[ir2fit]")
     std::istringstream input(
         "begin_workout\n"
         "num_steps 2\n"
-        "begin step\n"
-        "end step\n"
+        "begin_step\n"
+        "end_step\n"
         "end_workout\n"
         );
     std::stringstream output;
