@@ -52,6 +52,17 @@ value(istream& input)
 }
 
 template <class T>
+T
+value(istream& input, const T& min, const T& max)
+{
+    const T ans = value<T>(input);
+    if (ans < min || ans > max) {
+        throw bad_syntax();
+    }
+    return ans;
+}
+
+template <class T>
 void
 match(istream& input, const T& pattern)
 {
