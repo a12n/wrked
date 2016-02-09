@@ -104,9 +104,9 @@ template <>
 FIT_SPORT
 value<FIT_SPORT>(istream& input)
 {
-    const string token = value<string>(input);
-    if (token == "cycling") return FIT_SPORT_CYCLING;
-    throw bad_syntax();
+    return value<FIT_SPORT>(input, {
+            {"cycling", FIT_SPORT_CYCLING}
+        });
 }
 
 template <>
