@@ -136,3 +136,8 @@ type t = {
   sport : Sport.t option;
   steps : Step.t Non_empty_list.t;
 }
+
+let print wrk =
+  print_endline "workout";
+  (* TODO *)
+  print_endline "end_workout"
