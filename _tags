@@ -1,0 +1,2 @@
+<wrk2ir_test.*>: package(oUnit)
+true: use_menhir
