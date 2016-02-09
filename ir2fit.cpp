@@ -143,15 +143,6 @@ value<fit::WorkoutMesg>(istream& input)
 //----------------------------------------------------------------------------
 // Readers
 
-fit::WorkoutMesg
-workout(std::istream& input, size_t& nSteps)
-{
-    fit::WorkoutMesg ans;
-    // TODO
-    nSteps = 0;
-    return ans;
-}
-
 fit::WorkoutStepMesg
 workoutStep(std::istream& input)
 {
@@ -169,9 +160,10 @@ ir2fit(std::istream& input, std::iostream& output)
     fit::Encode encode;
     encode.Open(output);
     encode.Write(value<fit::FileIdMesg>(input));
-    size_t nSteps = 0;
-    encode.Write(workout(input, nSteps));
-    for (size_t i = 0; i < nSteps; ++i) {
+    const fit::WorkoutMesg workout = value<fit::WorkoutMesg>(input);
+    const size_t n = workout.GetNumValidSteps();
+    encode.Write(workout);
+    for (size_t i = 0; i < n; ++i) {
         encode.Write(workoutStep(input));
     }
     if (!encode.Close()) {
