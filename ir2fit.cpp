@@ -285,6 +285,9 @@ workout_step_value(istream& input)
             ans.SetTargetPowerZone(value<FIT_UINT32>(input, 0, 7));
         } else if (token == "repeat_steps") {
             ans.SetRepeatSteps(value<FIT_UINT32>(input, 1, 1000));
+        } else if (token == "repeat_time") {
+            // TODO: restrict by range?
+            ans.SetRepeatTime(value<FIT_FLOAT32>(input)); // s
         } else if (token == "end_step") {
             break;
         } else {
