@@ -123,6 +123,30 @@ value(istream& input, const vector<pair<string, T> >& map)
 //----------------------------------------------------------------------------
 // value<T> specializations
 
+FIT_WKT_STEP_DURATION
+step_duration_value(istream& input)
+{
+    return value<FIT_WKT_STEP_DURATION>(input, {
+            {"time"                            , FIT_WKT_STEP_DURATION_TIME                            },
+            {"distance"                        , FIT_WKT_STEP_DURATION_DISTANCE                        },
+            {"hr_less_than"                    , FIT_WKT_STEP_DURATION_HR_LESS_THAN                    },
+            {"hr_greater_than"                 , FIT_WKT_STEP_DURATION_HR_GREATER_THAN                 },
+            {"colories"                        , FIT_WKT_STEP_DURATION_CALORIES                        },
+            {"open"                            , FIT_WKT_STEP_DURATION_OPEN                            },
+            {"repeat_until_steps_cmplt"        , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_STEPS_CMPLT        },
+            {"repeat_until_time"               , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_TIME               },
+            {"repeat_until_distance"           , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_DISTANCE           },
+            {"repeat_until_calories"           , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_CALORIES           },
+            {"repeat_until_hr_less_than"       , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_HR_LESS_THAN       },
+            {"repeat_until_hr_greater_than"    , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_HR_GREATER_THAN    },
+            {"repeat_until_power_less_than"    , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_POWER_LESS_THAN    },
+            {"repeat_until_power_greater_than" , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_POWER_GREATER_THAN },
+            {"power_less_than"                 , FIT_WKT_STEP_DURATION_POWER_LESS_THAN                 },
+            {"power_greater_than"              , FIT_WKT_STEP_DURATION_POWER_GREATER_THAN              },
+            {"repetition_time"                 , FIT_WKT_STEP_DURATION_REPETITION_TIME                 }
+        });
+}
+
 FIT_INTENSITY
 intensity_value(istream& input)
 {
@@ -213,6 +237,8 @@ workout_step_value(istream& input)
             ans.SetIntensity(intensity_value(input));
         } else if (token == "name") {
             // ans.SetWktStepName(value<FIT_WSTRING>(input));
+        } else if (token == "duration_type") {
+            ans.SetDurationType(value<FIT_WKT_STEP_DURATION>(input));
         } else if (token == "end_step") {
             break;
         } else {
