@@ -23,7 +23,10 @@ let lexer_tests =
                    ~ctxt " \"xyz foo %%%\"" [NAME "xyz foo %%%"]);
     "Brackets" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET])
+        "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET]);
+    "hr in zone 1" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "hr in zone 1" [HR; IN; ZONE; NUMBER 1])
   ]
 
 let () = run_test_tt_main
