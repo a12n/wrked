@@ -32,7 +32,18 @@ DEF_EXCEPTION(InputFailed, "I/O error");
 #undef DEF_EXCEPTION
 
 //----------------------------------------------------------------------------
+// Read input
 
+std::string
+readLine(std::istream& input)
+{
+    if (input.eof()) {
+        throw EndOfFile();
+    }
+    std::string line;
+    std::getline(input, line, '\n');
+    return line;
+}
 
 //----------------------------------------------------------------------------
 // State functions
