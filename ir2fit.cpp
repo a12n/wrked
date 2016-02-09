@@ -67,7 +67,7 @@ value(istream& input, const T& min, const T& max)
 
 template <class T>
 T
-value<T>(istream& input, const vector<pair<string, T> >& table)
+value(istream& input, const vector<pair<string, T> >& table)
 {
     const string token = value<string>(input);
     for (const pair<string, T>& p : table) {
