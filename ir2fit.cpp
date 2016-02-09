@@ -39,20 +39,6 @@ DEF_EXCEPTION(input_failed, "I/O error");
 //----------------------------------------------------------------------------
 // Input functions
 
-string
-readLine(std::istream& input)
-{
-    string line;
-    if (!std::getline(input, line, '\n')) {
-        if (input.eof()) {
-            throw end_of_file();
-        } else {
-            throw input_failed();
-        }
-    }
-    return line;
-}
-
 template <class T>
 T
 value(std::istream& input)
