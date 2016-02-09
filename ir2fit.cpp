@@ -9,7 +9,9 @@
 #include <fit_workout_mesg.hpp>
 #include <fit_workout_step_mesg.hpp>
 
+using std::exception;
 using std::istream;
+using std::runtime_error;
 using std::string;
 
 namespace {
@@ -18,7 +20,7 @@ namespace {
 // Exceptions
 
 #define DEF_EXCEPTION(_name, _defMesg)                  \
-    struct _name : public std::runtime_error            \
+    struct _name : public runtime_error                 \
     {                                                   \
         explicit                                        \
         _name(const string& mesg = (_defMesg)) :        \
@@ -138,7 +140,7 @@ main()
 
     try {
         ir2fit(std::cin, output);
-    } catch (const std::exception& exn) {
+    } catch (const exception& exn) {
         std::cerr << exn.what() << std::endl;
         return 1;
     }
