@@ -34,6 +34,9 @@ let lexer_tests =
   ; "xN" >::
     (fun ctxt -> assert_tokens ~ctxt
         "(3x) [ ]" [L_PAREN; NUMBER 3; TIMES; R_PAREN; L_BRACKET; R_BRACKET])
+  ; "*N" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "(4 *) [ ]" [L_PAREN; NUMBER 4; TIMES; R_PAREN; L_BRACKET; R_BRACKET])
   ]
 
 let () = run_test_tt_main
