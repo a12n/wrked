@@ -30,16 +30,70 @@ DEF_EXCEPTION(InputFailed, "I/O error");
 
 //----------------------------------------------------------------------------
 
-fit::FileIdMesg
-fileIdMesg()
+
+//----------------------------------------------------------------------------
+
+#define DEF_STATE(_name)                                \
+void _name (std::istream& input, fit::Encode& encode)
+
+#define DECL_STATE(_name) DEF_STATE(_name)
+
+#define NEXT_STATE(_name)                       \
+_name(input, encode);                           \
+return
+
+DECL_STATE(start);
+DECL_STATE(workout);
+DECL_STATE(finish);
+
+DEF_STATE(start)
 {
-   fit::FileIdMesg ans;
-   ans.SetType(FIT_FILE_WORKOUT);
-   ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
-   ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
-   ans.SetSerialNumber(54321);
-   ans.SetTimeCreated(0);
-   return ans;
+    fit::FileIdMesg mesg;
+
+    mesg.SetType(FIT_FILE_WORKOUT);
+    mesg.SetManufacturer(FIT_MANUFACTURER_GARMIN);
+    mesg.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
+    mesg.SetSerialNumber(54321);
+    mesg.SetTimeCreated(0);
+
+    encode.Write(mesg);
+
+    // TODO
+
+    NEXT_STATE(finish);
+}
+
+DEF_STATE(workout)
+{
+    // TODO
+}
+
+DEF_STATE(finish)
+{
+    try {
+        // TODO
+        throw EndOfFile();
+    } catch (const EndOfFile&) {
+        if (!encode.Close()) {
+            throw EncodeFailed();
+        }
+    }
+}
+
+#undef NEXT_STATE
+#undef DECL_STATE
+#undef DEF_STATE
+
+//----------------------------------------------------------------------------
+
+void
+ir2fit(std::istream& input, std::iostream& output)
+{
+    fit::Encode encode;
+
+    encode.Open(output);
+
+    start(input, encode);
 }
 
 } // namespace
@@ -48,24 +102,11 @@ int
 main()
 {
     std::stringstream output(std::ios::out | std::ios::binary);
-    std::string line;
-
-    fit::Encode encode;
-
-    encode.Open(output);
-    encode.Write(fileIdMesg());
 
     try {
-        while (std::getline(std::cin, line, '\n')) {
-            // TODO
-        }
+        ir2fit(std::cin, output);
     } catch (const std::exception& exn) {
         std::cerr << exn.what() << std::endl;
-        return 1;
-    }
-
-    if (!encode.Close()) {
-        std::cerr << "fit::Encode::Close()" << std::endl;
         return 1;
     }
 
