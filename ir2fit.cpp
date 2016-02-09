@@ -277,6 +277,9 @@ workout_step_value(istream& input)
             ans.SetTargetType(step_target_value(input));
         } else if (token == "target_value") {
             ans.SetTargetValue(value<FIT_UINT32>(input));
+        } else if (token == "target_hr_zone") {
+            // hr zone (1-5);Custom =0;
+            ans.SetTargetHrZone(value<FIT_UINT32>(input, 0, 5));
         } else if (token == "end_step") {
             break;
         } else {
