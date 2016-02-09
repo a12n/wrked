@@ -280,6 +280,9 @@ workout_step_value(istream& input)
         } else if (token == "target_hr_zone") {
             // hr zone (1-5);Custom =0;
             ans.SetTargetHrZone(value<FIT_UINT32>(input, 0, 5));
+        } else if (token == "target_power_zone") {
+            // Power Zone ( 1-7); Custom = 0;
+            ans.SetTargetPowerZone(value<FIT_UINT32>(input, 0, 7));
         } else if (token == "end_step") {
             break;
         } else {
