@@ -93,10 +93,18 @@ end
 module Condition : sig
   type order = Less | Greater
 
-  type t = Time of int       (* ms *)
-         | Distance of int   (* cm *)
+  type calories = private int   (* kcal *)
+  type distance = private int   (* cm *)
+  type time = private int       (* ms *)
+
+  val calories_of_int : int -> calories
+  val distance_of_int : int -> distance
+  val time_of_int : int -> time
+
+  type t = Time of time
+         | Distance of distance
          | Heart_rate of order * Heart_rate.t
-         | Calories of int   (* kcal *)
+         | Calories of calories
          | Power of order * Power.t
 end
 

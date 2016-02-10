@@ -107,10 +107,23 @@ end
 module Condition = struct
   type order = Less | Greater
 
-  type t = Time of int       (* ms *)
-         | Distance of int   (* cm *)
+  type calories = int           (* kcal *)
+  type distance = int           (* cm *)
+  type time = int               (* ms *)
+
+  let calories_of_int = restricted (0, max_int)
+      (Invalid_argument "Workout.Condition.calories_of_int")
+
+  let distance_of_int = restricted (0, max_int)
+      (Invalid_argument "Workout.Condition.distance_of_int")
+
+  let time_of_int = restricted (0, max_int)
+      (Invalid_argument "Workout.Condition.time_of_int")
+
+  type t = Time of time
+         | Distance of distance
          | Heart_rate of order * Heart_rate.t
-         | Calories of int   (* kcal *)
+         | Calories of calories
          | Power of order * Power.t
 end
 
