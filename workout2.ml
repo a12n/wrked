@@ -143,6 +143,12 @@ module Condition = struct
          | Heart_rate of order * Heart_rate.t
          | Calories of calories
          | Power of order * Power.t
+
+  let caps = function
+    | Distance _ -> [Capability.Distance]
+    | Heart_rate _ -> [Capability.Heart_rate]
+    | Power _ -> [Capability.Power]
+    | Calories _ | Time _ -> []
 end
 
 module Repeat = struct
