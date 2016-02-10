@@ -29,6 +29,9 @@ rule read = parse
 | "in"   { IN }
 | "zone" { ZONE }
 
+| "while" { WHILE }
+| "keep"  { KEEP }
+
 | "bpm"  { BPM }
 | "h"    { H }
 | "kcal" { KCAL }

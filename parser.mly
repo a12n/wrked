@@ -38,6 +38,9 @@ open Workout
 %token IN
 %token ZONE
 
+%token WHILE
+%token KEEP
+
 %token <Workout.Intensity.t> INTENSITY
 
 %start <Workout.t> parse
