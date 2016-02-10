@@ -14,6 +14,8 @@ let lexer_tests =
     "Empty input" >:: (fun ctxt -> assert_tokens ~ctxt "" [EOF])
   ; "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " [EOF])
   ; "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [NUMBER 123; EOF])
+  ; "Aliases" >:: (fun ctxt ->
+      assert_tokens ~ctxt "cadence cad" [CADENCE; CADENCE; EOF])
   ; "Name" >:: (fun ctxt -> assert_tokens
                    ~ctxt " \"xyz foo %%%\"" [STRING "xyz foo %%%"; EOF])
   ; "Brackets" >::
