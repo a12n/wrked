@@ -55,9 +55,9 @@ rule read = parse
 | ':'       { COLON }
 | '*' | 'x' { TIMES }
 
-| _ { raise Error }
-
 | eof { EOF }
+
+| _ { raise Error }
 
 {
 open Batteries
