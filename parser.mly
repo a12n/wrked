@@ -49,25 +49,13 @@ open Workout
 %%
 
 workout:
-  name = name_opt; sport = sport_opt; steps = step_list {
-    { name; sport; steps }
-  }
-
-name_opt:
-  n = STRING COMMA? { Some n }
-| (* empty *) { None }
-
-sport_opt:
-  s = SPORT COMMA? { Some s }
-| (* empty *) { None }
+| name = STRING? COMMA? sport = SPORT? COMMA? steps = step_list
+  { { name; sport; steps } }
 
 step_list:
-  L_BRACKET s = single_step R_BRACKET {
-    s, []
-  }
+| L_BRACKET s = single_step R_BRACKET
+  { s, [] }
 
 single_step:
-  n = STRING COMMA i = INTENSITY {
-    Step.Step {Step.name = Some n; duration = None;
-               target = None; intensity = Some i}
-  }
+| name = STRING? COMMA? intensity = INTENSITY? SEMICOLON
+  { Step.Single {Step.name; duration = None; target = None; intensity} }
