@@ -78,18 +78,7 @@ module Power = struct
          | Percent of int       (* 0 - 1000 % of FTP *)
 end
 
-module Repeat_cond = struct
-  type t = Times of int
-         | Time_lt of int     (* ms *)
-         | Distance_lt of int (* cm *)
-         | Calories_lt of int (* kcal *)
-         | Heart_rate_lt of Heart_rate.t
-         | Heart_rate_gt of Heart_rate.t
-         | Power_lt of Power.t
-         | Power_gt of Power.t
-end
-
-module Duration = struct
+module Condition = struct
   type t = Time_lt of int       (* ms *)
          | Distance_lt of int   (* cm *)
          | Heart_rate_lt of Heart_rate.t
@@ -97,6 +86,11 @@ module Duration = struct
          | Calories_lt of int   (* kcal *)
          | Power_lt of Power.t
          | Power_gt of Power.t
+end
+
+module Repeat_condition = struct
+  type t = Times of int
+         | Condition of Condition.t
 end
 
 module Target = struct
@@ -122,13 +116,13 @@ end
 module Step = struct
   type step = {
     name : string option;
-    duration : Duration.t option;
+    duration : Condition.t option;
     target : Target.t option;
     intensity : Intensity.t option;
   }
 
   type t = Step of step
-         | Repeat of Repeat_cond.t * (t Non_empty_list.t)
+         | Repeat of Repeat_condition.t * (t Non_empty_list.t)
 end
 
 type t = {
