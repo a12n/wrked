@@ -87,9 +87,9 @@ module Heart_rate = struct
 end
 
 module Power = struct
-  type absolute = private int
-  type percent = private int
-  type zone = private int
+  type absolute = int
+  type percent = int
+  type zone = int
 
   let absolute_of_int = restricted (0, 10000)
       (Invalid_argument "Workout.Power.absolute_of_int")
