@@ -259,6 +259,7 @@ workout_value(istream& input)
     fit::WorkoutMesg ans;
 
     ans.SetNumValidSteps(1);
+    ans.SetSport(FIT_SPORT_CYCLING);
 
     match<string>(input, "workout");
     FOR_EACH_TOKEN(token, input) {
