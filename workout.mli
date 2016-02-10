@@ -158,8 +158,6 @@ type t = {
   steps : Step.t Non_empty_list.t;
 }
 
-val translate : t -> string
-
 (* {2 Capabilities flags} *)
 
 module Capability : sig
