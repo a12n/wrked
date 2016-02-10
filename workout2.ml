@@ -130,7 +130,7 @@ end
 module Repeat = struct
   type times = int
 
-  let times_of_int = restricted (1, 1000)
+  let times_of_int = restricted (1, 1000000)
       (Invalid_argument "Workout.Repeat.times_of_int")
 
   type t = Times of times
