@@ -1,5 +1,2 @@
 let () =
-  Lexing.from_channel stdin |>
-  Parser.workout Lexer.read |>
-  Workout.translate |>
-  print_string
+  Workout_repr.from_channel stdin |> Workout_repr.Ir.to_channel stdout
