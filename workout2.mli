@@ -72,6 +72,14 @@ module Speed : sig
   val zone_of_int : int -> zone
 end
 
+module Cadence : sig
+  type t = private int          (* rpm *)
+  type zone = private int
+
+  val of_int : int -> t
+  val zone_of_int : int -> zone
+end
+
 module Heart_rate : sig
   type absolute = private int
   type percent = private int

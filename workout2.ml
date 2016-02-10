@@ -80,6 +80,18 @@ module Speed = struct
       (Invalid_argument "Workout2.Speed.zone_of_int")
 end
 
+module Cadence = struct
+  type t = int                  (* rpm *)
+  type zone = int
+
+  let of_int = restricted (0, 500)
+      (Invalid_argument "Workout2.Cadence.of_int")
+
+  (* TODO: Max cadence zone? *)
+  let zone_of_int = restricted (1, 10)
+      (Invalid_argument "Workout2.Cadence.zone_of_int")
+end
+
 module Heart_rate = struct
   type absolute = int
   type percent = int
