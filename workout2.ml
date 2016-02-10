@@ -115,9 +115,10 @@ module Condition = struct
 end
 
 module Repeat = struct
-  type times = private int
+  type times = int
 
-  val times_of_int : int -> times
+  let times_of_int = restricted (1, 1000)
+      (Invalid_argument "Workout.Repeat.times_of_int")
 
   type t = Times of times
          | Until of Condition.t
