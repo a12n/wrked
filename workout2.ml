@@ -206,7 +206,16 @@ module Step = struct
   type t = Single of single
          | Repeat of Repeat.t * (t Non_empty_list.t)
 
-  let caps _s = []
+  let rec caps = function
+      Single {duration; target; _} ->
+      List.append
+        (Option.map_default Condition.caps [] duration)
+        (Option.map_default Target.caps [] target)
+    | Repeat (rep, sub_steps) ->
+      List.append
+        (Repeat.caps rep)
+        (Non_empty_list.to_list sub_steps |>
+         List.map caps |> List.flatten)
 end
 
 type t = {
