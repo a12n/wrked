@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include <fit_date_time.hpp>
 #include <fit_encode.hpp>
 #include <fit_file_id_mesg.hpp>
 #include <fit_workout_mesg.hpp>
@@ -206,7 +207,7 @@ file_id_value(istream& input)
     ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
     ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
     ans.SetSerialNumber(54321);
-    ans.SetTimeCreated(0);
+    ans.SetTimeCreated(fit::DateTime(time(0)).GetTimeStamp());
 
     match<string>(input, "file_id");
     FOR_EACH_TOKEN(token, input) {
