@@ -68,6 +68,18 @@ let restricted (min, max) exn =
   function n when n >= min && n <= max -> n
          | _ -> raise exn
 
+module Speed = struct
+  type t = float                (* m/s *)
+  type zone = int
+
+  let of_float = restricted (0.0, 100.0)
+      (Invalid_argument "Workout2.Speed.of_float")
+
+  (* TODO: Max speed zone? *)
+  let zone_of_int = restricted (1, 10)
+      (Invalid_argument "Workout2.Speed.zone_of_int")
+end
+
 module Heart_rate = struct
   type absolute = int
   type percent = int

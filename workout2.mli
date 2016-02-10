@@ -64,6 +64,14 @@ module Sport : sig
          | Kitesurfing
 end
 
+module Speed : sig
+  type t = private float        (* m/s *)
+  type zone = private int
+
+  val of_float : float -> t
+  val zone_of_int : int -> zone
+end
+
 module Heart_rate : sig
   type absolute = private int
   type percent = private int
