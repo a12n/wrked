@@ -1,3 +1,15 @@
+open Batteries
+
+module Capability = struct
+  type t = Speed
+         | Heart_rate
+         | Distance
+         | Cadence
+         | Power
+         | Grade
+         | Resistance
+end
+
 module Sport = struct
   type t = Generic
          | Running
@@ -177,6 +189,8 @@ module Step = struct
 
   type t = Single of single
          | Repeat of Repeat.t * (t Non_empty_list.t)
+
+  let caps _s = []
 end
 
 type t = {
@@ -185,14 +199,6 @@ type t = {
   steps : Step.t Non_empty_list.t;
 }
 
-module Capability = struct
-  type t = Speed
-         | Heart_rate
-         | Distance
-         | Cadence
-         | Power
-         | Grade
-         | Resistance
-end
-
-let caps _w = []
+let caps {steps; _} =
+  Non_empty_list.to_list steps |>
+  List.map Step.caps |> List.flatten |> List.unique
