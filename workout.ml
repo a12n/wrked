@@ -121,7 +121,7 @@ module Step = struct
     intensity : Intensity.t option;
   }
 
-  type t = Step of step
+  type t = Single of step
          | Repeat of Repeat_condition.t * (t Non_empty_list.t)
 end
 
