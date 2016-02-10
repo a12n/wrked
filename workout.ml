@@ -79,13 +79,12 @@ module Power = struct
 end
 
 module Condition = struct
-  type t = Time_lt of int       (* ms *)
-         | Distance_lt of int   (* cm *)
-         | Heart_rate_lt of Heart_rate.t
-         | Heart_rate_gt of Heart_rate.t
-         | Calories_lt of int   (* kcal *)
-         | Power_lt of Power.t
-         | Power_gt of Power.t
+  type order = Less | Greater
+  type t = Time of int       (* ms *)
+         | Distance of int   (* cm *)
+         | Heart_rate of order * Heart_rate.t
+         | Calories of int   (* kcal *)
+         | Power of order * Power.t
 end
 
 module Repeat_condition = struct
