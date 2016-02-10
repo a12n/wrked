@@ -1,21 +1,3 @@
-module Capability : sig
-  type t = Speed
-         | Heart_rate
-         | Distance
-         | Cadence
-         | Power
-         | Grade
-         | Resistance
-         (* ? *)
-         | Interval
-         | Custom
-         | Fitness_equipment
-         | Firstbeat
-         | New_leaf
-         | Tcx
-         | Protected
-end
-
 module Sport : sig
   type t = Generic
          | Running
@@ -177,3 +159,25 @@ type t = {
   sport : Sport.t option;
   steps : Step.t Non_empty_list.t;
 }
+
+(* {2 Capabilities flags} *)
+
+module Capability : sig
+  type t = Speed
+         | Heart_rate
+         | Distance
+         | Cadence
+         | Power
+         | Grade
+         | Resistance
+         (* ? *)
+         | Interval
+         | Custom
+         | Fitness_equipment
+         | Firstbeat
+         | New_leaf
+         | Tcx
+         | Protected
+end
+
+val capabilities : t -> Capability.t list

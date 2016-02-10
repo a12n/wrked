@@ -1,21 +1,3 @@
-module Capability = struct
-  type t = Speed
-         | Heart_rate
-         | Distance
-         | Cadence
-         | Power
-         | Grade
-         | Resistance
-         (* ? *)
-         | Interval
-         | Custom
-         | Fitness_equipment
-         | Firstbeat
-         | New_leaf
-         | Tcx
-         | Protected
-end
-
 module Sport = struct
   type t = Generic
          | Running
@@ -204,3 +186,23 @@ type t = {
   sport : Sport.t option;
   steps : Step.t Non_empty_list.t;
 }
+
+module Capability = struct
+  type t = Speed
+         | Heart_rate
+         | Distance
+         | Cadence
+         | Power
+         | Grade
+         | Resistance
+         (* ? *)
+         | Interval
+         | Custom
+         | Fitness_equipment
+         | Firstbeat
+         | New_leaf
+         | Tcx
+         | Protected
+end
+
+let capabilities _w = []
