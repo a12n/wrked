@@ -50,7 +50,14 @@ let lexer_tests =
     (fun ctxt -> assert_tokens ~ctxt
         "\"A\", warm up, time < 1 min, hr < 80 %"
         [NAME "A"; COMMA; INTENSITY Intensity.Warm_up; COMMA;
-         TIME; LESS; NUMBER 1; MIN; COMMA; HR; LESS; NUMBER 80; PERCENT])
+         TIME; LESS; NUMBER 1; MIN; COMMA;
+         HR; LESS; NUMBER 80; PERCENT])
+  ; "Step, no spaces" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "\"B\",recovery,distance<5km,power>100%"
+        [NAME "B"; COMMA; INTENSITY Intensity.Rest; COMMA;
+         DISTANCE; LESS; NUMBER 5; KM; COMMA;
+         POWER; GREATER; NUMBER 100; PERCENT])
   ]
 
 let () = run_test_tt_main
