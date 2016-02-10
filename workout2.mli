@@ -101,7 +101,11 @@ module Condition : sig
 end
 
 module Repeat : sig
-  type t = Times of int
+  type times = private int
+
+  val times_of_int : int -> times
+
+  type t = Times of times
          | Until of Condition.t
 end
 
