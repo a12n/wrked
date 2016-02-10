@@ -1,6 +1,7 @@
 {
 open Parser
 open Workout
+
 exception Error
 }
 
@@ -57,3 +58,12 @@ rule read = parse
 | _ { raise Error }
 
 | eof { raise End_of_file }
+
+{
+open Batteries
+
+let enum lexbuf =
+  Enum.from (fun () ->
+      try read lexbuf with End_of_file ->
+        raise Enum.No_more_elements)
+}
