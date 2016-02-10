@@ -1,4 +1,4 @@
-module Capability : sig
+module Capability = struct
   type t = Speed
          | Heart_rate
          | Distance
@@ -16,7 +16,7 @@ module Capability : sig
          | Protected
 end
 
-module Sport : sig
+module Sport = struct
   type t = Generic
          | Running
          | Cycling
@@ -68,7 +68,7 @@ let restricted_int (min, max) exn =
   function n when n >= min && n <= max -> n
          | _ -> raise exn
 
-module Heart_rate : sig
+module Heart_rate = struct
   type absolute = int
   type percent = int
   type zone = int
@@ -86,7 +86,7 @@ module Heart_rate : sig
          | Percent of percent   (* 0-100 % of max *)
 end
 
-module Power : sig
+module Power = struct
   type absolute = private int
   type percent = private int
   type zone = private int
@@ -99,7 +99,7 @@ module Power : sig
          | Percent of percent   (* 0-1000 % of FTP *)
 end
 
-module Condition : sig
+module Condition = struct
   type order = Less | Greater
 
   type t = Time of int       (* ms *)
@@ -109,7 +109,7 @@ module Condition : sig
          | Power of order * Power.t
 end
 
-module Repeat : sig
+module Repeat = struct
   type times = private int
 
   val times_of_int : int -> times
@@ -118,8 +118,8 @@ module Repeat : sig
          | Until of Condition.t
 end
 
-module Target : sig
-  module Value : sig
+module Target = struct
+  module Value = struct
     type t = Zone of int
            | Range of int * int
   end
@@ -132,14 +132,14 @@ module Target : sig
          (* | Resistance of int    (\* ? *\) *)
 end
 
-module Intensity : sig
+module Intensity = struct
   type t = Active
          | Cool_down
          | Rest
          | Warm_up
 end
 
-module Step : sig
+module Step = struct
   type single = {
     name      : string option;
     duration  : Condition.t option;
