@@ -131,8 +131,6 @@ module Target : sig
          | Heart_rate of Heart_rate_value.t
          | Cadence of Cadence_value.t
          | Power of Power_value.t
-         (* | Grade of int         (\* % *\) *)
-         (* | Resistance of int    (\* ? *\) *)
 end
 
 module Intensity : sig
@@ -170,14 +168,6 @@ module Capability : sig
          | Power
          | Grade
          | Resistance
-         (* ? *)
-         | Interval
-         | Custom
-         | Fitness_equipment
-         | Firstbeat
-         | New_leaf
-         | Tcx
-         | Protected
 end
 
 val capabilities : t -> Capability.t list

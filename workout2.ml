@@ -158,8 +158,6 @@ module Target = struct
          | Heart_rate of Heart_rate_value.t
          | Cadence of Cadence_value.t
          | Power of Power_value.t
-         (* | Grade of int         (\* % *\) *)
-         (* | Resistance of int    (\* ? *\) *)
 end
 
 module Intensity = struct
@@ -195,14 +193,6 @@ module Capability = struct
          | Power
          | Grade
          | Resistance
-         (* ? *)
-         | Interval
-         | Custom
-         | Fitness_equipment
-         | Firstbeat
-         | New_leaf
-         | Tcx
-         | Protected
 end
 
 let capabilities _w = []
