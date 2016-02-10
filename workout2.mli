@@ -67,9 +67,11 @@ end
 module Heart_rate : sig
   type absolute = private int
   type percent = private int
+  type zone = private int
 
   val absolute_of_int : int -> absolute
   val percent_of_int : int -> percent
+  val zone_of_int : int -> zone
 
   type t = Absolute of absolute (* bpm *)
          | Percent of percent   (* 0-100 % of max *)
@@ -78,9 +80,11 @@ end
 module Power : sig
   type absolute = private int
   type percent = private int
+  type zone = private int
 
   val absolute_of_int : int -> absolute
   val percent_of_int : int -> percent
+  val zone_of_int : int -> zone
 
   type t = Absolute of absolute (* W *)
          | Percent of percent   (* 0-1000 % of FTP *)
