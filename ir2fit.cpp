@@ -281,6 +281,8 @@ workout_value(istream& input)
             ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000));
         } else if (token == "name") {
             ans.SetWktName(value<FIT_WSTRING>(input));
+        } else if (token == "capabilities") {
+            ans.SetCapabilities(value<FIT_WORKOUT_CAPABILITIES>(input));
         } else if (token == "end_workout") {
             break;
         } else {
