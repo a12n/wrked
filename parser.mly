@@ -14,6 +14,7 @@ open Workout
 %token COLON
 %token COMMA
 %token PERCENT
+%token SEMICOLON
 %token TIMES
 
 %token CADENCE

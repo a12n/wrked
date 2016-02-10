@@ -43,6 +43,7 @@ rule read = parse
 | ']'       { R_BRACKET }
 | '('       { L_PAREN }
 | ')'       { R_PAREN }
+| ';'       { SEMICOLON }
 | '<'       { LESS }
 | '>'       { GREATER }
 | ','       { COMMA }
