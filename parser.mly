@@ -2,14 +2,12 @@
 open Workout
 %}
 
-%token <string> NAME
 %token <int> NUMBER
+%token <string> STRING
 
 %token L_BRACKET R_BRACKET
 %token L_PAREN R_PAREN
 %token LESS GREATER
-
-%token <Workout.Sport.t> SPORT
 
 %token COLON
 %token COMMA
@@ -41,6 +39,7 @@ open Workout
 %token WHILE
 %token KEEP
 
+%token <Workout.Sport.t> SPORT
 %token <Workout.Intensity.t> INTENSITY
 
 %start <Workout.t> parse

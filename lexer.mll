@@ -8,7 +8,7 @@ rule read = parse
 | [' ' '\t' '\n'] { read lexbuf }
 
 | ['0'-'9']+ as i        { NUMBER (int_of_string i) }
-| '"' ([^'"']+ as s) '"' { NAME s }
+| '"' ([^'"']+ as s) '"' { STRING s }
 
 | "warm up"           { INTENSITY Intensity.Warm_up }
 | "active"            { INTENSITY Intensity.Active }
