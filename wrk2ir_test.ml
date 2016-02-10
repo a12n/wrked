@@ -43,9 +43,7 @@ let lexer_tests =
         "\"B\", cool down" [STRING "B"; COMMA; INTENSITY Intensity.Cool_down])
   ; "Invalid intensity" >::
     (fun ctxt -> assert_raises
-        (Syntax_error {Lexing.pos_fname = ""; pos_lnum = 1;
-                       pos_bol = 0; pos_cnum = 0})
-        (fun () -> tokens "cool warm down up"))
+        Lexer.Error (fun () -> tokens "cool warm down up"))
   ; "Complete step" >::
     (fun ctxt -> assert_tokens ~ctxt
         "\"A\", warm up, time < 1 min, hr < 80 %"

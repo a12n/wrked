@@ -1,7 +1,7 @@
 {
 open Parser
 open Workout
-exception Syntax_error of Lexing.position
+exception Error
 }
 
 rule read = parse
@@ -54,6 +54,6 @@ rule read = parse
 | ':'       { COLON }
 | '*' | 'x' { TIMES }
 
-| _ { raise (Syntax_error (Lexing.lexeme_start_p lexbuf)) }
+| _ { raise Error }
 
-| eof             { raise End_of_file }
+| eof { raise End_of_file }
