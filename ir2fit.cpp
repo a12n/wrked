@@ -26,6 +26,7 @@ using std::runtime_error;
 using std::string;
 using std::stringstream;
 using std::vector;
+using std::wstring;
 
 namespace {
 
@@ -85,6 +86,15 @@ string
 value<string>(istream& input)
 {
     return line(input);
+}
+
+template <>
+FIT_WSTRING
+value<FIT_WSTRING>(istream& input)
+{
+    // FIXME: Invalid conversion
+    const string s = value<string>(input);
+    return wstring(s.begin(), s.end());
 }
 
 template <class T>
