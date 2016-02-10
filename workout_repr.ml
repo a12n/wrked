@@ -2,7 +2,7 @@ open Batteries
 
 let from_lexbuf = Parser.workout Lexer.read
 
-let from_channel chan = from_lexbuf (Lexing.from_channel chan)
+let from_channel chan = from_lexbuf (Legacy.Lexing.from_channel chan)
 
 module Ir = struct
   let int32_caps =
@@ -17,8 +17,8 @@ module Ir = struct
 
   let to_channel chan wrk =
     let s str =
-      output_string chan str;
-      output_char chan '\n' in
+      Legacy.output_string chan str;
+      Legacy.output_char chan '\n' in
     let i = s % string_of_int in
     s "file_id";
     s "end_file_id";
