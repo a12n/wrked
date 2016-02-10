@@ -180,6 +180,12 @@ module Target = struct
          | Heart_rate of Heart_rate_value.t
          | Cadence of Cadence_value.t
          | Power of Power_value.t
+
+  let caps = function
+      Speed _ -> [Capability.Speed]
+    | Heart_rate _ -> [Capability.Heart_rate]
+    | Cadence _ -> [Capability.Cadence]
+    | Power _ -> [Capability.Power]
 end
 
 module Intensity = struct
