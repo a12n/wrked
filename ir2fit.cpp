@@ -7,6 +7,7 @@
 
 #include <fit_date_time.hpp>
 #include <fit_encode.hpp>
+#include <fit_file_creator_mesg.hpp>
 #include <fit_file_id_mesg.hpp>
 #include <fit_workout_mesg.hpp>
 #include <fit_workout_step_mesg.hpp>
@@ -221,6 +222,31 @@ file_id_value(istream& input)
             throw bad_syntax(
                 STRING_STREAM("Unexpected token \"" << token <<
                               "\" in \"file_id\" message"));
+        }
+    }
+
+    return ans;
+}
+
+fit::FileCreatorMesg
+file_creator_value(istream& input)
+{
+    fit::FileCreatorMesg ans;
+
+    ans.SetSoftwareVersion(330);
+
+    match<string>(input, "file_creator");
+    FOR_EACH_TOKEN(token, input) {
+        if (token == "software_version") {
+            ans.SetSoftwareVersion(value<FIT_UINT16>(input));
+        } else if (token == "hardware_version") {
+            ans.SetHardwareVersion(value<FIT_UINT8>(input));
+        } else if (token == "end_file_creator") {
+            break;
+        } else {
+            throw bad_syntax(
+                STRING_STREAM("Unexpected token \"" << token <<
+                              "\" in \"file_creator\" message"));
         }
     }
 
