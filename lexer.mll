@@ -57,13 +57,16 @@ rule read = parse
 
 | _ { raise Error }
 
-| eof { raise End_of_file }
+| eof { EOF }
 
 {
 open Batteries
 
 let enum lexbuf =
-  Enum.from (fun () ->
-      try read lexbuf with End_of_file ->
-        raise Enum.No_more_elements)
+  Enum.from_loop true
+    (fun continue ->
+       if continue then
+         let token = read lexbuf in
+         token, token <> Parser.EOF
+       else raise Enum.No_more_elements)
 }

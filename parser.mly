@@ -39,6 +39,8 @@ open Workout
 %token WHILE
 %token KEEP
 
+%token EOF
+
 %token <Workout.Sport.t> SPORT
 %token <Workout.Intensity.t> INTENSITY
 
