@@ -168,6 +168,8 @@ module Capability : sig
          | Power
          | Grade
          | Resistance
+
+  val to_int32 : t -> int32
 end
 
 val caps : t -> Capability.t list

@@ -8,6 +8,16 @@ module Capability = struct
          | Power
          | Grade
          | Resistance
+
+  (* Values from FIT SDK *)
+  let to_int32 = function
+      Speed      -> 0x00000080l
+    | Heart_rate -> 0x00000100l
+    | Distance   -> 0x00000200l
+    | Cadence    -> 0x00000400l
+    | Power      -> 0x00000800l
+    | Grade      -> 0x00001000l
+    | Resistance -> 0x00002000l
 end
 
 module Sport = struct
