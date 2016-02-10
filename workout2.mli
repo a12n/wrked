@@ -134,15 +134,21 @@ module Repeat : sig
 end
 
 module Target : sig
-  module Value : sig
-    type 'a t = Zone of int
-              | Range of 'a * 'a
+  module Value : functor (S : sig type t type zone end) ->
+  sig
+    type t = Zone of S.zone
+           | Range of S.t * S.t
   end
 
-  type t = Speed of Speed.t Value.t
-         | Heart_rate of Heart_rate.t Value.t
-         | Cadence of Cadence.t Value.t
-         | Power of Power.t Value.t
+  module Cadence_value : module type of Value (Cadence)
+  module Heart_rate_value : module type of Value (Heart_rate)
+  module Power_value : module type of Value (Power)
+  module Speed_value : module type of Value (Speed)
+
+  type t = Speed of Speed_value.t
+         | Heart_rate of Heart_rate_value.t
+         | Cadence of Cadence_value.t
+         | Power of Power_value.t
          (* | Grade of int         (\* % *\) *)
          (* | Resistance of int    (\* ? *\) *)
 end

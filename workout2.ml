@@ -162,15 +162,20 @@ module Repeat = struct
 end
 
 module Target = struct
-  module Value = struct
-    type 'a t = Zone of int
-              | Range of 'a * 'a
+  module Value (S : sig type t type zone end) = struct
+    type t = Zone of S.zone
+           | Range of S.t * S.t
   end
 
-  type t = Speed of Speed.t Value.t
-         | Heart_rate of Heart_rate.t Value.t
-         | Cadence of Cadence.t Value.t
-         | Power of Power.t Value.t
+  module Cadence_value = Value (Cadence)
+  module Heart_rate_value = Value (Heart_rate)
+  module Power_value = Value (Power)
+  module Speed_value = Value (Speed)
+
+  type t = Speed of Speed_value.t
+         | Heart_rate of Heart_rate_value.t
+         | Cadence of Cadence_value.t
+         | Power of Power_value.t
          (* | Grade of int         (\* % *\) *)
          (* | Resistance of int    (\* ? *\) *)
 end
