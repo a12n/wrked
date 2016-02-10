@@ -228,3 +228,5 @@ let caps {steps; _} =
   Non_empty_list.to_list steps |>
   List.map Step.caps |> List.flatten |>
   List.sort_uniq compare
+
+let translate _ = ""
