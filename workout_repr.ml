@@ -10,17 +10,22 @@ module Ir = struct
      (List.map Workout.Capability.to_int32)) %
     Workout.caps
 
-  let (%) chan str =
-    output_string chan str;
-    output_char chan '\n';
-    chan
+  let capabilities = Int32.to_int % int32_caps
 
-  let to_channel chan {Workout.steps; _} =
-    chan
-    % "file_id"
-    % "end_file_id"
-    % "workout"
-    % "num_valid_steps"
-    % string_of_int (List.length (Non_empty_list.to_list steps))
-    % "end_workout" |> ignore
+  let num_valid_steps {Workout.steps; _} =
+    List.length (Non_empty_list.to_list steps)
+
+  let to_channel chan wrk =
+    let s str =
+      output_string chan str;
+      output_char chan '\n' in
+    let i = s % string_of_int in
+    s "file_id";
+    s "end_file_id";
+    s "workout";
+    s "num_valid_steps";
+    i (num_valid_steps wrk);
+    s "capabilities";
+    i (capabilities wrk);
+    s "end_workout"
 end
