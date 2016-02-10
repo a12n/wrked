@@ -64,7 +64,7 @@ module Sport = struct
          | Kitesurfing
 end
 
-let restricted_int (min, max) exn =
+let restricted (min, max) exn =
   function n when n >= min && n <= max -> n
          | _ -> raise exn
 
@@ -73,13 +73,13 @@ module Heart_rate = struct
   type percent = int
   type zone = int
 
-  let absolute_of_int = restricted_int (0, 255)
+  let absolute_of_int = restricted (0, 255)
       (Invalid_argument "Workout.Heart_rate.absolute_of_int")
 
-  let percent_of_int = restricted_int (0, 100)
+  let percent_of_int = restricted (0, 100)
       (Invalid_argument "Workout.Heart_rate.percent_of_int")
 
-  let zone_of_int = restricted_int (1, 5)
+  let zone_of_int = restricted (1, 5)
       (Invalid_argument "Workout.Heart_rate.zone_of_int")
 
   type t = Absolute of absolute (* bpm *)
