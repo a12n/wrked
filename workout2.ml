@@ -163,14 +163,14 @@ end
 
 module Target = struct
   module Value = struct
-    type t = Zone of int
-           | Range of int * int
+    type 'a t = Zone of int
+              | Range of 'a * 'a
   end
 
-  type t = Speed of Value.t
-         | Heart_rate of Value.t
-         | Cadence of Value.t
-         | Power of Value.t
+  type t = Speed of Speed.t Value.t
+         | Heart_rate of Heart_rate.t Value.t
+         | Cadence of Cadence.t Value.t
+         | Power of Power.t Value.t
          (* | Grade of int         (\* % *\) *)
          (* | Resistance of int    (\* ? *\) *)
 end
