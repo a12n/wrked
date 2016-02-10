@@ -278,9 +278,7 @@ workout_value(istream& input)
         } else if (token == "num_valid_steps") {
             ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000));
         } else if (token == "name") {
-            // TODO
-            // ans.SetWktName(value<FIT_WSTRING>(input));
-            static_cast<void>(value<string>(input));
+            ans.SetWktName(value<FIT_WSTRING>(input));
         } else if (token == "end_workout") {
             break;
         } else {
@@ -303,12 +301,10 @@ workout_step_value(istream& input)
 
     match<string>(input, "workout_step");
     FOR_EACH_TOKEN(token, input) {
-        // TODO
         if (token == "intensity") {
             ans.SetIntensity(intensity_value(input));
         } else if (token == "name") {
-            // ans.SetWktStepName(value<FIT_WSTRING>(input));
-            static_cast<void>(value<string>(input));
+            ans.SetWktStepName(value<FIT_WSTRING>(input));
         } else if (token == "duration_type") {
             ans.SetDurationType(step_duration_value(input));
         } else if (token == "duration_value") {
