@@ -67,6 +67,7 @@ include_directories(${PROJECT_BINARY_DIR})
 set(FIT_CXX_SRCS
   ${FIT_ROOT_DIR}/cpp/fit.cpp
   ${FIT_ROOT_DIR}/cpp/fit_crc.cpp
+  ${FIT_ROOT_DIR}/cpp/fit_date_time.cpp
   ${FIT_ROOT_DIR}/cpp/fit_encode.cpp
   ${FIT_ROOT_DIR}/cpp/fit_field.cpp
   ${FIT_ROOT_DIR}/cpp/fit_field_definition.cpp
