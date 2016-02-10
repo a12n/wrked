@@ -170,4 +170,4 @@ module Capability : sig
          | Resistance
 end
 
-val capabilities : t -> Capability.t list
+val caps : t -> Capability.t list

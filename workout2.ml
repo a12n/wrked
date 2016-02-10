@@ -195,4 +195,4 @@ module Capability = struct
          | Resistance
 end
 
-let capabilities _w = []
+let caps _w = []
