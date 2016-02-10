@@ -1,4 +1,4 @@
 let () =
   Lexing.from_channel stdin |>
-  Parser.parse Lexer.read |>
+  Parser.workout Lexer.read |>
   Workout.print

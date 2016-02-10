@@ -44,11 +44,11 @@ open Workout
 %token <Workout.Sport.t> SPORT
 %token <Workout.Intensity.t> INTENSITY
 
-%start <Workout.t> parse
+%start <Workout.t> workout
 
 %%
 
-parse:
+workout:
   name = name_opt; sport = sport_opt; steps = step_list {
     { name; sport; steps }
   }
