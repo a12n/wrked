@@ -91,9 +91,14 @@ module Power = struct
   type percent = private int
   type zone = private int
 
-  val absolute_of_int : int -> absolute
-  val percent_of_int : int -> percent
-  val zone_of_int : int -> zone
+  let absolute_of_int = restricted (0, 10000)
+      (Invalid_argument "Workout.Power.absolute_of_int")
+
+  let percent_of_int = restricted (0, 1000)
+      (Invalid_argument "Workout.Power.percent_of_int")
+
+  let zone_of_int = restricted (1, 7)
+      (Invalid_argument "Workout.Power.zone_of_int")
 
   type t = Absolute of absolute (* W *)
          | Percent of percent   (* 0-1000 % of FTP *)
