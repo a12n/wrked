@@ -159,6 +159,10 @@ module Repeat = struct
 
   type t = Times of times
          | Until of Condition.t
+
+  let caps = function
+      Times _ -> []
+    | Until c -> Condition.caps c
 end
 
 module Target = struct
