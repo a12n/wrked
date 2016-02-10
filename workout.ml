@@ -1,3 +1,5 @@
+open Batteries
+
 module Capability = struct
   type t = Speed
          | Heart_rate
@@ -6,14 +8,6 @@ module Capability = struct
          | Power
          | Grade
          | Resistance
-         (* ? *)
-         | Interval
-         | Custom
-         | Fitness_equipment
-         | Firstbeat
-         | New_leaf
-         | Tcx
-         | Protected
 end
 
 module Sport = struct
@@ -62,47 +56,136 @@ module Sport = struct
          | Rafting
          | Windsurfing
          | Kitesurfing
+end
 
-  let to_string = function
-      Cycling -> "cycling"
-    | _ -> "generic"
+let restricted (min, max) exn =
+  function n when n >= min && n <= max -> n
+         | _ -> raise exn
+
+module Speed = struct
+  type t = float                (* m/s *)
+  type zone = int
+
+  let of_float = restricted (0.0, 100.0)
+      (Invalid_argument "Workout2.Speed.of_float")
+
+  (* TODO: Max speed zone? *)
+  let zone_of_int = restricted (1, 10)
+      (Invalid_argument "Workout2.Speed.zone_of_int")
+end
+
+module Cadence = struct
+  type t = int                  (* rpm *)
+  type zone = int
+
+  let of_int = restricted (0, 500)
+      (Invalid_argument "Workout2.Cadence.of_int")
+
+  (* TODO: Max cadence zone? *)
+  let zone_of_int = restricted (1, 10)
+      (Invalid_argument "Workout2.Cadence.zone_of_int")
 end
 
 module Heart_rate = struct
-  type t = Absolute of int      (* bpm *)
-         | Percent of int       (* 0 - 100 % of max. *)
+  type absolute = int
+  type percent = int
+  type zone = int
+
+  let absolute_of_int = restricted (0, 255)
+      (Invalid_argument "Workout.Heart_rate.absolute_of_int")
+
+  let percent_of_int = restricted (0, 100)
+      (Invalid_argument "Workout.Heart_rate.percent_of_int")
+
+  let zone_of_int = restricted (1, 5)
+      (Invalid_argument "Workout.Heart_rate.zone_of_int")
+
+  type t = Absolute of absolute (* bpm *)
+         | Percent of percent   (* 0-100 % of max *)
 end
 
 module Power = struct
-  type t = Absolute of int      (* W *)
-         | Percent of int       (* 0 - 1000 % of FTP *)
+  type absolute = int
+  type percent = int
+  type zone = int
+
+  let absolute_of_int = restricted (0, 10000)
+      (Invalid_argument "Workout.Power.absolute_of_int")
+
+  let percent_of_int = restricted (0, 1000)
+      (Invalid_argument "Workout.Power.percent_of_int")
+
+  let zone_of_int = restricted (1, 7)
+      (Invalid_argument "Workout.Power.zone_of_int")
+
+  type t = Absolute of absolute (* W *)
+         | Percent of percent   (* 0-1000 % of FTP *)
 end
 
 module Condition = struct
   type order = Less | Greater
-  type t = Time of int       (* ms *)
-         | Distance of int   (* cm *)
+
+  type calories = int           (* kcal *)
+  type distance = int           (* cm *)
+  type time = int               (* ms *)
+
+  let calories_of_int = restricted (0, max_int)
+      (Invalid_argument "Workout.Condition.calories_of_int")
+
+  let distance_of_int = restricted (0, max_int)
+      (Invalid_argument "Workout.Condition.distance_of_int")
+
+  let time_of_int = restricted (0, max_int)
+      (Invalid_argument "Workout.Condition.time_of_int")
+
+  type t = Time of time
+         | Distance of distance
          | Heart_rate of order * Heart_rate.t
-         | Calories of int   (* kcal *)
+         | Calories of calories
          | Power of order * Power.t
+
+  let caps = function
+    | Distance _ -> [Capability.Distance]
+    | Heart_rate _ -> [Capability.Heart_rate]
+    | Power _ -> [Capability.Power]
+    | Calories _ | Time _ -> []
 end
 
-module Repeat_condition = struct
-  type t = Times of int
-         | Condition of Condition.t
+module Repeat = struct
+  type times = int
+
+  let times_of_int = restricted (1, 1000000)
+      (Invalid_argument "Workout.Repeat.times_of_int")
+
+  type t = Times of times
+         | Until of Condition.t
+
+  let caps = function
+      Times _ -> []
+    | Until c -> Condition.caps c
 end
 
 module Target = struct
-  module Value = struct
-    type t = Zone of int
-           | Range of int * int
+  module Value (S : sig type t type zone end) = struct
+    type t = Zone of S.zone
+           | Range of S.t * S.t
   end
-  type t = Speed of Value.t
-         | Heart_rate of Value.t
-         | Cadence of Value.t
-         | Power of Value.t
-         (* | Grade of int         (\* % *\) *)
-         (* | Resistance of int    (\* ? *\) *)
+
+  module Cadence_value = Value (Cadence)
+  module Heart_rate_value = Value (Heart_rate)
+  module Power_value = Value (Power)
+  module Speed_value = Value (Speed)
+
+  type t = Speed of Speed_value.t
+         | Heart_rate of Heart_rate_value.t
+         | Cadence of Cadence_value.t
+         | Power of Power_value.t
+
+  let caps = function
+      Speed _ -> [Capability.Speed]
+    | Heart_rate _ -> [Capability.Heart_rate]
+    | Cadence _ -> [Capability.Cadence]
+    | Power _ -> [Capability.Power]
 end
 
 module Intensity = struct
@@ -113,24 +196,35 @@ module Intensity = struct
 end
 
 module Step = struct
-  type step = {
-    name : string option;
-    duration : Condition.t option;
-    target : Target.t option;
+  type single = {
+    name      : string option;
+    duration  : Condition.t option;
+    target    : Target.t option;
     intensity : Intensity.t option;
   }
 
-  type t = Single of step
-         | Repeat of Repeat_condition.t * (t Non_empty_list.t)
+  type t = Single of single
+         | Repeat of Repeat.t * (t Non_empty_list.t)
+
+  let rec caps = function
+      Single {duration; target; _} ->
+      List.append
+        (Option.map_default Condition.caps [] duration)
+        (Option.map_default Target.caps [] target)
+    | Repeat (rep, sub_steps) ->
+      List.append
+        (Repeat.caps rep)
+        (Non_empty_list.to_list sub_steps |>
+         List.map caps |> List.flatten)
 end
 
 type t = {
-  name : string option;
+  name  : string option;
   sport : Sport.t option;
   steps : Step.t Non_empty_list.t;
 }
 
-let print wrk =
-  print_endline "workout";
-  (* TODO *)
-  print_endline "end_workout"
+let caps {steps; _} =
+  Non_empty_list.to_list steps |>
+  List.map Step.caps |> List.flatten |>
+  List.sort_uniq compare
