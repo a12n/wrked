@@ -242,6 +242,7 @@ workout_value(istream& input)
         } else if (token == "name") {
             // TODO
             // ans.SetWktName(value<FIT_WSTRING>(input));
+            static_cast<void>(value<string>(input));
         } else if (token == "end_workout") {
             break;
         } else {
@@ -269,6 +270,7 @@ workout_step_value(istream& input)
             ans.SetIntensity(intensity_value(input));
         } else if (token == "name") {
             // ans.SetWktStepName(value<FIT_WSTRING>(input));
+            static_cast<void>(value<string>(input));
         } else if (token == "duration_type") {
             ans.SetDurationType(step_duration_value(input));
         } else if (token == "duration_value") {
