@@ -22,7 +22,7 @@ let lexer_tests =
   ; "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " [])
   ; "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [NUMBER 123])
   ; "Name" >:: (fun ctxt -> assert_tokens
-                   ~ctxt " \"xyz foo %%%\"" [NAME "xyz foo %%%"])
+                   ~ctxt " \"xyz foo %%%\"" [STRING "xyz foo %%%"])
   ; "Brackets" >::
     (fun ctxt -> assert_tokens ~ctxt
         "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET])
@@ -31,7 +31,7 @@ let lexer_tests =
         "hr in zone 1" [HR; IN; ZONE; NUMBER 1])
   ; "Workout header" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "\"A\", cycling" [NAME "A"; COMMA; SPORT Sport.Cycling])
+        "\"A\", cycling" [STRING "A"; COMMA; SPORT Sport.Cycling])
   ; "xN" >::
     (fun ctxt -> assert_tokens ~ctxt
         "(3x) [ ]" [L_PAREN; NUMBER 3; TIMES; R_PAREN; L_BRACKET; R_BRACKET])
@@ -40,7 +40,7 @@ let lexer_tests =
         "(4 *) [ ]" [L_PAREN; NUMBER 4; TIMES; R_PAREN; L_BRACKET; R_BRACKET])
   ; "Step header" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "\"B\", cool down" [NAME "B"; COMMA; INTENSITY Intensity.Cool_down])
+        "\"B\", cool down" [STRING "B"; COMMA; INTENSITY Intensity.Cool_down])
   ; "Invalid intensity" >::
     (fun ctxt -> assert_raises
         (Syntax_error {Lexing.pos_fname = ""; pos_lnum = 1;
@@ -49,13 +49,13 @@ let lexer_tests =
   ; "Complete step" >::
     (fun ctxt -> assert_tokens ~ctxt
         "\"A\", warm up, time < 1 min, hr < 80 %"
-        [NAME "A"; COMMA; INTENSITY Intensity.Warm_up; COMMA;
+        [STRING "A"; COMMA; INTENSITY Intensity.Warm_up; COMMA;
          TIME; LESS; NUMBER 1; MIN; COMMA;
          HR; LESS; NUMBER 80; PERCENT])
   ; "Step, no spaces" >::
     (fun ctxt -> assert_tokens ~ctxt
         "\"B\",recovery,distance<5km,power>100%"
-        [NAME "B"; COMMA; INTENSITY Intensity.Rest; COMMA;
+        [STRING "B"; COMMA; INTENSITY Intensity.Rest; COMMA;
          DISTANCE; LESS; NUMBER 5; KM; COMMA;
          POWER; GREATER; NUMBER 100; PERCENT])
   ]

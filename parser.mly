@@ -52,7 +52,7 @@ parse:
   }
 
 name_opt:
-  n = NAME COMMA? { Some n }
+  n = STRING COMMA? { Some n }
 | (* empty *) { None }
 
 sport_opt:
@@ -65,7 +65,7 @@ step_list:
   }
 
 single_step:
-  n = NAME COMMA i = INTENSITY {
+  n = STRING COMMA i = INTENSITY {
     Step.Step {Step.name = Some n; duration = None;
                target = None; intensity = Some i}
   }
