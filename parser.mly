@@ -50,7 +50,7 @@ open Workout
 %%
 
 workout:
-| name = STRING? COMMA? sport = SPORT? COMMA? steps = step_list
+| name = STRING? COMMA? sport = SPORT? COMMA? steps = step_list EOF
   { { name; sport; steps } }
 
 time_spec_1:
