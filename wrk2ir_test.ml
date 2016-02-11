@@ -62,6 +62,14 @@ let parser_tests =
     "Empty input" >::
     (fun _ctxt ->
        assert_raises Parser.Error (fun () -> Workout_repr.from_string ""))
+  ; "Simplest workout" >::
+    (fun ctxt ->
+       assert_equal ~ctxt (Workout_repr.from_string "[open]")
+         {Workout.name = None; sport = None;
+          steps = Workout.Step.Single {Workout.Step.name = None;
+                                       duration = None;
+                                       target = None;
+                                       intensity = None}, []})
   ]
 
 let () = run_test_tt_main
