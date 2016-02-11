@@ -120,8 +120,12 @@ end
 module Target : sig
   module Value : functor (S : sig type t type zone end) ->
   sig
+    type range = private (S.t * S.t)
+
     type t = Zone of S.zone
-           | Range of (S.t * S.t)
+           | Range of range
+
+    val range_of_pair : S.t * S.t -> range
   end
 
   module Cadence_value : module type of Value (Cadence)

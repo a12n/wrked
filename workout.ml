@@ -179,8 +179,12 @@ end
 
 module Target = struct
   module Value (S : sig type t type zone end) = struct
+    type range = (S.t * S.t)
+
     type t = Zone of S.zone
-           | Range of (S.t * S.t)
+           | Range of range
+
+    let range_of_pair (a, b) = if a < b then (a, b) else (b, a)
   end
 
   module Cadence_value = Value (Cadence)
