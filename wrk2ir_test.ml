@@ -15,6 +15,8 @@ let lexer_tests =
   ; "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [NUMBER 123; EOF])
   ; "Aliases" >:: (fun ctxt ->
       assert_tokens ~ctxt "cadence cad" [CADENCE; CADENCE; EOF])
+  ; "Open aliases" >:: (fun ctxt ->
+      assert_tokens ~ctxt "open open-ended" [OPEN; OPEN; EOF])
   ; "Name" >:: (fun ctxt -> assert_tokens
                    ~ctxt " \"xyz foo %%%\"" [STRING "xyz foo %%%"; EOF])
   ; "Brackets" >::
