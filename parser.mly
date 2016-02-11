@@ -108,6 +108,15 @@ condition:
 | h = hr_condition       { Workout.Condition.Heart_rate h }
 | p = power_condition    { Workout.Condition.Power p }
 
+hr_target:
+| HR IN ZONE z = NUMBER
+  { Workout.Target.Heart_rate_value.Zone (Workout.Heart_rate.zone_of_int z) }
+| a = hr_spec LESS HR GREATER b = hr_spec
+  { Workout.Target.Heart_rate_value.Range (a, b) }
+
+target:
+| h = hr_target      { Workout.Target.Heart_rate h }
+
 times_condition:
 | TIMES n = NUMBER | n = NUMBER TIMES { Workout.Repeat.times_of_int n }
 
@@ -138,3 +147,4 @@ single_step:
 step_duration_and_target:
 | OPEN                { None, None }
 | UNTIL c = condition { Some c, None }
+| KEEP t = target     { None, Some t }
