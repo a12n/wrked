@@ -113,7 +113,7 @@ step_list:
   { s, [] }
 
 single_step:
-| name = STRING? COMMA? intensity = INTENSITY? SEMICOLON
+| name = STRING? COMMA? intensity = INTENSITY? COMMA? OPEN
   { Step.Single {Step.name; duration = None; target = None; intensity} }
 
 step_duration: WHILE c = condition { c }
