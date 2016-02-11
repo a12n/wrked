@@ -7,7 +7,6 @@ let assert_tokens ~ctxt str toks =
   assert_equal ~ctxt (tokens str) toks
 
 let lexer_tests =
-  let open Lexer in
   let open Parser in
   let open Workout in
   "Lexer" >::: [
@@ -40,7 +39,7 @@ let lexer_tests =
         "\"B\", cool down" [STRING "B"; COMMA;
                             INTENSITY Intensity.Cool_down; EOF])
   ; "Invalid intensity" >::
-    (fun ctxt -> assert_raises
+    (fun _ctxt -> assert_raises
         Lexer.Error (fun () -> tokens "cool warm down up"))
   ; "Complete step" >::
     (fun ctxt -> assert_tokens ~ctxt
