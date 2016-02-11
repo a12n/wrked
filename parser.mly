@@ -80,8 +80,8 @@ distance_spec:
 calories_spec: kcal = NUMBER KCAL? { Workout.Condition.calories_of_int kcal }
 
 hr_spec:
-| bpm = NUMBER BPM?    { Workout.Heart_rate.absolute_of_int bpm }
-| pct = NUMBER PERCENT { Workout.Heart_rate.percent_of_int pct }
+| bpm = NUMBER BPM?    { Workout.Heart_rate.(Absolute (absolute_of_int bpm)) }
+| pct = NUMBER PERCENT { Workout.Heart_rate.(Percent (percent_of_int pct)) }
 
 power_spec:
 | w = NUMBER W?        { Workout.Power.absolute_of_int w }
@@ -105,6 +105,7 @@ condition:
 | t = time_condition     { Workout.Condition.Time t }
 | c = calories_condition { Workout.Condition.Calories c }
 | d = distance_condition { Workout.Condition.Distance d }
+| h = hr_condition       { Workout.Condition.Heart_rate h }
 
 times_condition:
 | TIMES n = NUMBER | n = NUMBER TIMES { Workout.Repeat.times_of_int n }
