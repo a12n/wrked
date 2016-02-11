@@ -52,6 +52,8 @@ module Speed : sig
 
   val of_float : float -> t
   val zone_of_int : int -> zone
+
+  val from_kmph : float -> t
 end
 
 module Cadence : sig
