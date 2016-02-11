@@ -115,19 +115,25 @@ repeat_condition:
 | t = times_condition { Workout.Repeat.Times t }
 | c = condition       { Workout.Repeat.Until c }
 
-repeat: r = delimited(L_PAREN, repeat_condition, R_PAREN) { r }
-
 steps:
 | l = delimited(L_BRACKET,
-    separated_nonempty_list(SEMICOLON, single_step), R_BRACKET)
+    separated_nonempty_list(SEMICOLON, step), R_BRACKET)
   { Non_empty_list.of_list l }
+
+step:
+| s = single_step { Workout.Step.Single s }
+| r = repeat_step { Workout.Step.Repeat r }
+
+repeat_step:
+| condition = delimited(L_PAREN, repeat_condition, R_PAREN) steps = steps
+  { {Workout.Step.condition; steps} }
 
 single_step:
 | name = option(terminated(STRING, COMMA))
   intensity = option(terminated(INTENSITY, COMMA))
   p = step_duration_and_target
   { let duration, target = p in
-    Step.Single {Step.name; duration; target; intensity} }
+    {Step.name; duration; target; intensity} }
 
 step_duration_and_target:
 | OPEN                { None, None }
