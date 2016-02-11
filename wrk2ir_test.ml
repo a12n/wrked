@@ -129,14 +129,21 @@ let parser_tests =
   ; "Steps with calories duration" >::
     (fun ctxt ->
        assert_equal ~ctxt
-         (Workout_repr.from_string "[while calories < 1500]")
+         (Workout_repr.from_string
+            "[while calories < 1500; while calories < 300 kcal]")
          {empty_workout with
-          Workout.steps =
-            Workout.Step.Single
-              {empty_single_step with
-               Workout.Step.duration = Some (
-                   Workout.Condition.Calories
-                     (Workout.Condition.calories_of_int 1500))}, []})
+          Workout.steps = Non_empty_list.of_list [
+              Workout.Step.Single
+                {empty_single_step with
+                 Workout.Step.duration = Some (
+                     Workout.Condition.Calories
+                       (Workout.Condition.calories_of_int 1500))}
+            ; Workout.Step.Single
+                {empty_single_step with
+                 Workout.Step.duration = Some (
+                     Workout.Condition.Calories
+                       (Workout.Condition.calories_of_int 300))}
+            ]})
   ]
 
 let () = run_test_tt_main
