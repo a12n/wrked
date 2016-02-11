@@ -31,7 +31,7 @@ rule read = parse
 | "zone"                { ZONE }
 | "open-ended" | "open" { OPEN }
 
-| "while" { WHILE }
+| "until" { UNTIL }
 | "keep"  { KEEP }
 
 | "bpm"  { BPM }

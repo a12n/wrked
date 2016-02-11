@@ -118,7 +118,7 @@ let parser_tests =
 
   ; "Step with time duration" >::
     (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[while time < 10 min]")
+       assert_equal ~ctxt (Workout_repr.from_string "[until time < 10 min]")
          {empty_workout with
           Workout.steps =
             Workout.Step.Single
@@ -130,7 +130,7 @@ let parser_tests =
     (fun ctxt ->
        assert_equal ~ctxt
          (Workout_repr.from_string
-            "[while time < 01:15:30; while time < 10:00]")
+            "[until time < 01:15:30; until time < 10:00]")
          {empty_workout with
           Workout.steps = Non_empty_list.of_list [
               Workout.Step.Single
@@ -155,9 +155,9 @@ let parser_tests =
                   (Workout.Condition.distance_of_int 5000))} in
        assert_equal ~ctxt
          (Workout_repr.from_string
-            ("[while distance < 5000;" ^
-             " while distance < 5000 m;" ^
-             " while distance < 5 km]"))
+            ("[until distance < 5000;" ^
+             " until distance < 5000 m;" ^
+             " until distance < 5 km]"))
          {empty_workout with
           Workout.steps = Non_empty_list.of_list [
               until_5km; until_5km; until_5km
@@ -166,7 +166,7 @@ let parser_tests =
     (fun ctxt ->
        assert_equal ~ctxt
          (Workout_repr.from_string
-            "[while calories < 1500; while calories < 300 kcal]")
+            "[until calories < 1500; until calories < 300 kcal]")
          {empty_workout with
           Workout.steps = Non_empty_list.of_list [
               Workout.Step.Single
@@ -185,7 +185,7 @@ let parser_tests =
        let open Workout in
        assert_equal ~ctxt
          (Workout_repr.from_string
-            "[while hr > 150; while hr > 70 %; while hr < 180 bpm]")
+            "[until hr > 150; until hr > 70 %; until hr < 180 bpm]")
          {empty_workout with
           steps = Non_empty_list.of_list [
               Step.Single
@@ -214,7 +214,7 @@ let parser_tests =
     (fun ctxt ->
        let open Workout in
        assert_equal ~ctxt
-         (Workout_repr.from_string "[while power < 200 W; while power > 300 %]")
+         (Workout_repr.from_string "[until power < 200 W; until power > 300 %]")
          {empty_workout with
           steps = Non_empty_list.of_list [
               Step.Single {empty_single_step with
@@ -235,7 +235,7 @@ let parser_tests =
        let open Workout in
        assert_equal ~ctxt
          (Workout_repr.from_string
-            "[warm up, open-ended; (2x) [active, while time < 10 min]]")
+            "[warm up, open-ended; (2x) [active, until time < 10 min]]")
          {empty_workout with
           steps = Non_empty_list.of_list
               [ Step.Single

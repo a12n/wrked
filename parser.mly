@@ -36,9 +36,9 @@ open Workout
 %token IN
 %token ZONE
 
-%token OPEN
-%token WHILE
 %token KEEP
+%token OPEN
+%token UNTIL
 
 %token EOF
 
@@ -137,4 +137,4 @@ single_step:
 
 step_duration_and_target:
 | OPEN                { None, None }
-| WHILE c = condition { Some c, None }
+| UNTIL c = condition { Some c, None }
