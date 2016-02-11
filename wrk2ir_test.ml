@@ -61,6 +61,9 @@ let lexer_tests =
         [FLOAT 12.25; FLOAT 0.0; FLOAT 1.001; EOF])
   ]
 
+let assert_parses str expected ctxt =
+  assert_equal ~ctxt (Workout_repr.from_string str) expected
+
 let parser_tests =
   let empty_single_step =
     {Workout.Step.name = None;
