@@ -283,6 +283,19 @@ let parser_tests =
                              Target.Heart_rate
                                (Target.Heart_rate_value.Zone
                                   (Heart_rate.zone_of_int 2)))}, []})
+  ; "Workout step with speed target" >::
+    (fun ctxt ->
+       let open Workout in
+       assert_equal ~ctxt
+         (Workout_repr.from_string "[keep 25.2 < speed < 36 km/h]")
+         {empty_workout with
+          steps =
+            Step.Single {empty_single_step with
+                         Step.target = Some (
+                             Target.Speed
+                               (Target.Speed_value.Range
+                                  (Speed.of_float 7.0,
+                                   Speed.of_float 10.0)))}, []})
   ]
 
 let () = run_test_tt_main
