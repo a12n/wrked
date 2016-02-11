@@ -139,10 +139,17 @@ cadence_target:
 | CADENCE r = target_range(cadence_spec)
   { Workout.Target.Cadence_value.Range r }
 
+power_target:
+| POWER ZONE z = INTEGER
+  { Workout.Target.Power_value.Zone (Workout.Power.zone_of_int z) }
+| POWER r = target_range(power_spec)
+  { Workout.Target.Power_value.Range r }
+
 target:
 | h = hr_target      { Workout.Target.Heart_rate h }
 | s = speed_target   { Workout.Target.Speed s }
 | c = cadence_target { Workout.Target.Cadence c }
+| p = power_target   { Workout.Target.Power p }
 
 times_condition:
 | TIMES n = INTEGER | n = INTEGER TIMES { Workout.Repeat.times_of_int n }
