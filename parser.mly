@@ -60,9 +60,18 @@ time_spec_1:
 | min = NUMBER MIN { Workout.Condition.time_of_int (60 * min) }
 | h = NUMBER H     { Workout.Condition.time_of_int (60 * 60 * h) }
 
-(* TODO: time_spec_2 *)
+%inline
+separated_triplet(X, a, Y, b, Z): x = X a y = Y b z = Z { x, y, z }
 
-time_spec: t = time_spec_1 { t }
+time_spec_2:
+| hms = separated_triplet(NUMBER, COLON, NUMBER, COLON, NUMBER)
+  { let h, m, s = hms in
+    Workout.Condition.time_of_int (h * 3600 + m * 60 + s) }
+| ms = separated_pair(NUMBER, COLON, NUMBER)
+  { let m, s = ms in
+    Workout.Condition.time_of_int (m * 60 + s) }
+
+time_spec: t = time_spec_1 | t = time_spec_2 { t }
 
 distance_spec:
 | m = NUMBER M?  { Workout.Condition.distance_of_int m }
