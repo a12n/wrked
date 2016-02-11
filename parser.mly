@@ -118,13 +118,13 @@ condition:
 hr_target:
 | HR IN ZONE z = INTEGER
   { Workout.Target.Heart_rate_value.Zone (Workout.Heart_rate.zone_of_int z) }
-| a = hr_spec LESS HR GREATER b = hr_spec
+| a = hr_spec LESS HR LESS b = hr_spec
   { Workout.Target.Heart_rate_value.Range (a, b) }
 
 speed_target:
 | SPEED IN ZONE z = INTEGER
   { Workout.Target.Speed_value.Zone (Workout.Speed.zone_of_int z) }
-| a = speed_spec LESS SPEED GREATER b = speed_spec
+| a = speed_spec LESS SPEED LESS b = speed_spec
   { Workout.Target.Speed_value.Range (a, b) }
 
 target:
