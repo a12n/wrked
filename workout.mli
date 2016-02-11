@@ -146,10 +146,11 @@ module Step : sig
     duration  : Condition.t option;
     target    : Target.t option;
     intensity : Intensity.t option;
-  }
-
-  type t = Single of single
-         | Repeat of Repeat.t * (t Non_empty_list.t)
+  } and repeat = {
+    condition : Repeat.t;
+    steps     : t Non_empty_list.t;
+  } and t = Single of single
+          | Repeat of repeat
 end
 
 type t = {
