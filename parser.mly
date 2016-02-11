@@ -114,7 +114,9 @@ step_list:
   { Non_empty_list.of_list l }
 
 single_step:
-| name = STRING? COMMA? intensity = INTENSITY? COMMA? OPEN
-  { Step.Single {Step.name; duration = None; target = None; intensity} }
+| name = STRING? COMMA? intensity = INTENSITY? COMMA?
+       p = step_duration_and_target
+  { let duration, target = p in
+    Step.Single {Step.name; duration; target; intensity} }
 
-step_duration: WHILE c = condition { c }
+step_duration_and_target: OPEN { None, None }
