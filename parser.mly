@@ -175,6 +175,7 @@ single_step:
     {Workout.Step.name; duration; target; intensity} }
 
 step_duration_and_target:
-| OPEN                { None, None }
-| UNTIL c = condition { Some c, None }
-| KEEP t = target     { None, Some t }
+| OPEN                                      { None, None }
+| UNTIL c = condition                       { Some c, None }
+| KEEP t = target                           { None, Some t }
+| UNTIL c = condition COMMA KEEP t = target { Some c, Some t }
