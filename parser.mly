@@ -87,11 +87,11 @@ power_spec:
 | w = NUMBER W?        { Workout.Power.(Absolute (absolute_of_int w)) }
 | pct = NUMBER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
 
-time_condition: TIME LESS t = time_spec { t }
+time_condition: TIME t = time_spec { t }
 
-distance_condition: DISTANCE LESS d = distance_spec { d }
+distance_condition: DISTANCE d = distance_spec { d }
 
-calories_condition: CALORIES LESS c = calories_spec { c }
+calories_condition: CALORIES c = calories_spec { c }
 
 hr_condition:
 | HR LESS h = hr_spec    { Workout.Condition.Less, h }
