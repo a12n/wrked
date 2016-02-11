@@ -125,25 +125,25 @@ hr_target:
 | HR ZONE z = INTEGER
   { Workout.Target.Heart_rate_value.Zone (Workout.Heart_rate.zone_of_int z) }
 | HR r = target_range(hr_spec)
-  { Workout.Target.Heart_rate_value.Range r }
+  { Workout.Target.Heart_rate_value.(Range (range_of_pair r)) }
 
 speed_target:
 | SPEED ZONE z = INTEGER
   { Workout.Target.Speed_value.Zone (Workout.Speed.zone_of_int z) }
 | SPEED r = target_range(speed_spec)
-  { Workout.Target.Speed_value.Range r }
+  { Workout.Target.Speed_value.(Range (range_of_pair r)) }
 
 cadence_target:
 | CADENCE ZONE z = INTEGER
   { Workout.Target.Cadence_value.Zone (Workout.Cadence.zone_of_int z) }
 | CADENCE r = target_range(cadence_spec)
-  { Workout.Target.Cadence_value.Range r }
+  { Workout.Target.Cadence_value.(Range (range_of_pair r)) }
 
 power_target:
 | POWER ZONE z = INTEGER
   { Workout.Target.Power_value.Zone (Workout.Power.zone_of_int z) }
 | POWER r = target_range(power_spec)
-  { Workout.Target.Power_value.Range r }
+  { Workout.Target.Power_value.(Range (range_of_pair r)) }
 
 target:
 | h = hr_target      { Workout.Target.Heart_rate h }
