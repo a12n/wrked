@@ -2,7 +2,7 @@ open Batteries
 
 let from_lexbuf = Parser.workout Lexer.read
 
-let from_channel chan = from_lexbuf (Legacy.Lexing.from_channel chan)
+let from_channel = from_lexbuf % Legacy.Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
