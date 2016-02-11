@@ -52,7 +52,7 @@ open Workout
 workout:
 | name = option(terminated(STRING, COMMA))
   sport = option(terminated(SPORT, COMMA))
-  steps = step_list EOF
+  steps = steps EOF
   { { name; sport; steps } }
 
 time_spec_1:
@@ -119,7 +119,7 @@ repeat:
 | L_PAREN r = repeat_condition R_PAREN
   { r }
 
-step_list:
+steps:
 | l = delimited(L_BRACKET,
     separated_nonempty_list(SEMICOLON, single_step), R_BRACKET)
   { Non_empty_list.of_list l }
