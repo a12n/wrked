@@ -27,8 +27,9 @@ rule read = parse
 | "speed"           { SPEED }
 | "time"            { TIME }
 
-| "in"   { IN }
-| "zone" { ZONE }
+| "in"                  { IN }
+| "zone"                { ZONE }
+| "open-ended" | "open" { OPEN }
 
 | "while" { WHILE }
 | "keep"  { KEEP }

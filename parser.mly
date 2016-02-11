@@ -36,6 +36,7 @@ open Workout
 %token IN
 %token ZONE
 
+%token OPEN
 %token WHILE
 %token KEEP
 
