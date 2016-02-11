@@ -55,5 +55,10 @@ let lexer_tests =
          POWER; GREATER; NUMBER 100; PERCENT; EOF])
   ]
 
+let parser_tests =
+  "Parser" >::: [
+    
+  ]
+
 let () = run_test_tt_main
-    (test_list [ lexer_tests ])
+    (test_list [ lexer_tests; parser_tests ])
