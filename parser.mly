@@ -95,6 +95,8 @@ speed_spec:
 | kmph = FLOAT KMPH? { Workout.Speed.from_kmph kmph }
 | mps = FLOAT MPS    { Workout.Speed.of_float mps }
 
+cadence_spec: rpm = INTEGER RPM? { Workout.Cadence.of_int rpm }
+
 time_condition: TIME t = time_spec { t }
 
 distance_condition: DISTANCE d = distance_spec { d }
@@ -131,9 +133,16 @@ speed_target:
 | SPEED r = target_range(speed_spec)
   { Workout.Target.Speed_value.Range r }
 
+cadence_target:
+| CADENCE ZONE z = INTEGER
+  { Workout.Target.Cadence_value.Zone (Workout.Cadence.zone_of_int z) }
+| CADENCE r = target_range(cadence_spec)
+  { Workout.Target.Cadence_value.Range r }
+
 target:
-| h = hr_target    { Workout.Target.Heart_rate h }
-| s = speed_target { Workout.Target.Speed s }
+| h = hr_target      { Workout.Target.Heart_rate h }
+| s = speed_target   { Workout.Target.Speed s }
+| c = cadence_target { Workout.Target.Cadence c }
 
 times_condition:
 | TIMES n = INTEGER | n = INTEGER TIMES { Workout.Repeat.times_of_int n }
