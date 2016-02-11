@@ -109,8 +109,9 @@ repeat:
   { r }
 
 step_list:
-| L_BRACKET s = single_step R_BRACKET
-  { s, [] }
+| l = delimited(L_BRACKET,
+    separated_nonempty_list(SEMICOLON, single_step), R_BRACKET)
+  { Non_empty_list.of_list l }
 
 single_step:
 | name = STRING? COMMA? intensity = INTENSITY? COMMA? OPEN
