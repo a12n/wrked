@@ -101,9 +101,9 @@ module Condition : sig
 
   type t = Time of time
          | Distance of distance
-         | Heart_rate of order * Heart_rate.t
+         | Heart_rate of (order * Heart_rate.t)
          | Calories of calories
-         | Power of order * Power.t
+         | Power of (order * Power.t)
 end
 
 module Repeat : sig
