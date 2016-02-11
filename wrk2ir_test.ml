@@ -230,6 +230,27 @@ let parser_tests =
                                   (Power.Percent
                                      (Power.percent_of_int 300))))}
             ]})
+  ; "Repeat 2 times" >::
+    (fun ctxt ->
+       let open Workout in
+       assert_equal ~ctxt
+         (Workout_repr.from_string
+            "[warm up, open-ended; (2x) [active, while time < 10 min]]")
+         {empty_workout with
+          steps = Non_empty_list.of_list
+              [ Step.Single
+                  {empty_single_step with
+                   Step.intensity = Some Intensity.Warm_up}
+              ; Step.Repeat
+                  {Step.condition =
+                     Repeat.Times (Repeat.times_of_int 2);
+                   steps = Non_empty_list.of_list
+                       [ Step.Single
+                           {empty_single_step with
+                            Step.intensity = Some Intensity.Active;
+                            duration = Some (Condition.Time
+                                               (Condition.time_of_int 600))} ]}
+            ]})
   ]
 
 let () = run_test_tt_main
