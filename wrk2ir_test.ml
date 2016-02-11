@@ -310,6 +310,19 @@ let parser_tests =
                        Range (range_of_pair
                                 (Cadence.of_int 90,
                                  Cadence.of_int 100)))))}, []})
+  ; "Step with both duration and target" >::
+    (assert_parses "[until time 1 min, keep cadence zone 2]"
+       {empty_workout with
+        steps =
+          Step.Single
+            {empty_single_step with
+             Step.duration = Some (
+                 Condition.Time (Condition.time_of_int 60)
+               );
+             target = Some (
+                 Target.Cadence
+                   (Target.Cadence_value.Zone (Cadence.zone_of_int 2))
+               )}, []})
   ]
 
 let () = run_test_tt_main
