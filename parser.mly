@@ -84,8 +84,8 @@ hr_spec:
 | pct = NUMBER PERCENT { Workout.Heart_rate.(Percent (percent_of_int pct)) }
 
 power_spec:
-| w = NUMBER W?        { Workout.Power.absolute_of_int w }
-| pct = NUMBER PERCENT { Workout.Power.percent_of_int pct }
+| w = NUMBER W?        { Workout.Power.(Absolute (absolute_of_int w)) }
+| pct = NUMBER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
 
 time_condition: TIME LESS t = time_spec { t }
 
@@ -106,6 +106,7 @@ condition:
 | c = calories_condition { Workout.Condition.Calories c }
 | d = distance_condition { Workout.Condition.Distance d }
 | h = hr_condition       { Workout.Condition.Heart_rate h }
+| p = power_condition    { Workout.Condition.Power p }
 
 times_condition:
 | TIMES n = NUMBER | n = NUMBER TIMES { Workout.Repeat.times_of_int n }
