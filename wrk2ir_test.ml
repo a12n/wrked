@@ -71,6 +71,15 @@ let parser_tests =
   ; "Simplest workout" >::
     (fun ctxt ->
        assert_equal ~ctxt (Workout_repr.from_string "[open]") empty_workout)
+  ; "Open-ended step with name" >::
+    (fun ctxt ->
+       assert_equal ~ctxt (Workout_repr.from_string "[\"Xyz\", open-ended]")
+         {empty_workout with
+          Workout.steps =
+            Workout.Step.Single {Workout.Step.name = Some "Xyz";
+                                 duration = None;
+                                 target = None;
+                                 intensity = None}, []})
   ]
 
 let () = run_test_tt_main
