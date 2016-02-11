@@ -267,6 +267,18 @@ let parser_tests =
                        [ Step.Single empty_single_step ]}
               ]}
     )
+  ; "Workout step with target" >::
+    (fun ctxt ->
+       let open Workout in
+       assert_equal ~ctxt
+         (Workout_repr.from_string "[keep hr in zone 2]")
+         {empty_workout with
+          steps =
+            Step.Single {empty_single_step with
+                         Step.target = Some (
+                             Target.Heart_rate
+                               (Target.Heart_rate_value.Zone
+                                  (Heart_rate.zone_of_int 2)))}, []})
   ]
 
 let () = run_test_tt_main
