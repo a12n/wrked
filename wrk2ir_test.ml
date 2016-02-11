@@ -295,6 +295,17 @@ let parser_tests =
                         (Power.(Absolute (absolute_of_int 200)),
                          Power.(Absolute (absolute_of_int 250)))))}
           ]})
+  ; "Reorder target range endpoints" >::
+    (assert_parses "[keep cadence 100-90]"
+       {empty_workout with
+        steps =
+          Step.Single
+            {empty_single_step with
+             Step.target = Some (
+                 Target.Cadence
+                   (Target.Cadence_value.Range
+                      (Cadence.of_int 90,
+                       Cadence.of_int 100)))}, []})
   ]
 
 let () = run_test_tt_main
