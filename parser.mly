@@ -94,6 +94,7 @@ power_condition:
 
 condition:
 | t = time_condition     { Workout.Condition.Time t }
+| c = calories_condition { Workout.Condition.Calories c }
 
 times_condition:
 | TIMES n = NUMBER | n = NUMBER TIMES { Workout.Repeat.times_of_int n }
