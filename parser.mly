@@ -33,9 +33,7 @@
 %token S
 %token W
 
-%token KEEP
 %token OPEN
-%token UNTIL
 %token ZONE
 
 %token EOF
