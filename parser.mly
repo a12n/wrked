@@ -92,8 +92,8 @@ power_spec:
 | pct = INTEGER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
 
 speed_spec:
-| kmh = FLOAT KMPH? { Workout.Speed.of_float (1000.0 *. kmh /. 3600.0) }
-| ms = FLOAT MPS    { Workout.Speed.of_float ms }
+| kmph = FLOAT KMPH? { Workout.Speed.from_kmph kmph }
+| mps = FLOAT MPS    { Workout.Speed.of_float mps }
 
 time_condition: TIME t = time_spec { t }
 
