@@ -2,7 +2,7 @@
 open Workout
 %}
 
-%token <int> NUMBER
+%token <int> INTEGER
 %token <string> STRING
 
 %token L_BRACKET R_BRACKET
@@ -56,36 +56,36 @@ workout:
   { { name; sport; steps } }
 
 time_spec_1:
-| s = NUMBER S?    { Workout.Condition.time_of_int s }
-| min = NUMBER MIN { Workout.Condition.time_of_int (60 * min) }
-| h = NUMBER H     { Workout.Condition.time_of_int (60 * 60 * h) }
+| s = INTEGER S?    { Workout.Condition.time_of_int s }
+| min = INTEGER MIN { Workout.Condition.time_of_int (60 * min) }
+| h = INTEGER H     { Workout.Condition.time_of_int (60 * 60 * h) }
 
 %inline
 separated_triplet(X, a, Y, b, Z): x = X a y = Y b z = Z { x, y, z }
 
 time_spec_2:
-| hms = separated_triplet(NUMBER, COLON, NUMBER, COLON, NUMBER)
+| hms = separated_triplet(INTEGER, COLON, INTEGER, COLON, INTEGER)
   { let h, m, s = hms in
     Workout.Condition.time_of_int (h * 3600 + m * 60 + s) }
-| ms = separated_pair(NUMBER, COLON, NUMBER)
+| ms = separated_pair(INTEGER, COLON, INTEGER)
   { let m, s = ms in
     Workout.Condition.time_of_int (m * 60 + s) }
 
 time_spec: t = time_spec_1 | t = time_spec_2 { t }
 
 distance_spec:
-| m = NUMBER M?  { Workout.Condition.distance_of_int m }
-| km = NUMBER KM { Workout.Condition.distance_of_int (km * 1000) }
+| m = INTEGER M?  { Workout.Condition.distance_of_int m }
+| km = INTEGER KM { Workout.Condition.distance_of_int (km * 1000) }
 
-calories_spec: kcal = NUMBER KCAL? { Workout.Condition.calories_of_int kcal }
+calories_spec: kcal = INTEGER KCAL? { Workout.Condition.calories_of_int kcal }
 
 hr_spec:
-| bpm = NUMBER BPM?    { Workout.Heart_rate.(Absolute (absolute_of_int bpm)) }
-| pct = NUMBER PERCENT { Workout.Heart_rate.(Percent (percent_of_int pct)) }
+| bpm = INTEGER BPM?    { Workout.Heart_rate.(Absolute (absolute_of_int bpm)) }
+| pct = INTEGER PERCENT { Workout.Heart_rate.(Percent (percent_of_int pct)) }
 
 power_spec:
-| w = NUMBER W?        { Workout.Power.(Absolute (absolute_of_int w)) }
-| pct = NUMBER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
+| w = INTEGER W?        { Workout.Power.(Absolute (absolute_of_int w)) }
+| pct = INTEGER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
 
 time_condition: TIME t = time_spec { t }
 
@@ -109,7 +109,7 @@ condition:
 | p = power_condition    { Workout.Condition.Power p }
 
 hr_target:
-| HR IN ZONE z = NUMBER
+| HR IN ZONE z = INTEGER
   { Workout.Target.Heart_rate_value.Zone (Workout.Heart_rate.zone_of_int z) }
 | a = hr_spec LESS HR GREATER b = hr_spec
   { Workout.Target.Heart_rate_value.Range (a, b) }
@@ -118,7 +118,7 @@ target:
 | h = hr_target      { Workout.Target.Heart_rate h }
 
 times_condition:
-| TIMES n = NUMBER | n = NUMBER TIMES { Workout.Repeat.times_of_int n }
+| TIMES n = INTEGER | n = INTEGER TIMES { Workout.Repeat.times_of_int n }
 
 repeat_condition:
 | t = times_condition { Workout.Repeat.Times t }
