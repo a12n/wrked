@@ -92,8 +92,8 @@ module Condition : sig
   type order = Less | Greater
 
   type calories = private int   (* kcal *)
-  type distance = private int   (* cm *)
-  type time = private int       (* ms *)
+  type distance = private int   (* m *)
+  type time = private int       (* s *)
 
   val calories_of_int : int -> calories
   val distance_of_int : int -> distance
