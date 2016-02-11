@@ -24,7 +24,7 @@ let lexer_tests =
         "[[ ]] ]" [L_BRACKET; L_BRACKET; R_BRACKET; R_BRACKET; R_BRACKET; EOF])
   ; "HR condition" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "hr in zone 1" [HR; IN; ZONE; INTEGER 1; EOF])
+        "hr zone 1" [HR; ZONE; INTEGER 1; EOF])
   ; "Workout header" >::
     (fun ctxt -> assert_tokens ~ctxt
         "\"A\", cycling" [STRING "A"; COMMA; SPORT Sport.Cycling; EOF])
