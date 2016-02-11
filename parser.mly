@@ -120,15 +120,15 @@ condition:
 target_range(X): r = separated_pair(X, HYPHEN, X) { r }
 
 hr_target:
-| HR IN ZONE z = INTEGER
+| HR ZONE z = INTEGER
   { Workout.Target.Heart_rate_value.Zone (Workout.Heart_rate.zone_of_int z) }
-| HR IN r = target_range(hr_spec)
+| HR r = target_range(hr_spec)
   { Workout.Target.Heart_rate_value.Range r }
 
 speed_target:
-| SPEED IN ZONE z = INTEGER
+| SPEED ZONE z = INTEGER
   { Workout.Target.Speed_value.Zone (Workout.Speed.zone_of_int z) }
-| SPEED IN r = target_range(speed_spec)
+| SPEED r = target_range(speed_spec)
   { Workout.Target.Speed_value.Range r }
 
 target:

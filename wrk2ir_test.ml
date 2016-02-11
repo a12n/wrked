@@ -275,7 +275,7 @@ let parser_tests =
     (fun ctxt ->
        let open Workout in
        assert_equal ~ctxt
-         (Workout_repr.from_string "[keep hr in zone 2]")
+         (Workout_repr.from_string "[keep hr zone 2]")
          {empty_workout with
           steps =
             Step.Single {empty_single_step with
@@ -287,7 +287,7 @@ let parser_tests =
     (fun ctxt ->
        let open Workout in
        assert_equal ~ctxt
-         (Workout_repr.from_string "[keep speed in 25.2-36.0 km/h]")
+         (Workout_repr.from_string "[keep speed 25.2-36.0 km/h]")
          {empty_workout with
           steps =
             Step.Single {empty_single_step with
