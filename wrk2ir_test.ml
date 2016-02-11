@@ -277,6 +277,24 @@ let parser_tests =
                              (Target.Cadence_value.Range
                                 (Cadence.of_int 95,
                                  Cadence.of_int 110)))}, []})
+  ; "Workout steps with power target" >::
+    (assert_parses "[keep power zone 3; keep power 200-250 W]"
+       {empty_workout with
+        steps = Non_empty_list.of_list [
+            Step.Single
+              {empty_single_step with
+               Step.target = Some (
+                   Target.Power
+                     (Target.Power_value.Zone
+                        (Power.zone_of_int 3)))}
+          ; Step.Single
+              {empty_single_step with
+               Step.target = Some (
+                   Target.Power
+                     (Target.Power_value.Range
+                        (Power.(Absolute (absolute_of_int 200)),
+                         Power.(Absolute (absolute_of_int 250)))))}
+          ]})
   ]
 
 let () = run_test_tt_main
