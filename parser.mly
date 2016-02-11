@@ -1,7 +1,3 @@
-%{
-open Workout
-%}
-
 %token <float> FLOAT
 %token <int> INTEGER
 %token <string> STRING
@@ -176,7 +172,7 @@ single_step:
   intensity = option(terminated(INTENSITY, COMMA))
   p = step_duration_and_target
   { let duration, target = p in
-    {Step.name; duration; target; intensity} }
+    {Workout.Step.name; duration; target; intensity} }
 
 step_duration_and_target:
 | OPEN                { None, None }
