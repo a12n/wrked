@@ -87,7 +87,7 @@ module Speed = struct
 end
 
 module Cadence = struct
-  type t = int                  (* rpm *)
+  type t = int
   type zone = int
 
   let of_int = restricted (0, 500)
