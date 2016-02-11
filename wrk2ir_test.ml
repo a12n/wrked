@@ -59,7 +59,9 @@ let lexer_tests =
 
 let parser_tests =
   "Parser" >::: [
-    
+    "Empty input" >::
+    (fun _ctxt ->
+       assert_raises Parser.Error (fun () -> Workout_repr.from_string ""))
   ]
 
 let () = run_test_tt_main
