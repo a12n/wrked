@@ -287,15 +287,15 @@ let parser_tests =
     (fun ctxt ->
        let open Workout in
        assert_equal ~ctxt
-         (Workout_repr.from_string "[keep 25.2 < speed < 36 km/h]")
+         (Workout_repr.from_string "[keep speed in 25.2-36 km/h]")
          {empty_workout with
           steps =
             Step.Single {empty_single_step with
                          Step.target = Some (
                              Target.Speed
                                (Target.Speed_value.Range
-                                  (Speed.of_float 7.0,
-                                   Speed.of_float 10.0)))}, []})
+                                  (Speed.from_kmph 25.2,
+                                   Speed.from_kmph 36.0)))}, []})
   ]
 
 let () = run_test_tt_main

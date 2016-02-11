@@ -116,17 +116,20 @@ condition:
 | h = hr_condition       { Workout.Condition.Heart_rate h }
 | p = power_condition    { Workout.Condition.Power p }
 
+%inline
+target_range(X): r = separated_pair(X, HYPHEN, X) { r }
+
 hr_target:
 | HR IN ZONE z = INTEGER
   { Workout.Target.Heart_rate_value.Zone (Workout.Heart_rate.zone_of_int z) }
-| a = hr_spec LESS HR LESS b = hr_spec
-  { Workout.Target.Heart_rate_value.Range (a, b) }
+| HR IN r = target_range(hr_spec)
+  { Workout.Target.Heart_rate_value.Range r }
 
 speed_target:
 | SPEED IN ZONE z = INTEGER
   { Workout.Target.Speed_value.Zone (Workout.Speed.zone_of_int z) }
-| a = speed_spec LESS SPEED LESS b = speed_spec
-  { Workout.Target.Speed_value.Range (a, b) }
+| SPEED IN r = target_range(speed_spec)
+  { Workout.Target.Speed_value.Range r }
 
 target:
 | h = hr_target    { Workout.Target.Heart_rate h }
