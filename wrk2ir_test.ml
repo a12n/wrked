@@ -180,6 +180,36 @@ let parser_tests =
                      Workout.Condition.Calories
                        (Workout.Condition.calories_of_int 300))}
             ]})
+  ; "Steps with HR duration" >::
+    (fun ctxt ->
+       let open Workout in
+       assert_equal ~ctxt
+         (Workout_repr.from_string
+            "[while hr > 150; while hr > 70 %; while hr < 180 bpm]")
+         {empty_workout with
+          steps = Non_empty_list.of_list [
+              Step.Single
+                {empty_single_step with
+                 Step.duration = Some (
+                     Condition.Heart_rate
+                       (Condition.Greater,
+                        (Heart_rate.Absolute
+                           (Heart_rate.absolute_of_int 150))))}
+            ; Step.Single
+                {empty_single_step with
+                 Step.duration = Some (
+                     Condition.Heart_rate
+                       (Condition.Greater,
+                        (Heart_rate.Percent
+                           (Heart_rate.percent_of_int 70))))}
+            ; Step.Single
+                {empty_single_step with
+                 Step.duration = Some (
+                     Condition.Heart_rate
+                       (Condition.Less,
+                        (Heart_rate.Absolute
+                           (Heart_rate.absolute_of_int 180))))}
+            ]})
   ]
 
 let () = run_test_tt_main
