@@ -121,7 +121,7 @@ module Target : sig
   module Value : functor (S : sig type t type zone end) ->
   sig
     type t = Zone of S.zone
-           | Range of S.t * S.t
+           | Range of (S.t * S.t)
   end
 
   module Cadence_value : module type of Value (Cadence)

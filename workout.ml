@@ -180,7 +180,7 @@ end
 module Target = struct
   module Value (S : sig type t type zone end) = struct
     type t = Zone of S.zone
-           | Range of S.t * S.t
+           | Range of (S.t * S.t)
   end
 
   module Cadence_value = Value (Cadence)
