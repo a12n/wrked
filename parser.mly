@@ -12,6 +12,7 @@ open Workout
 
 %token COLON
 %token COMMA
+%token HYPHEN
 %token PERCENT
 %token SEMICOLON
 %token TIMES

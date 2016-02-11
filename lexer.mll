@@ -53,6 +53,7 @@ rule read = parse
 | '('       { L_PAREN }
 | ')'       { R_PAREN }
 | ';'       { SEMICOLON }
+| '-'       { HYPHEN }
 | '<'       { LESS }
 | '>'       { GREATER }
 | ','       { COMMA }
