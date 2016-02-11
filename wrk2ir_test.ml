@@ -267,6 +267,16 @@ let parser_tests =
                              (Target.Speed_value.Range
                                 (Speed.from_kmph 25.2,
                                  Speed.from_kmph 36.0)))}, []})
+  ; "Workout step with cadence target" >::
+    (assert_parses "[keep cadence 95-110 rpm]"
+       {empty_workout with
+        steps =
+          Step.Single {empty_single_step with
+                       Step.target = Some (
+                           Target.Cadence
+                             (Target.Cadence_value.Range
+                                (Cadence.of_int 95,
+                                 Cadence.of_int 110)))}, []})
   ]
 
 let () = run_test_tt_main
