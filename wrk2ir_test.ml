@@ -210,6 +210,26 @@ let parser_tests =
                         (Heart_rate.Absolute
                            (Heart_rate.absolute_of_int 180))))}
             ]})
+  ; "Steps with power duration" >::
+    (fun ctxt ->
+       let open Workout in
+       assert_equal ~ctxt
+         (Workout_repr.from_string "[while power < 200 W; while power > 300 %]")
+         {empty_workout with
+          steps = Non_empty_list.of_list [
+              Step.Single {empty_single_step with
+                           Step.duration = Some (
+                               Condition.Power
+                                 (Condition.Less,
+                                  (Power.Absolute
+                                     (Power.absolute_of_int 200))))}
+            ; Step.Single {empty_single_step with
+                           Step.duration = Some (
+                               Condition.Power
+                                 (Condition.Greater,
+                                  (Power.Percent
+                                     (Power.percent_of_int 300))))}
+            ]})
   ]
 
 let () = run_test_tt_main
