@@ -58,12 +58,14 @@ let lexer_tests =
   ]
 
 let parser_tests =
+  let empty_single_step =
+    {Workout.Step.name = None;
+     duration = None;
+     target = None;
+     intensity = None} in
   let empty_workout =
     {Workout.name = None; sport = None;
-     steps = Workout.Step.Single {Workout.Step.name = None;
-                                  duration = None;
-                                  target = None;
-                                  intensity = None}, []} in
+     steps = Workout.Step.Single empty_single_step, []} in
   "Parser" >::: [
     "Empty input" >::
     (fun _ctxt ->
@@ -76,10 +78,8 @@ let parser_tests =
        assert_equal ~ctxt (Workout_repr.from_string "[\"Xyz\", open-ended]")
          {empty_workout with
           Workout.steps =
-            Workout.Step.Single {Workout.Step.name = Some "Xyz";
-                                 duration = None;
-                                 target = None;
-                                 intensity = None}, []})
+            Workout.Step.Single {empty_single_step with
+                                 Workout.Step.name = Some "Xyz"}, []})
   ]
 
 let () = run_test_tt_main
