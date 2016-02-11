@@ -90,6 +90,10 @@ power_spec:
 | w = INTEGER W?        { Workout.Power.(Absolute (absolute_of_int w)) }
 | pct = INTEGER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
 
+speed_spec:
+| kmh = FLOAT KMPH? { Workout.Speed.of_float (1000.0 *. kmh /. 3600.0) }
+| ms = FLOAT MPS    { Workout.Speed.of_float ms }
+
 time_condition: TIME t = time_spec { t }
 
 distance_condition: DISTANCE d = distance_spec { d }
