@@ -264,9 +264,10 @@ let parser_tests =
           Step.Single {empty_single_step with
                        Step.target = Some (
                            Target.Speed
-                             (Target.Speed_value.Range
-                                (Speed.from_kmph 25.2,
-                                 Speed.from_kmph 36.0)))}, []})
+                             (Target.Speed_value.(
+                                 Range (range_of_pair
+                                          (Speed.from_kmph 25.2,
+                                           Speed.from_kmph 36.0)))))}, []})
   ; "Workout step with cadence target" >::
     (assert_parses "[keep cadence 95-110 rpm]"
        {empty_workout with
@@ -274,9 +275,10 @@ let parser_tests =
           Step.Single {empty_single_step with
                        Step.target = Some (
                            Target.Cadence
-                             (Target.Cadence_value.Range
-                                (Cadence.of_int 95,
-                                 Cadence.of_int 110)))}, []})
+                             (Target.Cadence_value.(
+                                 Range (range_of_pair
+                                          (Cadence.of_int 95,
+                                           Cadence.of_int 110)))))}, []})
   ; "Workout steps with power target" >::
     (assert_parses "[keep power zone 3; keep power 200-250 W]"
        {empty_workout with
@@ -291,9 +293,10 @@ let parser_tests =
               {empty_single_step with
                Step.target = Some (
                    Target.Power
-                     (Target.Power_value.Range
-                        (Power.(Absolute (absolute_of_int 200)),
-                         Power.(Absolute (absolute_of_int 250)))))}
+                     (Target.Power_value.(
+                         Range (range_of_pair
+                                  (Power.(Absolute (absolute_of_int 200)),
+                                   Power.(Absolute (absolute_of_int 250)))))))}
           ]})
   ; "Reorder target range endpoints" >::
     (assert_parses "[keep cadence 100-90]"
@@ -303,9 +306,10 @@ let parser_tests =
             {empty_single_step with
              Step.target = Some (
                  Target.Cadence
-                   (Target.Cadence_value.Range
-                      (Cadence.of_int 90,
-                       Cadence.of_int 100)))}, []})
+                   (Target.Cadence_value.(
+                       Range (range_of_pair
+                                (Cadence.of_int 90,
+                                 Cadence.of_int 100)))))}, []})
   ]
 
 let () = run_test_tt_main
