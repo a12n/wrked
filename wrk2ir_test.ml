@@ -55,6 +55,10 @@ let lexer_tests =
         [STRING "B"; COMMA; INTENSITY Intensity.Rest; COMMA;
          DISTANCE; LESS; INTEGER 5; KM; COMMA;
          POWER; GREATER; INTEGER 100; PERCENT; EOF])
+  ; "Float" >::
+    (fun ctxt -> assert_tokens ~ctxt
+        "12.25 0.0 001.001"
+        [FLOAT 12.25; FLOAT 0.0; FLOAT 1.001; EOF])
   ]
 
 let parser_tests =
