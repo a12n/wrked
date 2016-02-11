@@ -199,10 +199,10 @@ module Target = struct
 end
 
 module Intensity = struct
-  type t = Active
-         | Cool_down
+  type t = Warm_up
+         | Active
          | Rest
-         | Warm_up
+         | Cool_down
 end
 
 module Step = struct

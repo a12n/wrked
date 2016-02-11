@@ -134,10 +134,10 @@ module Target : sig
 end
 
 module Intensity : sig
-  type t = Active
-         | Cool_down
+  type t = Warm_up
+         | Active
          | Rest
-         | Warm_up
+         | Cool_down
 end
 
 module Step : sig
