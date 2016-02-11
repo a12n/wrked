@@ -121,8 +121,15 @@ hr_target:
 | a = hr_spec LESS HR GREATER b = hr_spec
   { Workout.Target.Heart_rate_value.Range (a, b) }
 
+speed_target:
+| SPEED IN ZONE z = INTEGER
+  { Workout.Target.Speed_value.Zone (Workout.Speed.zone_of_int z) }
+| a = speed_spec LESS SPEED GREATER b = speed_spec
+  { Workout.Target.Speed_value.Range (a, b) }
+
 target:
-| h = hr_target      { Workout.Target.Heart_rate h }
+| h = hr_target    { Workout.Target.Heart_rate h }
+| s = speed_target { Workout.Target.Speed s }
 
 times_condition:
 | TIMES n = INTEGER | n = INTEGER TIMES { Workout.Repeat.times_of_int n }
