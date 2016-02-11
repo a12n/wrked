@@ -1,3 +1,4 @@
+<parser.ml>: warn(-A)
 <wrk2ir_test.*>: package(oUnit)
 true: package(batteries)
 true: use_menhir
