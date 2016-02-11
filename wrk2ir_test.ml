@@ -255,7 +255,7 @@ let parser_tests =
     (fun ctxt ->
        let open Workout in
        assert_equal ~ctxt
-         (Workout_repr.from_string "[open; (distance < 2 km) [open]]")
+         (Workout_repr.from_string "[open; (until distance < 2 km) [open]]")
          {empty_workout with
           steps = Non_empty_list.of_list
               [ Step.Single empty_single_step
