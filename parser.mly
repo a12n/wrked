@@ -68,7 +68,7 @@ distance_spec:
 | m = NUMBER M?  { Workout.Condition.distance_of_int m }
 | km = NUMBER KM { Workout.Condition.distance_of_int (km * 1000) }
 
-calories_spec: kcal = NUMBER KCAL { Workout.Condition.calories_of_int kcal }
+calories_spec: kcal = NUMBER KCAL? { Workout.Condition.calories_of_int kcal }
 
 hr_spec:
 | bpm = NUMBER BPM?    { Workout.Heart_rate.absolute_of_int bpm }
