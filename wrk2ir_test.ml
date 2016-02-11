@@ -126,7 +126,7 @@ let parser_tests =
                Workout.Step.duration = Some (
                    Workout.Condition.Time
                      (Workout.Condition.time_of_int 600))}, []})
-  ; "Step with alt. time duration" >::
+  ; "Steps with alt. time duration" >::
     (fun ctxt ->
        assert_equal ~ctxt
          (Workout_repr.from_string
@@ -144,6 +144,23 @@ let parser_tests =
                  Workout.Step.duration = Some (
                      Workout.Condition.Time
                        (Workout.Condition.time_of_int 600))}
+            ]})
+  ; "Steps with distance duration" >::
+    (fun ctxt ->
+       let until_5km =
+         Workout.Step.Single
+           {empty_single_step with
+            Workout.Step.duration = Some (
+                Workout.Condition.Distance
+                  (Workout.Condition.distance_of_int 5000))} in
+       assert_equal ~ctxt
+         (Workout_repr.from_string
+            ("[while distance < 5000;" ^
+             " while distance < 5000 m;" ^
+             " while distance < 5 km]"))
+         {empty_workout with
+          Workout.steps = Non_empty_list.of_list [
+              until_5km; until_5km; until_5km
             ]})
   ; "Steps with calories duration" >::
     (fun ctxt ->
