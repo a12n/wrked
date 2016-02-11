@@ -251,6 +251,22 @@ let parser_tests =
                             duration = Some (Condition.Time
                                                (Condition.time_of_int 600))} ]}
             ]})
+  ; "Repeat until distance condition" >::
+    (fun ctxt ->
+       let open Workout in
+       assert_equal ~ctxt
+         (Workout_repr.from_string "[open; (distance < 2 km) [open]]")
+         {empty_workout with
+          steps = Non_empty_list.of_list
+              [ Step.Single empty_single_step
+              ; Step.Repeat
+                  {Step.condition =
+                     Repeat.Until (Condition.Distance
+                                     (Condition.distance_of_int 2000));
+                   steps = Non_empty_list.of_list
+                       [ Step.Single empty_single_step ]}
+              ]}
+    )
   ]
 
 let () = run_test_tt_main
