@@ -94,10 +94,6 @@ power_condition:
 
 condition:
 | t = time_condition     { Workout.Condition.Time t }
-| d = distance_condition { Workout.Condition.Distance d }
-| c = calories_condition { Workout.Condition.Calories c }
-| h = hr_condition       { Workout.Condition.Heart_rate h }
-| p = power_condition    { Workout.Condition.Power p }
 
 times_condition:
 | TIMES n = NUMBER | n = NUMBER TIMES { Workout.Repeat.times_of_int n }
@@ -122,4 +118,6 @@ single_step:
   { let duration, target = p in
     Step.Single {Step.name; duration; target; intensity} }
 
-step_duration_and_target: OPEN { None, None }
+step_duration_and_target:
+| OPEN                { None, None }
+| WHILE c = condition { Some c, None }
