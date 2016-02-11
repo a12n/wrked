@@ -35,6 +35,9 @@ rule read = parse
 | "until" { UNTIL }
 | "keep"  { KEEP }
 
+| "km/h" { KMPH }
+| "m/s"  { MPS }
+
 | "bpm"  { BPM }
 | "h"    { H }
 | "kcal" { KCAL }

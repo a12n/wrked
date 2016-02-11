@@ -28,8 +28,10 @@ open Workout
 %token H
 %token KCAL
 %token KM
+%token KMPH
 %token M
 %token MIN
+%token MPS
 %token RPM
 %token S
 %token W
