@@ -115,6 +115,17 @@ let parser_tests =
             Workout.Step.Single empty_single_step,
             [Workout.Step.Single empty_single_step;
              Workout.Step.Single empty_single_step]})
+
+  ; "Step with duration and no target" >::
+    (fun ctxt ->
+       assert_equal ~ctxt (Workout_repr.from_string "[while time < 10 min]")
+         {empty_workout with
+          Workout.steps =
+            Workout.Step.Single
+              {empty_single_step with
+               Workout.Step.duration = Some (
+                   Workout.Condition.Time
+                     (Workout.Condition.time_of_int 600))}, []})
   ]
 
 let () = run_test_tt_main
