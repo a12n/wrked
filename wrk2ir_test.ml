@@ -58,18 +58,19 @@ let lexer_tests =
   ]
 
 let parser_tests =
+  let empty_workout =
+    {Workout.name = None; sport = None;
+     steps = Workout.Step.Single {Workout.Step.name = None;
+                                  duration = None;
+                                  target = None;
+                                  intensity = None}, []} in
   "Parser" >::: [
     "Empty input" >::
     (fun _ctxt ->
        assert_raises Parser.Error (fun () -> Workout_repr.from_string ""))
   ; "Simplest workout" >::
     (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[open]")
-         {Workout.name = None; sport = None;
-          steps = Workout.Step.Single {Workout.Step.name = None;
-                                       duration = None;
-                                       target = None;
-                                       intensity = None}, []})
+       assert_equal ~ctxt (Workout_repr.from_string "[open]") empty_workout)
   ]
 
 let () = run_test_tt_main
