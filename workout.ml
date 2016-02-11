@@ -73,7 +73,7 @@ let restricted (min, max) exn =
          | _ -> raise exn
 
 module Speed = struct
-  type t = float                (* m/s *)
+  type t = float
   type zone = int
 
   let of_float = restricted (0.0, 100.0)
@@ -110,8 +110,8 @@ module Heart_rate = struct
   let zone_of_int = restricted (1, 5)
       (Invalid_argument "Workout.Heart_rate.zone_of_int")
 
-  type t = Absolute of absolute (* bpm *)
-         | Percent of percent   (* 0-100 % of max *)
+  type t = Absolute of absolute
+         | Percent of percent
 end
 
 module Power = struct
@@ -128,16 +128,16 @@ module Power = struct
   let zone_of_int = restricted (1, 7)
       (Invalid_argument "Workout.Power.zone_of_int")
 
-  type t = Absolute of absolute (* W *)
-         | Percent of percent   (* 0-1000 % of FTP *)
+  type t = Absolute of absolute
+         | Percent of percent
 end
 
 module Condition = struct
   type order = Less | Greater
 
-  type calories = int           (* kcal *)
-  type distance = int           (* cm *)
-  type time = int               (* ms *)
+  type calories = int
+  type distance = int
+  type time = int
 
   let calories_of_int = restricted (0, max_int)
       (Invalid_argument "Workout.Condition.calories_of_int")
