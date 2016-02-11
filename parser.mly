@@ -50,7 +50,9 @@ open Workout
 %%
 
 workout:
-| name = STRING? COMMA? sport = SPORT? COMMA? steps = step_list EOF
+| name = option(terminated(STRING, COMMA))
+  sport = option(terminated(SPORT, COMMA))
+  steps = step_list EOF
   { { name; sport; steps } }
 
 time_spec_1:
@@ -114,8 +116,9 @@ step_list:
   { Non_empty_list.of_list l }
 
 single_step:
-| name = STRING? COMMA? intensity = INTENSITY? COMMA?
-       p = step_duration_and_target
+| name = option(terminated(STRING, COMMA))
+  intensity = option(terminated(INTENSITY, COMMA))
+  p = step_duration_and_target
   { let duration, target = p in
     Step.Single {Step.name; duration; target; intensity} }
 
