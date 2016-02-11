@@ -65,6 +65,7 @@ let assert_parses str expected ctxt =
   assert_equal ~ctxt (Workout_repr.from_string str) expected
 
 let parser_tests =
+  let open Workout in
   let empty_single_step =
     {Workout.Step.name = None;
      duration = None;
@@ -78,227 +79,194 @@ let parser_tests =
     (fun _ctxt ->
        assert_raises Parser.Error (fun () -> Workout_repr.from_string ""))
   ; "Simplest workout" >::
-    (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[open]") empty_workout)
+    (assert_parses "[open]" empty_workout)
   ; "Simplest named workout" >::
-    (fun ctxt ->
-       assert_equal ~ctxt
-         (Workout_repr.from_string "\"Just ride\": cycling, [open-ended]")
-         {empty_workout with Workout.name = Some "Just ride";
-                             sport = Some Workout.Sport.Cycling})
+    (assert_parses "\"Just ride\": cycling, [open-ended]"
+       {empty_workout with Workout.name = Some "Just ride";
+                           sport = Some Workout.Sport.Cycling})
   ; "Open-ended step with name" >::
-    (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[\"Xyz\": open-ended]")
-         {empty_workout with
-          Workout.steps =
-            Workout.Step.Single {empty_single_step with
-                                 Workout.Step.name = Some "Xyz"}, []})
+    (assert_parses "[\"Xyz\": open-ended]"
+       {empty_workout with
+        Workout.steps =
+          Workout.Step.Single {empty_single_step with
+                               Workout.Step.name = Some "Xyz"}, []})
   ; "Open-ended step with intensity" >::
-    (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[warm up, open-ended]")
-         {empty_workout with
-          Workout.steps =
-            Workout.Step.Single {empty_single_step with
-                                 Workout.Step.intensity =
-                                   Some Workout.Intensity.Warm_up}, []})
+    (assert_parses "[warm up, open-ended]"
+       {empty_workout with
+        Workout.steps =
+          Workout.Step.Single {empty_single_step with
+                               Workout.Step.intensity =
+                                 Some Workout.Intensity.Warm_up}, []})
   ; "Two workout steps" >::
-    (fun ctxt ->
-       assert_equal ~ctxt
-         (Workout_repr.from_string
-            "[\"A\": warm up, open; \"B\": active, open-ended]")
-         {empty_workout with
-          Workout.steps =
-            Workout.Step.Single {empty_single_step with
-                                 Workout.Step.name = Some "A";
-                                 intensity = Some Workout.Intensity.Warm_up},
-            [Workout.Step.Single {empty_single_step with
-                                  Workout.Step.name = Some "B";
-                                  intensity = Some Workout.Intensity.Active}]})
+    (assert_parses
+       "[\"A\": warm up, open; \"B\": active, open-ended]"
+       {empty_workout with
+        Workout.steps =
+          Workout.Step.Single {empty_single_step with
+                               Workout.Step.name = Some "A";
+                               intensity = Some Workout.Intensity.Warm_up},
+          [Workout.Step.Single {empty_single_step with
+                                Workout.Step.name = Some "B";
+                                intensity = Some Workout.Intensity.Active}]})
   ; "Three workout steps" >::
-    (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[open; open; open]")
-         {empty_workout with
-          Workout.steps =
-            Workout.Step.Single empty_single_step,
-            [Workout.Step.Single empty_single_step;
-             Workout.Step.Single empty_single_step]})
+    (assert_parses "[open; open; open]"
+       {empty_workout with
+        Workout.steps =
+          Workout.Step.Single empty_single_step,
+          [Workout.Step.Single empty_single_step;
+           Workout.Step.Single empty_single_step]})
 
   ; "Step with time duration" >::
-    (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[until time 10 min]")
-         {empty_workout with
-          Workout.steps =
+    (assert_parses "[until time 10 min]"
+       {empty_workout with
+        Workout.steps =
+          Workout.Step.Single
+            {empty_single_step with
+             Workout.Step.duration = Some (
+                 Workout.Condition.Time
+                   (Workout.Condition.time_of_int 600))}, []})
+  ; "Steps with alt. time duration" >::
+    (assert_parses
+       "[until time 01:15:30; until time 10:00]"
+       {empty_workout with
+        Workout.steps = Non_empty_list.of_list [
             Workout.Step.Single
               {empty_single_step with
                Workout.Step.duration = Some (
                    Workout.Condition.Time
-                     (Workout.Condition.time_of_int 600))}, []})
-  ; "Steps with alt. time duration" >::
-    (fun ctxt ->
-       assert_equal ~ctxt
-         (Workout_repr.from_string
-            "[until time 01:15:30; until time 10:00]")
-         {empty_workout with
-          Workout.steps = Non_empty_list.of_list [
-              Workout.Step.Single
-                {empty_single_step with
-                 Workout.Step.duration = Some (
-                     Workout.Condition.Time
-                       (Workout.Condition.time_of_int
-                          (3600 + 15 * 60 + 30)))}
-            ; Workout.Step.Single
-                {empty_single_step with
-                 Workout.Step.duration = Some (
-                     Workout.Condition.Time
-                       (Workout.Condition.time_of_int 600))}
-            ]})
+                     (Workout.Condition.time_of_int
+                        (3600 + 15 * 60 + 30)))}
+          ; Workout.Step.Single
+              {empty_single_step with
+               Workout.Step.duration = Some (
+                   Workout.Condition.Time
+                     (Workout.Condition.time_of_int 600))}
+          ]})
   ; "Steps with distance duration" >::
-    (fun ctxt ->
-       let until_5km =
-         Workout.Step.Single
-           {empty_single_step with
-            Workout.Step.duration = Some (
-                Workout.Condition.Distance
-                  (Workout.Condition.distance_of_int 5000))} in
-       assert_equal ~ctxt
-         (Workout_repr.from_string
-            ("[until distance 5000;" ^
-             " until distance 5000 m;" ^
-             " until distance 5 km]"))
-         {empty_workout with
-          Workout.steps = Non_empty_list.of_list [
-              until_5km; until_5km; until_5km
-            ]})
+    (assert_parses
+       ("[until distance 5000;" ^
+        " until distance 5000 m;" ^
+        " until distance 5 km]")
+       (let until_5km =
+          Workout.Step.Single
+            {empty_single_step with
+             Workout.Step.duration = Some (
+                 Workout.Condition.Distance
+                   (Workout.Condition.distance_of_int 5000))} in
+        {empty_workout with
+         Workout.steps = Non_empty_list.of_list [
+             until_5km; until_5km; until_5km ]}))
   ; "Steps with calories duration" >::
-    (fun ctxt ->
-       assert_equal ~ctxt
-         (Workout_repr.from_string
-            "[until calories 1500; until calories 300 kcal]")
-         {empty_workout with
-          Workout.steps = Non_empty_list.of_list [
-              Workout.Step.Single
-                {empty_single_step with
-                 Workout.Step.duration = Some (
-                     Workout.Condition.Calories
-                       (Workout.Condition.calories_of_int 1500))}
-            ; Workout.Step.Single
-                {empty_single_step with
-                 Workout.Step.duration = Some (
-                     Workout.Condition.Calories
-                       (Workout.Condition.calories_of_int 300))}
-            ]})
+    (assert_parses
+       "[until calories 1500; until calories 300 kcal]"
+       {empty_workout with
+        Workout.steps = Non_empty_list.of_list [
+            Workout.Step.Single
+              {empty_single_step with
+               Workout.Step.duration = Some (
+                   Workout.Condition.Calories
+                     (Workout.Condition.calories_of_int 1500))}
+          ; Workout.Step.Single
+              {empty_single_step with
+               Workout.Step.duration = Some (
+                   Workout.Condition.Calories
+                     (Workout.Condition.calories_of_int 300))}
+          ]})
   ; "Steps with HR duration" >::
-    (fun ctxt ->
-       let open Workout in
-       assert_equal ~ctxt
-         (Workout_repr.from_string
-            "[until hr > 150; until hr > 70 %; until hr < 180 bpm]")
-         {empty_workout with
-          steps = Non_empty_list.of_list [
-              Step.Single
-                {empty_single_step with
-                 Step.duration = Some (
-                     Condition.Heart_rate
-                       (Condition.Greater,
-                        (Heart_rate.Absolute
-                           (Heart_rate.absolute_of_int 150))))}
-            ; Step.Single
-                {empty_single_step with
-                 Step.duration = Some (
-                     Condition.Heart_rate
-                       (Condition.Greater,
-                        (Heart_rate.Percent
-                           (Heart_rate.percent_of_int 70))))}
-            ; Step.Single
-                {empty_single_step with
-                 Step.duration = Some (
-                     Condition.Heart_rate
-                       (Condition.Less,
-                        (Heart_rate.Absolute
-                           (Heart_rate.absolute_of_int 180))))}
-            ]})
+    (assert_parses
+       "[until hr > 150; until hr > 70 %; until hr < 180 bpm]"
+       {empty_workout with
+        steps = Non_empty_list.of_list [
+            Step.Single
+              {empty_single_step with
+               Step.duration = Some (
+                   Condition.Heart_rate
+                     (Condition.Greater,
+                      (Heart_rate.Absolute
+                         (Heart_rate.absolute_of_int 150))))}
+          ; Step.Single
+              {empty_single_step with
+               Step.duration = Some (
+                   Condition.Heart_rate
+                     (Condition.Greater,
+                      (Heart_rate.Percent
+                         (Heart_rate.percent_of_int 70))))}
+          ; Step.Single
+              {empty_single_step with
+               Step.duration = Some (
+                   Condition.Heart_rate
+                     (Condition.Less,
+                      (Heart_rate.Absolute
+                         (Heart_rate.absolute_of_int 180))))}
+          ]})
   ; "Steps with power duration" >::
-    (fun ctxt ->
-       let open Workout in
-       assert_equal ~ctxt
-         (Workout_repr.from_string "[until power < 200 W; until power > 300 %]")
-         {empty_workout with
-          steps = Non_empty_list.of_list [
-              Step.Single {empty_single_step with
-                           Step.duration = Some (
-                               Condition.Power
-                                 (Condition.Less,
-                                  (Power.Absolute
-                                     (Power.absolute_of_int 200))))}
-            ; Step.Single {empty_single_step with
-                           Step.duration = Some (
-                               Condition.Power
-                                 (Condition.Greater,
-                                  (Power.Percent
-                                     (Power.percent_of_int 300))))}
-            ]})
+    (assert_parses
+       "[until power < 200 W; until power > 300 %]"
+       {empty_workout with
+        steps = Non_empty_list.of_list [
+            Step.Single {empty_single_step with
+                         Step.duration = Some (
+                             Condition.Power
+                               (Condition.Less,
+                                (Power.Absolute
+                                   (Power.absolute_of_int 200))))}
+          ; Step.Single {empty_single_step with
+                         Step.duration = Some (
+                             Condition.Power
+                               (Condition.Greater,
+                                (Power.Percent
+                                   (Power.percent_of_int 300))))}
+          ]})
   ; "Repeat 2 times" >::
-    (fun ctxt ->
-       let open Workout in
-       assert_equal ~ctxt
-         (Workout_repr.from_string
-            "[warm up, open-ended; (2x) [active, until time 10 min]]")
-         {empty_workout with
-          steps = Non_empty_list.of_list
-              [ Step.Single
-                  {empty_single_step with
-                   Step.intensity = Some Intensity.Warm_up}
-              ; Step.Repeat
-                  {Step.condition =
-                     Repeat.Times (Repeat.times_of_int 2);
-                   steps = Non_empty_list.of_list
-                       [ Step.Single
-                           {empty_single_step with
-                            Step.intensity = Some Intensity.Active;
-                            duration = Some (Condition.Time
-                                               (Condition.time_of_int 600))} ]}
+    (assert_parses
+       "[warm up, open-ended; (2x) [active, until time 10 min]]"
+       {empty_workout with
+        steps = Non_empty_list.of_list
+            [ Step.Single
+                {empty_single_step with
+                 Step.intensity = Some Intensity.Warm_up}
+            ; Step.Repeat
+                {Step.condition =
+                   Repeat.Times (Repeat.times_of_int 2);
+                 steps = Non_empty_list.of_list
+                     [ Step.Single
+                         {empty_single_step with
+                          Step.intensity = Some Intensity.Active;
+                          duration = Some (Condition.Time
+                                             (Condition.time_of_int 600))} ]}
             ]})
   ; "Repeat until distance condition" >::
-    (fun ctxt ->
-       let open Workout in
-       assert_equal ~ctxt
-         (Workout_repr.from_string "[open; (until distance 2 km) [open]]")
-         {empty_workout with
-          steps = Non_empty_list.of_list
-              [ Step.Single empty_single_step
-              ; Step.Repeat
-                  {Step.condition =
-                     Repeat.Until (Condition.Distance
-                                     (Condition.distance_of_int 2000));
-                   steps = Non_empty_list.of_list
-                       [ Step.Single empty_single_step ]}
-              ]}
-    )
+    (assert_parses
+       "[open; (until distance 2 km) [open]]"
+       {empty_workout with
+        steps = Non_empty_list.of_list
+            [ Step.Single empty_single_step
+            ; Step.Repeat
+                {Step.condition =
+                   Repeat.Until (Condition.Distance
+                                   (Condition.distance_of_int 2000));
+                 steps = Non_empty_list.of_list
+                     [ Step.Single empty_single_step ]}
+            ]})
   ; "Workout step with target" >::
-    (fun ctxt ->
-       let open Workout in
-       assert_equal ~ctxt
-         (Workout_repr.from_string "[keep hr zone 2]")
-         {empty_workout with
-          steps =
-            Step.Single {empty_single_step with
-                         Step.target = Some (
-                             Target.Heart_rate
-                               (Target.Heart_rate_value.Zone
-                                  (Heart_rate.zone_of_int 2)))}, []})
+    (assert_parses "[keep hr zone 2]"
+       {empty_workout with
+        steps =
+          Step.Single {empty_single_step with
+                       Step.target = Some (
+                           Target.Heart_rate
+                             (Target.Heart_rate_value.Zone
+                                (Heart_rate.zone_of_int 2)))}, []})
   ; "Workout step with speed target" >::
-    (fun ctxt ->
-       let open Workout in
-       assert_equal ~ctxt
-         (Workout_repr.from_string "[keep speed 25.2-36.0 km/h]")
-         {empty_workout with
-          steps =
-            Step.Single {empty_single_step with
-                         Step.target = Some (
-                             Target.Speed
-                               (Target.Speed_value.Range
-                                  (Speed.from_kmph 25.2,
-                                   Speed.from_kmph 36.0)))}, []})
+    (assert_parses "[keep speed 25.2-36.0 km/h]"
+       {empty_workout with
+        steps =
+          Step.Single {empty_single_step with
+                       Step.target = Some (
+                           Target.Speed
+                             (Target.Speed_value.Range
+                                (Speed.from_kmph 25.2,
+                                 Speed.from_kmph 36.0)))}, []})
   ]
 
 let () = run_test_tt_main
