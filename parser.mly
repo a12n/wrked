@@ -86,8 +86,10 @@ power_spec:
 | pct = INTEGER PERCENT { Workout.Power.(Percent (percent_of_int pct)) }
 
 speed_spec:
-| kmph = FLOAT KMPH? { Workout.Speed.from_kmph kmph }
-| mps = FLOAT MPS    { Workout.Speed.of_float mps }
+| kmph = FLOAT KMPH?   { Workout.Speed.from_kmph kmph }
+| kmph = INTEGER KMPH? { Workout.Speed.from_kmph (float_of_int kmph) }
+| mps = FLOAT MPS      { Workout.Speed.of_float mps }
+| mps = INTEGER MPS    { Workout.Speed.of_float (float_of_int mps) }
 
 cadence_spec: rpm = INTEGER RPM? { Workout.Cadence.of_int rpm }
 

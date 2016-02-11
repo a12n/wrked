@@ -258,7 +258,7 @@ let parser_tests =
                              (Target.Heart_rate_value.Zone
                                 (Heart_rate.zone_of_int 2)))}, []})
   ; "Workout step with speed target" >::
-    (assert_parses "[keep speed 25.2-36.0 km/h]"
+    (assert_parses "[keep speed 25.2-36 km/h]"
        {empty_workout with
         steps =
           Step.Single {empty_single_step with
