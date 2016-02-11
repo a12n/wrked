@@ -50,7 +50,7 @@ open Workout
 %%
 
 workout:
-| name = option(terminated(STRING, COMMA))
+| name = option(terminated(STRING, COLON))
   sport = option(terminated(SPORT, COMMA))
   steps = steps EOF
   { { name; sport; steps } }
@@ -129,7 +129,7 @@ repeat_step:
   { {Workout.Step.condition; steps} }
 
 single_step:
-| name = option(terminated(STRING, COMMA))
+| name = option(terminated(STRING, COLON))
   intensity = option(terminated(INTENSITY, COMMA))
   p = step_duration_and_target
   { let duration, target = p in

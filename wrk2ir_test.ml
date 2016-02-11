@@ -76,12 +76,12 @@ let parser_tests =
   ; "Simplest named workout" >::
     (fun ctxt ->
        assert_equal ~ctxt
-         (Workout_repr.from_string "\"Just ride\", cycling, [open-ended]")
+         (Workout_repr.from_string "\"Just ride\": cycling, [open-ended]")
          {empty_workout with Workout.name = Some "Just ride";
                              sport = Some Workout.Sport.Cycling})
   ; "Open-ended step with name" >::
     (fun ctxt ->
-       assert_equal ~ctxt (Workout_repr.from_string "[\"Xyz\", open-ended]")
+       assert_equal ~ctxt (Workout_repr.from_string "[\"Xyz\": open-ended]")
          {empty_workout with
           Workout.steps =
             Workout.Step.Single {empty_single_step with
@@ -98,7 +98,7 @@ let parser_tests =
     (fun ctxt ->
        assert_equal ~ctxt
          (Workout_repr.from_string
-            "[\"A\", warm up, open; \"B\", active, open-ended]")
+            "[\"A\": warm up, open; \"B\": active, open-ended]")
          {empty_workout with
           Workout.steps =
             Workout.Step.Single {empty_single_step with
