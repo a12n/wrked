@@ -4,6 +4,8 @@ let from_lexbuf = Parser.workout Lexer.read
 
 let from_channel chan = from_lexbuf (Legacy.Lexing.from_channel chan)
 
+let from_string = from_lexbuf % Lexing.from_string
+
 module Ir = struct
   let int32_caps =
     ((List.fold_left Int32.add Int32.zero) %
