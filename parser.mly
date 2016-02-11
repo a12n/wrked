@@ -152,7 +152,7 @@ times_condition:
 
 repeat_condition:
 | t = times_condition { Workout.Repeat.Times t }
-| UNTIL c = condition { Workout.Repeat.Until c }
+| c = condition { Workout.Repeat.Until c }
 
 steps:
 | l = delimited(L_BRACKET,
@@ -175,7 +175,7 @@ single_step:
     {Workout.Step.name; duration; target; intensity} }
 
 step_duration_and_target:
-| OPEN                                      { None, None }
-| UNTIL c = condition                       { Some c, None }
-| KEEP t = target                           { None, Some t }
-| UNTIL c = condition COMMA KEEP t = target { Some c, Some t }
+| OPEN                           { None, None }
+| c = condition                  { Some c, None }
+| t = target                     { None, Some t }
+| c = condition COMMA t = target { Some c, Some t }

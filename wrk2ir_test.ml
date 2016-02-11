@@ -117,7 +117,7 @@ let parser_tests =
            Workout.Step.Single empty_single_step]})
 
   ; "Step with time duration" >::
-    (assert_parses "[until time 10 min]"
+    (assert_parses "[time 10 min]"
        {empty_workout with
         Workout.steps =
           Workout.Step.Single
@@ -127,7 +127,7 @@ let parser_tests =
                    (Workout.Condition.time_of_int 600))}, []})
   ; "Steps with alt. time duration" >::
     (assert_parses
-       "[until time 01:15:30; until time 10:00]"
+       "[time 01:15:30; time 10:00]"
        {empty_workout with
         Workout.steps = Non_empty_list.of_list [
             Workout.Step.Single
@@ -144,9 +144,9 @@ let parser_tests =
           ]})
   ; "Steps with distance duration" >::
     (assert_parses
-       ("[until distance 5000;" ^
-        " until distance 5000 m;" ^
-        " until distance 5 km]")
+       ("[distance 5000;" ^
+        " distance 5000 m;" ^
+        " distance 5 km]")
        (let until_5km =
           Workout.Step.Single
             {empty_single_step with
@@ -158,7 +158,7 @@ let parser_tests =
              until_5km; until_5km; until_5km ]}))
   ; "Steps with calories duration" >::
     (assert_parses
-       "[until calories 1500; until calories 300 kcal]"
+       "[calories 1500; calories 300 kcal]"
        {empty_workout with
         Workout.steps = Non_empty_list.of_list [
             Workout.Step.Single
@@ -174,7 +174,7 @@ let parser_tests =
           ]})
   ; "Steps with HR duration" >::
     (assert_parses
-       "[until hr > 150; until hr > 70 %; until hr < 180 bpm]"
+       "[hr > 150; hr > 70 %; hr < 180 bpm]"
        {empty_workout with
         steps = Non_empty_list.of_list [
             Step.Single
@@ -201,7 +201,7 @@ let parser_tests =
           ]})
   ; "Steps with power duration" >::
     (assert_parses
-       "[until power < 200 W; until power > 300 %]"
+       "[power < 200 W; power > 300 %]"
        {empty_workout with
         steps = Non_empty_list.of_list [
             Step.Single {empty_single_step with
@@ -219,7 +219,7 @@ let parser_tests =
           ]})
   ; "Repeat 2 times" >::
     (assert_parses
-       "[warm up, open-ended; (2x) [active, until time 10 min]]"
+       "[warm up, open-ended; (2x) [active, time 10 min]]"
        {empty_workout with
         steps = Non_empty_list.of_list
             [ Step.Single
@@ -237,7 +237,7 @@ let parser_tests =
             ]})
   ; "Repeat until distance condition" >::
     (assert_parses
-       "[open; (until distance 2 km) [open]]"
+       "[open; (distance 2 km) [open]]"
        {empty_workout with
         steps = Non_empty_list.of_list
             [ Step.Single empty_single_step
@@ -249,7 +249,7 @@ let parser_tests =
                      [ Step.Single empty_single_step ]}
             ]})
   ; "Workout step with target" >::
-    (assert_parses "[keep hr zone 2]"
+    (assert_parses "[hr zone 2]"
        {empty_workout with
         steps =
           Step.Single {empty_single_step with
@@ -258,7 +258,7 @@ let parser_tests =
                              (Target.Heart_rate_value.Zone
                                 (Heart_rate.zone_of_int 2)))}, []})
   ; "Workout step with speed target" >::
-    (assert_parses "[keep speed 25.2-36 km/h]"
+    (assert_parses "[speed 25.2-36 km/h]"
        {empty_workout with
         steps =
           Step.Single {empty_single_step with
@@ -269,7 +269,7 @@ let parser_tests =
                                           (Speed.from_kmph 25.2,
                                            Speed.from_kmph 36.0)))))}, []})
   ; "Workout step with cadence target" >::
-    (assert_parses "[keep cadence 95-110 rpm]"
+    (assert_parses "[cadence 95-110 rpm]"
        {empty_workout with
         steps =
           Step.Single {empty_single_step with
@@ -280,7 +280,7 @@ let parser_tests =
                                           (Cadence.of_int 95,
                                            Cadence.of_int 110)))))}, []})
   ; "Workout steps with power target" >::
-    (assert_parses "[keep power zone 3; keep power 200-250 W]"
+    (assert_parses "[power zone 3; power 200-250 W]"
        {empty_workout with
         steps = Non_empty_list.of_list [
             Step.Single
@@ -299,7 +299,7 @@ let parser_tests =
                                    Power.(Absolute (absolute_of_int 250)))))))}
           ]})
   ; "Reorder target range endpoints" >::
-    (assert_parses "[keep cadence 100-90]"
+    (assert_parses "[cadence 100-90]"
        {empty_workout with
         steps =
           Step.Single
@@ -311,7 +311,7 @@ let parser_tests =
                                 (Cadence.of_int 90,
                                  Cadence.of_int 100)))))}, []})
   ; "Step with both duration and target" >::
-    (assert_parses "[until time 1 min, keep cadence zone 2]"
+    (assert_parses "[time 1 min, cadence zone 2]"
        {empty_workout with
         steps =
           Step.Single
