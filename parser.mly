@@ -2,6 +2,7 @@
 open Workout
 %}
 
+%token <float> FLOAT
 %token <int> INTEGER
 %token <string> STRING
 
