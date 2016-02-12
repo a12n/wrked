@@ -57,7 +57,7 @@ rule read = parse
 | ':'       { COLON }
 | '*' | 'x' { TIMES }
 
-| eof { EOF }
+| eof | "EOF" { EOF }
 
 | _ { raise Error }
 
