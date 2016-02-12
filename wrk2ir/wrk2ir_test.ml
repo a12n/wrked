@@ -13,8 +13,6 @@ let lexer_tests =
     "Empty input" >:: (fun ctxt -> assert_tokens ~ctxt "" [EOF])
   ; "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " [EOF])
   ; "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [INTEGER 123; EOF])
-  ; "Open aliases" >:: (fun ctxt ->
-      assert_tokens ~ctxt "open open-ended" [OPEN; OPEN; EOF])
   ; "Name" >:: (fun ctxt -> assert_tokens
                    ~ctxt " \"xyz foo %%%\"" [STRING "xyz foo %%%"; EOF])
   ; "Brackets" >::
@@ -79,17 +77,17 @@ let parser_tests =
   ; "Simplest workout" >::
     (assert_parses "[open]" empty_workout)
   ; "Simplest named workout" >::
-    (assert_parses "\"Just ride\": cycling [open-ended]"
+    (assert_parses "\"Just ride\": cycling [open]"
        {empty_workout with Workout.name = Some "Just ride";
                            sport = Some Workout.Sport.Cycling})
   ; "Open-ended step with name" >::
-    (assert_parses "[\"Xyz\": open-ended]"
+    (assert_parses "[\"Xyz\": open]"
        {empty_workout with
         Workout.steps =
           Workout.Step.Single {empty_single_step with
                                Workout.Step.name = Some "Xyz"}, []})
   ; "Open-ended step with intensity" >::
-    (assert_parses "[warmup, open-ended]"
+    (assert_parses "[warmup, open]"
        {empty_workout with
         Workout.steps =
           Workout.Step.Single {empty_single_step with
@@ -97,7 +95,7 @@ let parser_tests =
                                  Some Workout.Intensity.Warm_up}, []})
   ; "Two workout steps" >::
     (assert_parses
-       "[\"A\": warmup, open; \"B\": active, open-ended]"
+       "[\"A\": warmup, open; \"B\": active, open]"
        {empty_workout with
         Workout.steps =
           Workout.Step.Single {empty_single_step with
@@ -217,7 +215,7 @@ let parser_tests =
           ]})
   ; "Repeat 2 times" >::
     (assert_parses
-       "[warmup, open-ended; (2x) [active, time 10 min]]"
+       "[warmup, open; (2x) [active, time 10 min]]"
        {empty_workout with
         steps = Non_empty_list.of_list
             [ Step.Single

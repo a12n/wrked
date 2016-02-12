@@ -28,8 +28,8 @@ rule read = parse
 | "speed"    { SPEED }
 | "time"     { TIME }
 
-| "open-ended" | "open" { OPEN }
-| "zone"                { ZONE }
+| "open" { OPEN }
+| "zone" { ZONE }
 
 | "km/h" { KMPH }
 | "m/s"  { MPS }
