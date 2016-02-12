@@ -149,7 +149,7 @@ times_condition: n = INTEGER TIMES { Workout.Repeat.times_of_int n }
 
 repeat_condition:
 | t = times_condition { Workout.Repeat.Times t }
-| c = condition { Workout.Repeat.Until c }
+| c = condition       { Workout.Repeat.Until c }
 
 steps:
 | l = delimited(L_BRACKET,
