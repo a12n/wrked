@@ -145,8 +145,7 @@ target:
 | c = cadence_target { Workout.Target.Cadence c }
 | p = power_target   { Workout.Target.Power p }
 
-times_condition:
-| TIMES n = INTEGER | n = INTEGER TIMES { Workout.Repeat.times_of_int n }
+times_condition: n = INTEGER TIMES { Workout.Repeat.times_of_int n }
 
 repeat_condition:
 | t = times_condition { Workout.Repeat.Times t }
