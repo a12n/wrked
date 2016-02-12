@@ -174,7 +174,7 @@ module Ir = struct
 
   let p_single_step ch {Step.name; duration; target; intensity} =
     p_line ch "workout_step";
-    Option.may (p_field ch "name") name;
+    Option.may (p_field ch "wkt_step_name") name;
     p_duration_opt ch duration;
     p_target_opt ch target;
     Option.may (p_field ch "intensity" % Intensity.(
@@ -239,7 +239,7 @@ module Ir = struct
     p_line ch "file_id";
     p_line ch "end_file_id";
     p_line ch "workout";
-    Option.may (p_field ch "name") name;
+    Option.may (p_field ch "wkt_name") name;
     Option.may (p_field ch "sport" % Sport.(
         function Cycling  -> "cycling"
                | Running  -> "running"
