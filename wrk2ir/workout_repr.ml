@@ -97,9 +97,19 @@ module Ir = struct
     p_field ch "duration_type" duration_type;
     p_int_field ch field_name value
 
-  let p_target ch _cond =
+  let p_target ch target =
     (* TODO *)
-    ()
+    match target with
+      Target.Speed (Target.Speed_value.Zone z) -> (
+        p_field ch "target_type" "speed";
+        p_int_field ch "target_value" (z :> int)
+      )
+    | Target.Speed (Target.Speed_value.Range r) -> (
+        p_field ch "target_type" "speed";
+        let a, b = (r :> (Speed.t * Speed.t)) in
+        p_float_field ch "custom_target_speed_low" (a :> float);
+        p_float_field ch "custom_target_speed_high" (b :> float)
+      )
 
   let p_single_step ch {Step.name; duration; target; intensity} =
     p_line ch "workout_step";
