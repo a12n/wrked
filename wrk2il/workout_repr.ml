@@ -58,7 +58,7 @@ let to_string w =
   to_channel chan w;
   IO.close_out chan
 
-module Ir = struct
+module Il = struct
   let int32_caps =
     ((List.fold_left Int32.add Int32.zero) %
      (List.map Workout.Capability.to_int32)) %

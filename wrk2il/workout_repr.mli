@@ -10,6 +10,6 @@ val to_channel : 'a IO.output -> Workout.t -> unit
 
 val to_string : Workout.t -> string
 
-module Ir : sig
+module Il : sig
   val to_channel : 'a IO.output -> Workout.t -> unit
 end
