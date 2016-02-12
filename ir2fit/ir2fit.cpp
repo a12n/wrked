@@ -279,7 +279,7 @@ workout_value(istream& input)
             ans.SetSport(sport_value(input));
         } else if (token == "num_valid_steps") {
             ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000));
-        } else if (token == "name") {
+        } else if (token == "wkt_name") {
             ans.SetWktName(value<FIT_WSTRING>(input));
         } else if (token == "capabilities") {
             ans.SetCapabilities(value<FIT_WORKOUT_CAPABILITIES>(input));
@@ -307,7 +307,7 @@ workout_step_value(istream& input)
     FOR_EACH_TOKEN(token, input) {
         if (token == "intensity") {
             ans.SetIntensity(intensity_value(input));
-        } else if (token == "name") {
+        } else if (token == "wkt_step_name") {
             ans.SetWktStepName(value<FIT_WSTRING>(input));
         } else if (token == "duration_type") {
             ans.SetDurationType(step_duration_value(input));
