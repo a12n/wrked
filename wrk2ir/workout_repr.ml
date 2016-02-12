@@ -64,11 +64,56 @@ module Ir = struct
      (List.map Workout.Capability.to_int32)) %
     Workout.caps
 
-  let capabilities = Int32.to_int % int32_caps
+  open Workout
 
-  let num_valid_steps {Workout.steps; _} =
-    List.length (Non_empty_list.to_list steps)
+  let p_line ch line = IO.(nwrite ch line; write ch '\n')
 
-  let to_channel _chan _w =
+  let p_field ch k v = p_line ch k; p_line ch v
+
+  let p_int_field ch k v = p_field ch k (string_of_int v)
+
+  let p_condition ch _cond =
+    (* TODO *)
     ()
+
+  let p_target ch _cond =
+    (* TODO *)
+    ()
+
+  let p_single_step ch {Step.name; duration; target; intensity} =
+    p_line ch "workout_step";
+    Option.may (p_field ch "name") name;
+    Option.may (p_condition ch) duration;
+    Option.may (p_target ch) target;
+    Option.may (p_field ch "intensity" % Intensity.(
+        function Warm_up   -> "warmup"
+               | Active    -> "active"
+               | Rest      -> "rest"
+               | Cool_down -> "cooldown")) intensity;
+    p_line ch "end_workout_step"
+
+  let p_repeat_step ch _step =
+    (* TODO *)
+    ()
+
+  let p_step ch = function
+      Step.Single s -> p_single_step ch s
+    | Step.Repeat r -> p_repeat_step ch r
+
+  (* TODO: Message indices and repeats *)
+  let p_non_empty_list ~f ch =
+    List.iter (f ch) % Non_empty_list.to_list
+
+  let to_channel ch {name; sport; steps} =
+    p_line ch "workout";
+    Option.may (p_field ch "name") name;
+    Option.may (p_field ch "sport" % Sport.(
+        function Cycling  -> "cycling"
+               | Running  -> "running"
+               | Swimming -> "swimming"
+               | Walking  -> "walking")) sport;
+    p_int_field ch "num_valid_steps"
+      (List.length (Non_empty_list.to_list steps));
+    p_non_empty_list ch ~f:p_step steps;
+    p_line ch "end_workout"
 end
