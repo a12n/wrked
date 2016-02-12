@@ -82,6 +82,7 @@ module Ir = struct
 
   let p_float_field ch k = p_field ch k % string_of_float
 
+  (* TODO: rename to p_condition_opt, handle open-ended case *)
   let p_condition ch cond =
     let duration_type, field_name, value =
       Condition.(
