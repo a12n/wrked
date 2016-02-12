@@ -21,51 +21,10 @@ module Capability = struct
 end
 
 module Sport = struct
-  type t = Generic
+  type t = Cycling
          | Running
-         | Cycling
-         | Transition
-         | Fitness_equipment
          | Swimming
-         | Basketball
-         | Soccer
-         | Tennis
-         | American_football
-         | Training
          | Walking
-         | Cross_country_skiing
-         | Alpine_skiing
-         | Snowboarding
-         | Rowing
-         | Mountaineering
-         | Hiking
-         | Multisport
-         | Paddling
-         | Flying
-         | E_biking
-         | Motorcycling
-         | Boating
-         | Driving
-         | Golf
-         | Hang_gliding
-         | Horseback_riding
-         | Hunting
-         | Fishing
-         | Inline_skating
-         | Rock_climbing
-         | Sailing
-         | Ice_skating
-         | Sky_diving
-         | Snowshoeing
-         | Snowmobiling
-         | Stand_up_paddleboarding
-         | Surfing
-         | Wakeboarding
-         | Water_skiing
-         | Kayaking
-         | Rafting
-         | Windsurfing
-         | Kitesurfing
 end
 
 let restricted (min, max) exn =
