@@ -8,14 +8,14 @@ OCAMLBUILD_FLAGS += -use-ocamlfind
 all: app
 
 app:
-	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2ir.byte
+	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il.byte
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
 
 test:
-	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2ir_test.byte
-	@./wrk2ir_test.byte
+	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il_test.byte
+	@./wrk2il_test.byte
 
 top: app
 	utop -I _build/ -require batteries
