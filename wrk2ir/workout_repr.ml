@@ -86,19 +86,40 @@ module Ir = struct
     let duration_type, field_name, value =
       Condition.(
         match cond with
-          Time s -> "time", "duration_time", (s :> int)
-        | Distance m -> "distance", "duration_distance", (m :> int)
-        | Calories kcal -> "colories", "duration_calories", (kcal :> int)
-        | Heart_rate (Less, hr) -> "hr_less_than", "duration_hr", (int_of_heart_rate hr)
-        | Heart_rate (Greater, hr) -> "hr_greater_than", "duration_hr", (int_of_heart_rate hr)
-        | Power (Less, power) -> "power_less_than", "duration_power", (int_of_power power)
-        | Power (Greater, power) -> "power_greater_than", "duration_power", (int_of_power power)
+          Time s ->
+          "time",
+          "duration_time",
+          (s :> int)
+        | Distance m ->
+          "distance",
+          "duration_distance",
+          (m :> int)
+        | Calories kcal ->
+          "colories",
+          "duration_calories",
+          (kcal :> int)
+        | Heart_rate (Less, hr) ->
+          "hr_less_than",
+          "duration_hr",
+          (int_of_heart_rate hr)
+        | Heart_rate (Greater, hr) ->
+          "hr_greater_than",
+          "duration_hr",
+          (int_of_heart_rate hr)
+        | Power (Less, power) ->
+          "power_less_than",
+          "duration_power",
+          (int_of_power power)
+        | Power (Greater, power) ->
+          "power_greater_than",
+          "duration_power",
+          (int_of_power power)
       ) in
     p_field ch "duration_type" duration_type;
     p_int_field ch field_name value
 
   let p_duration_opt ch = function
-      None      -> p_field ch "duration_type" "open"
+      None      -> p_field ch "duration_type" "open" (* TODO: duration_value? *)
     | Some cond -> p_duration ch cond
 
   let p_target ch target =
