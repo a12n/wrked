@@ -81,7 +81,7 @@ let parser_tests =
   ; "Simplest workout" >::
     (assert_parses "[open]" empty_workout)
   ; "Simplest named workout" >::
-    (assert_parses "\"Just ride\": cycling, [open-ended]"
+    (assert_parses "\"Just ride\": cycling [open-ended]"
        {empty_workout with Workout.name = Some "Just ride";
                            sport = Some Workout.Sport.Cycling})
   ; "Open-ended step with name" >::

@@ -47,7 +47,7 @@
 
 workout:
 | name = option(terminated(STRING, COLON))
-  sport = option(terminated(SPORT, COMMA))
+  sport = option(SPORT)
   steps = steps EOF
   { { name; sport; steps } }
 
