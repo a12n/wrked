@@ -82,7 +82,7 @@ module Ir = struct
 
   let p_float_field ch k = p_field ch k % string_of_float
 
-  let p_condition ch cond =
+  let p_duration ch cond =
     let duration_type, field_name, value =
       Condition.(
         match cond with
@@ -97,9 +97,9 @@ module Ir = struct
     p_field ch "duration_type" duration_type;
     p_int_field ch field_name value
 
-  let p_condition_opt ch = function
+  let p_duration_opt ch = function
       None      -> p_field ch "duration_type" "open"
-    | Some cond -> p_condition ch cond
+    | Some cond -> p_duration ch cond
 
   let p_target ch target =
     (* TODO *)
@@ -122,7 +122,7 @@ module Ir = struct
   let p_single_step ch {Step.name; duration; target; intensity} =
     p_line ch "workout_step";
     Option.may (p_field ch "name") name;
-    p_condition_opt ch duration;
+    p_duration_opt ch duration;
     p_target_opt ch target;
     Option.may (p_field ch "intensity" % Intensity.(
         function Warm_up   -> "warmup"
