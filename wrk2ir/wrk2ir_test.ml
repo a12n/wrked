@@ -38,8 +38,8 @@ let lexer_tests =
                      L_BRACKET; R_BRACKET; EOF])
   ; "Step header" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "\"B\", cool down" [STRING "B"; COMMA;
-                            INTENSITY Intensity.Cool_down; EOF])
+        "\"B\", cooldown" [STRING "B"; COMMA;
+                           INTENSITY Intensity.Cool_down; EOF])
   ; "Invalid intensity" >::
     (fun _ctxt -> assert_raises
         Lexer.Error (fun () -> tokens "cool warm down up"))
@@ -51,7 +51,7 @@ let lexer_tests =
          HR; LESS; INTEGER 80; PERCENT; EOF])
   ; "Step, no spaces" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "\"B\",recovery,distance<5km,power>100%"
+        "\"B\",rest,distance<5km,power>100%"
         [STRING "B"; COMMA; INTENSITY Intensity.Rest; COMMA;
          DISTANCE; LESS; INTEGER 5; KM; COMMA;
          POWER; GREATER; INTEGER 100; PERCENT; EOF])
@@ -91,7 +91,7 @@ let parser_tests =
           Workout.Step.Single {empty_single_step with
                                Workout.Step.name = Some "Xyz"}, []})
   ; "Open-ended step with intensity" >::
-    (assert_parses "[warm up, open-ended]"
+    (assert_parses "[warmup, open-ended]"
        {empty_workout with
         Workout.steps =
           Workout.Step.Single {empty_single_step with
@@ -99,7 +99,7 @@ let parser_tests =
                                  Some Workout.Intensity.Warm_up}, []})
   ; "Two workout steps" >::
     (assert_parses
-       "[\"A\": warm up, open; \"B\": active, open-ended]"
+       "[\"A\": warmup, open; \"B\": active, open-ended]"
        {empty_workout with
         Workout.steps =
           Workout.Step.Single {empty_single_step with
@@ -219,7 +219,7 @@ let parser_tests =
           ]})
   ; "Repeat 2 times" >::
     (assert_parses
-       "[warm up, open-ended; (2x) [active, time 10 min]]"
+       "[warmup, open-ended; (2x) [active, time 10 min]]"
        {empty_workout with
         steps = Non_empty_list.of_list
             [ Step.Single
