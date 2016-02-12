@@ -101,20 +101,23 @@ module Ir = struct
       None      -> p_field ch "duration_type" "open"
     | Some cond -> p_condition ch cond
 
-  let p_target_opt ch target =
+  let p_target ch target =
     (* TODO *)
     match target with
-      None -> p_field ch "target_type" "open"
-    | Some (Target.Speed (Target.Speed_value.Zone z)) -> (
+    | Target.Speed (Target.Speed_value.Zone z) -> (
         p_field ch "target_type" "speed";
         p_int_field ch "target_value" (z :> int)
       )
-    | Some (Target.Speed (Target.Speed_value.Range r)) -> (
+    | Target.Speed (Target.Speed_value.Range r) -> (
         p_field ch "target_type" "speed";
         let a, b = (r :> (Speed.t * Speed.t)) in
         p_float_field ch "custom_target_speed_low" (a :> float);
         p_float_field ch "custom_target_speed_high" (b :> float)
       )
+
+  let p_target_opt ch = function
+      None        -> p_field ch "target_type" "open"
+    | Some target -> p_target ch target
 
   let p_single_step ch {Step.name; duration; target; intensity} =
     p_line ch "workout_step";
