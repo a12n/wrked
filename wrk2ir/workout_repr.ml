@@ -170,7 +170,12 @@ module Ir = struct
     p_line ch "end_workout_step";
     k + 1
 
-  (* FIXME: repeats are not included in num_valid_steps *)
+  let rec n_steps = function
+      [] -> 0
+    | (Step.Single _) :: tail -> 1 + (n_steps tail)
+    | (Step.Repeat {Step.steps; _}) :: tail ->
+      1 + (n_steps (Non_empty_list.to_list steps)) + (n_steps tail)
+
   let to_channel ch {name; sport; steps} =
     p_line ch "workout";
     Option.may (p_field ch "name") name;
@@ -180,7 +185,7 @@ module Ir = struct
                | Swimming -> "swimming"
                | Walking  -> "walking")) sport;
     p_int_field ch "num_valid_steps"
-      (List.length (Non_empty_list.to_list steps));
+      (n_steps (Non_empty_list.to_list steps));
     p_line ch "end_workout";
     ignore (
       List.fold_left (p_step ch) 0 (Non_empty_list.to_list steps))
