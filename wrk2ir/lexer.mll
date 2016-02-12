@@ -12,10 +12,10 @@ rule read = parse
 | (['0'-'9']+ '.' ['0'-'9']+) as f { FLOAT (float_of_string f) }
 | '"' ([^'"']+ as s) '"'           { STRING s }
 
-| "warm up"           { INTENSITY Intensity.Warm_up }
-| "active"            { INTENSITY Intensity.Active }
-| "rest" | "recovery" { INTENSITY Intensity.Rest }
-| "cool down"         { INTENSITY Intensity.Cool_down }
+| "warm up" | "warmup"     { INTENSITY Intensity.Warm_up }
+| "active"                 { INTENSITY Intensity.Active }
+| "rest" | "recovery"      { INTENSITY Intensity.Rest }
+| "cool down" | "cooldown" { INTENSITY Intensity.Cool_down }
 
 | "cycling" { SPORT Sport.Cycling }
 | "running" { SPORT Sport.Running }
