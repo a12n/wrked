@@ -20,13 +20,13 @@ rule read = parse
 | "cycling" { SPORT Sport.Cycling }
 | "running" { SPORT Sport.Running }
 
-| "cadence" | "cad" { CADENCE }
-| "calories"        { CALORIES }
-| "distance"        { DISTANCE }
-| "hr"              { HR }
-| "power"           { POWER }
-| "speed"           { SPEED }
-| "time"            { TIME }
+| "cadence"  { CADENCE }
+| "calories" { CALORIES }
+| "distance" { DISTANCE }
+| "hr"       { HR }
+| "power"    { POWER }
+| "speed"    { SPEED }
+| "time"     { TIME }
 
 | "open-ended" | "open" { OPEN }
 | "zone"                { ZONE }

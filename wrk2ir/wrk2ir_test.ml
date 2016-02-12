@@ -13,8 +13,6 @@ let lexer_tests =
     "Empty input" >:: (fun ctxt -> assert_tokens ~ctxt "" [EOF])
   ; "Spaces" >:: (fun ctxt -> assert_tokens ~ctxt " 	  " [EOF])
   ; "Number" >:: (fun ctxt -> assert_tokens ~ctxt "0123" [INTEGER 123; EOF])
-  ; "Aliases" >:: (fun ctxt ->
-      assert_tokens ~ctxt "cadence cad" [CADENCE; CADENCE; EOF])
   ; "Open aliases" >:: (fun ctxt ->
       assert_tokens ~ctxt "open open-ended" [OPEN; OPEN; EOF])
   ; "Name" >:: (fun ctxt -> assert_tokens
