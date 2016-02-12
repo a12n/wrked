@@ -395,7 +395,7 @@ workout_step_value(istream& input)
 // Main
 
 void
-ir2fit(std::istream& input, std::iostream& output)
+il2fit(std::istream& input, std::iostream& output)
 {
     fit::Encode encode;
 
@@ -428,7 +428,7 @@ main()
     stringstream output(ios::out | ios::binary);
 
     try {
-        ir2fit(cin, output);
+        il2fit(cin, output);
     } catch (const exception& exn) {
         cerr << exn.what() << endl;
         return 1;
@@ -472,11 +472,11 @@ TEST_CASE("Read multiple lines", "[line]")
     CHECK_THROWS_AS(line(input), end_of_file);
 }
 
-TEST_CASE("Empty input", "[ir2fit]")
+TEST_CASE("Empty input", "[il2fit]")
 {
     istringstream input;
     stringstream output;
-    CHECK_THROWS_AS(ir2fit(input, output), bad_syntax);
+    CHECK_THROWS_AS(il2fit(input, output), bad_syntax);
 }
 
 #endif  // _WITH_TESTS
