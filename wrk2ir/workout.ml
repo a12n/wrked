@@ -25,12 +25,6 @@ module Sport = struct
          | Running
          | Swimming
          | Walking
-
-  let to_string = function
-      Cycling  -> "cycling"
-    | Running  -> "running"
-    | Swimming -> "swimming"
-    | Walking  -> "walking"
 end
 
 let restricted (min, max) exn =
