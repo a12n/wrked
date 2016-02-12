@@ -3,6 +3,8 @@ module Sport : sig
          | Running
          | Swimming
          | Walking
+
+  val to_string : t -> string
 end
 
 module Speed : sig
