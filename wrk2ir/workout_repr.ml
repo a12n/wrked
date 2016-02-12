@@ -105,7 +105,43 @@ module Ir = struct
          p_field ch "duration_type" "repeat_until_steps_cmplt";
          p_int_field ch "repeat_steps" (n :> int)
        )
-     | Repeat.Until c -> p_condition ch c);
+     | Repeat.Until (Condition.Time s) -> (
+         p_field ch "duration_type" "repeat_until_time";
+         p_int_field ch "duration_time" (s :> int)
+       )
+     | Repeat.Until (Condition.Distance m) -> (
+         p_field ch "duration_type" "repeat_until_distance";
+         p_int_field ch "duration_distance" (m :> int)
+       )
+     | Repeat.Until (Condition.Calories kcal) -> (
+         p_field ch "duration_type" "repeat_until_calories";
+         p_int_field ch "duration_calories" (kcal :> int)
+       )
+     | Repeat.Until (Condition.Heart_rate (order, hr)) -> (
+         p_field ch "duration_type" Condition.(
+             match order with
+               Less    -> "repeat_until_hr_less_than"
+             | Greater -> "repeat_until_hr_greater_than"
+           );
+         p_int_field ch "duration_hr" Heart_rate.(
+             match hr with
+               Absolute bpm    -> (bpm :> int) + 100
+             | Percent percent -> (percent :> int)
+           )
+       )
+     | Repeat.Until (Condition.Power (order, power)) -> (
+         p_field ch "duration_type" Condition.(
+             match order with
+               Less    -> "repeat_until_power_less_than"
+             | Greater -> "repeat_until_power_greater_than"
+           );
+         p_int_field ch "duration_power" Power.(
+             match power with
+               Absolute w      -> (w :> int) + 1000
+             | Percent percent -> (percent :> int)
+           )
+       )
+    );
     p_line ch "end_workout_step";
     k + 1
 
