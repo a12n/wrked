@@ -170,6 +170,7 @@ module Ir = struct
     p_line ch "end_workout_step";
     k + 1
 
+  (* FIXME: repeats are not included in num_valid_steps *)
   let to_channel ch {name; sport; steps} =
     p_line ch "workout";
     Option.may (p_field ch "name") name;
