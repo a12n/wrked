@@ -236,6 +236,8 @@ module Ir = struct
       1 + (n_steps (Non_empty_list.to_list steps)) + (n_steps tail)
 
   let to_channel ch {name; sport; steps} =
+    p_line ch "file_id";
+    p_line ch "end_file_id";
     p_line ch "workout";
     Option.may (p_field ch "name") name;
     Option.may (p_field ch "sport" % Sport.(
