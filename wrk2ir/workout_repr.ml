@@ -80,9 +80,20 @@ module Ir = struct
 
   let p_int_field ch k v = p_field ch k (string_of_int v)
 
-  let p_condition ch _cond =
-    (* TODO *)
-    ()
+  let p_condition ch cond =
+    let duration_type, field_name, value =
+      Condition.(
+        match cond with
+          Time s -> "time", "duration_time", (s :> int)
+        | Distance m -> "distance", "duration_distance", (m :> int)
+        | Calories kcal -> "colories", "duration_calories", (kcal :> int)
+        | Heart_rate (Less, hr) -> "hr_less_than", "duration_hr", (int_of_heart_rate hr)
+        | Heart_rate (Greater, hr) -> "hr_greater_than", "duration_hr", (int_of_heart_rate hr)
+        | Power (Less, power) -> "power_less_than", "duration_power", (int_of_power power)
+        | Power (Greater, power) -> "power_greater_than", "duration_power", (int_of_power power)
+      ) in
+    p_field ch "duration_type" duration_type;
+    p_int_field ch field_name value
 
   let p_target ch _cond =
     (* TODO *)
