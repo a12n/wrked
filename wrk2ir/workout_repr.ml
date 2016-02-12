@@ -66,6 +66,14 @@ module Ir = struct
 
   open Workout
 
+  let int_of_heart_rate = function
+      Heart_rate.Absolute bpm    -> (bpm :> int) + 100
+    | Heart_rate.Percent percent -> (percent :> int)
+
+  let int_of_power = function
+      Power.Absolute w      -> (w :> int) + 1000
+    | Power.Percent percent -> (percent :> int)
+
   let p_line ch line = IO.(nwrite ch line; write ch '\n')
 
   let p_field ch k v = p_line ch k; p_line ch v
