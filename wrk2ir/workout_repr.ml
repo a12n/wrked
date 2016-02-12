@@ -97,14 +97,15 @@ module Ir = struct
     p_field ch "duration_type" duration_type;
     p_int_field ch field_name value
 
-  let p_target ch target =
+  let p_target_opt ch target =
     (* TODO *)
     match target with
-      Target.Speed (Target.Speed_value.Zone z) -> (
+      None -> p_field ch "target_type" "open"
+    | Some (Target.Speed (Target.Speed_value.Zone z)) -> (
         p_field ch "target_type" "speed";
         p_int_field ch "target_value" (z :> int)
       )
-    | Target.Speed (Target.Speed_value.Range r) -> (
+    | Some (Target.Speed (Target.Speed_value.Range r)) -> (
         p_field ch "target_type" "speed";
         let a, b = (r :> (Speed.t * Speed.t)) in
         p_float_field ch "custom_target_speed_low" (a :> float);
@@ -115,7 +116,7 @@ module Ir = struct
     p_line ch "workout_step";
     Option.may (p_field ch "name") name;
     Option.may (p_condition ch) duration;
-    Option.may (p_target ch) target;
+    p_target_opt ch target;
     Option.may (p_field ch "intensity" % Intensity.(
         function Warm_up   -> "warmup"
                | Active    -> "active"
