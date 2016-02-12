@@ -45,7 +45,7 @@ let lexer_tests =
         Lexer.Error (fun () -> tokens "cool warm down up"))
   ; "Complete step" >::
     (fun ctxt -> assert_tokens ~ctxt
-        "\"A\", warm up, time < 1 min, hr < 80 %"
+        "\"A\", warmup, time < 1 min, hr < 80 %"
         [STRING "A"; COMMA; INTENSITY Intensity.Warm_up; COMMA;
          TIME; LESS; INTEGER 1; MIN; COMMA;
          HR; LESS; INTEGER 80; PERCENT; EOF])
