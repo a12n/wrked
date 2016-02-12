@@ -181,7 +181,7 @@ module Ir = struct
                | Walking  -> "walking")) sport;
     p_int_field ch "num_valid_steps"
       (List.length (Non_empty_list.to_list steps));
+    p_line ch "end_workout";
     ignore (
-      List.fold_left (p_step ch) 0 (Non_empty_list.to_list steps));
-    p_line ch "end_workout"
+      List.fold_left (p_step ch) 0 (Non_empty_list.to_list steps))
 end
