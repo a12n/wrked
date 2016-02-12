@@ -131,11 +131,7 @@ module Ir = struct
                Less    -> "repeat_until_hr_less_than"
              | Greater -> "repeat_until_hr_greater_than"
            );
-         p_int_field ch "duration_hr" Heart_rate.(
-             match hr with
-               Absolute bpm    -> (bpm :> int) + 100
-             | Percent percent -> (percent :> int)
-           )
+         p_int_field ch "duration_hr" (int_of_heart_rate hr)
        )
      | Repeat.Until (Condition.Power (order, power)) -> (
          p_field ch "duration_type" Condition.(
@@ -143,11 +139,7 @@ module Ir = struct
                Less    -> "repeat_until_power_less_than"
              | Greater -> "repeat_until_power_greater_than"
            );
-         p_int_field ch "duration_power" Power.(
-             match power with
-               Absolute w      -> (w :> int) + 1000
-             | Percent percent -> (percent :> int)
-           )
+         p_int_field ch "duration_power" (int_of_power power)
        )
     );
     p_line ch "end_workout_step";
