@@ -6,13 +6,51 @@ let from_channel = from_lexbuf % Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
+let print_name chan name =
+  Printf.fprintf chan "\"%s\": " name
+
+let print_intensity chan intensity =
+  IO.nwrite chan Workout.Intensity.(
+      match intensity with
+        Warm_up   -> "warm up"
+      | Active    -> "active"
+      | Rest      -> "rest"
+      | Cool_down -> "cool down")
+
+let print_sport chan sport =
+  IO.nwrite chan Workout.Sport.(
+      match sport with
+        Cycling  -> "cycling"
+      | Running  -> "running"
+      | Swimming -> "swimming"
+      | Walking  -> "walking")
+
+let print_condition chan _condition = ()
+
+let print_target chan _target = ()
+
+let print_single_step chan
+    {Workout.Step.name; duration; target; intensity} =
+  Option.may (print_name chan) name;
+  Option.may (print_intensity chan) intensity;
+  match duration, target with
+    None, None -> IO.nwrite chan "open"
+  | Some c, None -> print_condition chan c
+  | None, Some t -> print_target chan t
+  | Some c, Some t ->
+    (print_condition chan c;
+     IO.nwrite chan ", ";
+     print_target chan t)
+
+let print_step chan = function
+    Workout.Step.Single s -> ()
+  | Workout.Step.Repeat r -> ()
+
 let to_channel chan {Workout.name; sport; steps} =
-  Option.may (fun name ->
-      Printf.fprintf chan "\"%s\": " name) name;
-  Option.may (fun sport ->
-      Printf.fprintf chan "%s, " (Workout.Sport.to_string sport)) sport;
+  Option.may (print_name chan) name;
+  Option.may (print_sport chan) sport;
   IO.write chan '[';
-  List.iter (fun step -> ()) (Non_empty_list.to_list steps);
+  List.iter (print_step chan) (Non_empty_list.to_list steps);
   IO.write chan ']'
 
 let to_string w =
