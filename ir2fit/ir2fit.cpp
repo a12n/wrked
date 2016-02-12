@@ -270,8 +270,9 @@ workout_value(istream& input)
 {
     fit::WorkoutMesg ans;
 
-    ans.SetNumValidSteps(1);
     ans.SetSport(FIT_SPORT_CYCLING);
+    ans.SetCapabilities(FIT_WORKOUT_CAPABILITIES_INVALID);
+    ans.SetNumValidSteps(1);
 
     match<string>(input, "workout");
     FOR_EACH_TOKEN(token, input) {
@@ -300,6 +301,7 @@ workout_step_value(istream& input)
 {
     fit::WorkoutStepMesg ans;
 
+    ans.SetMessageIndex(FIT_MESSAGE_INDEX_INVALID);
     ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
     ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
 
