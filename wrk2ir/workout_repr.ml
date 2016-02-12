@@ -92,17 +92,22 @@ module Ir = struct
                | Cool_down -> "cooldown")) intensity;
     p_line ch "end_workout_step"
 
-  let p_repeat_step ch _step =
-    (* TODO *)
-    ()
-
-  let p_step ch = function
-      Step.Single s -> p_single_step ch s
-    | Step.Repeat r -> p_repeat_step ch r
-
-  (* TODO: Message indices and repeats *)
-  let p_non_empty_list ~f ch =
-    List.iter (f ch) % Non_empty_list.to_list
+  let rec p_step ch i = function
+      Step.Single s -> p_single_step ch s; i + 1
+    | Step.Repeat r -> p_repeat_step ch i r
+  and p_repeat_step ch i {Step.condition; steps} =
+    let k = List.fold_left (p_step ch) i
+        (Non_empty_list.to_list steps) in
+    p_line ch "workout_step";
+    p_int_field ch "duration_step" i; (* Repeat from step i *)
+    (match condition with
+       Repeat.Times n -> (
+         p_field ch "duration_type" "repeat_until_steps_cmplt";
+         p_int_field ch "repeat_steps" (n :> int)
+       )
+     | Repeat.Until c -> p_condition ch c);
+    p_line ch "end_workout_step";
+    k + 1
 
   let to_channel ch {name; sport; steps} =
     p_line ch "workout";
@@ -114,6 +119,7 @@ module Ir = struct
                | Walking  -> "walking")) sport;
     p_int_field ch "num_valid_steps"
       (List.length (Non_empty_list.to_list steps));
-    p_non_empty_list ch ~f:p_step steps;
+    ignore (
+      List.fold_left (p_step ch) 0 (Non_empty_list.to_list steps));
     p_line ch "end_workout"
 end
