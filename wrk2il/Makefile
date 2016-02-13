@@ -5,10 +5,7 @@ OCAMLBUILD_FLAGS += -use-ocamlfind
 
 .PHONY: all app clean test top
 
-all: app
-
-app:
-	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il.byte
+all: wrk2il.byte
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
@@ -19,3 +16,9 @@ test:
 
 top: app
 	utop -I _build/ -require batteries
+
+wrk2il.byte:
+	ocamlbuild $(OCAMLBUILD_FLAGS) $@
+
+wrk2il.native:
+	ocamlbuild $(OCAMLBUILD_FLAGS) $@
