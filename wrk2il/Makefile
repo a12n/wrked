@@ -5,7 +5,7 @@ OCAMLBUILD_FLAGS += -use-ocamlfind
 
 .PHONY: all app clean test top
 
-all: wrk2il.byte
+all: wrk2il.native
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
