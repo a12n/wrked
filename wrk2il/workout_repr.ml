@@ -245,11 +245,7 @@ module Il = struct
     p_line ch "end_file_id";
     p_line ch "workout";
     Option.may (p_field ch "wkt_name") name;
-    Option.may (p_field ch "sport" % Sport.(
-        function Cycling  -> "cycling"
-               | Running  -> "running"
-               | Swimming -> "swimming"
-               | Walking  -> "walking")) sport;
+    Option.may (p_field ch "sport" % Sport.to_string) sport;
     p_int_field ch "num_valid_steps"
       (n_steps (Non_empty_list.to_list steps));
     p_line ch "end_workout";
