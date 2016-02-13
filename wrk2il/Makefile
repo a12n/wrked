@@ -3,12 +3,15 @@ OCAMLBUILD_FLAGS += -cflag -safe-string
 OCAMLBUILD_FLAGS += -cflags -w,+A-32-34-44
 OCAMLBUILD_FLAGS += -use-ocamlfind
 
-.PHONY: all app clean test top
+.PHONY: all app clean install test top
 
 all: wrk2il.native
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
+
+install: wrk2il.native
+	install -D -s wrk2il.native $(DESTDIR)/bin/wrk2il
 
 test:
 	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il_test.byte
