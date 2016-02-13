@@ -38,7 +38,6 @@ module Speed = struct
   let of_float = restricted (0.0, 100.0)
       (Invalid_argument "Workout2.Speed.of_float")
 
-  (* TODO: Max speed zone? *)
   let zone_of_int = restricted (1, 10)
       (Invalid_argument "Workout2.Speed.zone_of_int")
 
