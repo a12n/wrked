@@ -196,7 +196,6 @@ module Il = struct
     let k = List.fold_left (p_step ch) i
         (Non_empty_list.to_list steps) in
     p_line ch "workout_step";
-    p_int_field ch "duration_step" i; (* Repeat from step i *)
     (match condition with
        Repeat.Times n -> (
          p_field ch "duration_type" "repeat_until_steps_cmplt";
@@ -231,6 +230,7 @@ module Il = struct
          p_int_field ch "duration_power" (int_of_power power)
        )
     );
+    p_int_field ch "duration_step" i; (* Repeat from step i *)
     p_line ch "end_workout_step";
     k + 1
 
