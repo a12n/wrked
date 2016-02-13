@@ -5,12 +5,15 @@ OCAMLBUILD_FLAGS += -use-ocamlfind
 
 .PHONY: all app clean install test top
 
-all: wrk2il.native
+all: app
+
+app:
+	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il.native
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
 
-install: wrk2il.native
+install: app
 	install -D -s wrk2il.native $(DESTDIR)/bin/wrk2il
 
 test:
@@ -19,9 +22,3 @@ test:
 
 top: app
 	utop -I _build/ -require batteries
-
-wrk2il.byte:
-	ocamlbuild $(OCAMLBUILD_FLAGS) $@
-
-wrk2il.native:
-	ocamlbuild $(OCAMLBUILD_FLAGS) $@
