@@ -128,42 +128,47 @@ module Il = struct
         Speed (Speed_value.Zone z) ->
         ( p_field ch "target_type" "speed";
           (* TODO: where is target_speed_zone? *)
-          (* TOOD: set custom fields to zero? *)
-          p_int_field ch "target_value" (z :> int) )
+          p_int_field ch "target_value" (z :> int);
+          p_float_field ch "custom_target_speed_low" 0.0;
+          p_float_field ch "custom_target_speed_high" 0.0 )
       | Speed (Speed_value.Range r) ->
         ( p_field ch "target_type" "speed";
           let a, b = (r :> (Speed.t * Speed.t)) in
-          (* TODO: set target_value to zero? *)
+          p_int_field ch "target_value" 0;
           p_float_field ch "custom_target_speed_low" (a :> float);
           p_float_field ch "custom_target_speed_high" (b :> float) )
       | Heart_rate (Heart_rate_value.Zone z) ->
         ( p_field ch "target_type" "heart_rate";
-          p_int_field ch "target_hr_zone" (z :> int) )
+          p_int_field ch "target_hr_zone" (z :> int);
+          p_int_field ch "custom_target_heart_rate_low" 0;
+          p_int_field ch "custom_target_heart_rate_high" 0 )
       | Heart_rate (Heart_rate_value.Range r) ->
         ( p_field ch "target_type" "heart_rate";
           let a, b = (r :> (Heart_rate.t * Heart_rate.t)) in
-          (* TODO: set target_value to zero? *)
+          p_int_field ch "target_hr_zone" 0;
           p_int_field ch "custom_target_heart_rate_low" (int_of_heart_rate a);
           p_int_field ch "custom_target_heart_rate_high" (int_of_heart_rate b) )
       | Cadence (Cadence_value.Zone z) ->
         ( p_field ch "target_type" "cadence";
           (* TODO: where is target_cadence_zone? *)
-          p_int_field ch "target_value" (z :> int)
-          (* TODO: set custom fields to zero? *) )
+          p_int_field ch "target_value" (z :> int);
+          p_int_field ch "custom_target_cadence_low" 0;
+          p_int_field ch "custom_target_cadence_high" 0 )
       | Cadence (Cadence_value.Range r) ->
         ( p_field ch "target_type" "cadence";
           let a, b = (r :> (Cadence.t * Cadence.t)) in
-          (* TODO: set target_value to zero? *)
+          p_int_field ch "target_value" 0;
           p_int_field ch "custom_target_cadence_low" (a :> int);
           p_int_field ch "custom_target_cadence_high" (b :> int) )
       | Power (Power_value.Zone z) ->
         ( p_field ch "target_type" "power";
-          (* TODO: set custom fields to zero? *)
-          p_int_field ch "target_power_zone" (z :> int) )
+          p_int_field ch "target_power_zone" (z :> int);
+          p_int_field ch "custom_target_power_low" 0;
+          p_int_field ch "custom_target_power_high" 0 )
       | Power (Power_value.Range r) ->
         ( p_field ch "target_type" "power";
           let a, b = (r :> (Power.t * Power.t)) in
-          (* TODO: set target_value to zero? *)
+          p_int_field ch "target_power_zone" 0;
           p_int_field ch "custom_target_power_low" (int_of_power a);
           p_int_field ch "custom_target_power_high" (int_of_power b) )
     )
