@@ -25,6 +25,19 @@ module Sport = struct
          | Running
          | Swimming
          | Walking
+
+  let of_string = function
+      "cycling"  -> Cycling
+    | "running"  -> Running
+    | "swimming" -> Swimming
+    | "walking"  -> Walking
+    | _ -> raise (Invalid_argument "Workout.Sport.of_string")
+
+  let to_string = function
+      Cycling  -> "cycling"
+    | Running  -> "running"
+    | Swimming -> "swimming"
+    | Walking  -> "walking"
 end
 
 let restricted (min, max) exn =
