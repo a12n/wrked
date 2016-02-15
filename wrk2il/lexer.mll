@@ -18,8 +18,10 @@ rule read = parse
 | "rest"     { INTENSITY Intensity.Rest }
 | "cooldown" { INTENSITY Intensity.Cool_down }
 
-| "cycling" { SPORT Sport.Cycling }
-| "running" { SPORT Sport.Running }
+| "cycling"  { SPORT Sport.Cycling }
+| "running"  { SPORT Sport.Running }
+| "swimming" { SPORT Sport.Swimming }
+| "walking"  { SPORT Sport.Walking }
 
 | "cadence"  { CADENCE }
 | "calories" { CALORIES }
