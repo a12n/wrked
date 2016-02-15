@@ -11,6 +11,7 @@ rule read = parse
 | ['0'-'9']+ as i                  { INTEGER (int_of_string i) }
 | (['0'-'9']+ '.' ['0'-'9']+) as f { FLOAT (float_of_string f) }
 | '"' ([^'"']+ as s) '"'           { STRING s }
+| '{' [^'}']*  '}'                 { read lexbuf }
 
 | "warmup"   { INTENSITY Intensity.Warm_up }
 | "active"   { INTENSITY Intensity.Active }
