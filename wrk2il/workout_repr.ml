@@ -82,6 +82,8 @@ module Il = struct
 
   let p_float_field ch k = p_field ch k % string_of_float
 
+  let p_int32_field ch k = p_field ch k % Int32.to_string
+
   let p_duration ch cond =
     let duration_type, field_name, value =
       Condition.(
