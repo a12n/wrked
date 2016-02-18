@@ -78,7 +78,7 @@ module Il = struct
 
   let p_field ch k v = p_line ch k; p_line ch v
 
-  let p_int_field ch k v = p_field ch k (string_of_int v)
+  let p_int_field ch k = p_field ch k % string_of_int
 
   let p_float_field ch k = p_field ch k % string_of_float
 
