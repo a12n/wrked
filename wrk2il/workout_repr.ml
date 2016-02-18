@@ -241,12 +241,13 @@ module Il = struct
     | (Step.Repeat {Step.steps; _}) :: tail ->
       1 + (n_steps (Non_empty_list.to_list steps)) + (n_steps tail)
 
-  let to_channel ch {name; sport; steps} =
+  let to_channel ch ({name; sport; steps} as workout) =
     p_line ch "file_id";
     p_line ch "end_file_id";
     p_line ch "workout";
     Option.may (p_field ch "wkt_name") name;
     Option.may (p_field ch "sport" % Sport.to_string) sport;
+    p_int32_field ch "capabilities" (int32_caps workout);
     p_int_field ch "num_valid_steps"
       (n_steps (Non_empty_list.to_list steps));
     p_line ch "end_workout";
