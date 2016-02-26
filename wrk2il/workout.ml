@@ -49,10 +49,10 @@ module Speed = struct
   type zone = int
 
   let of_float = restricted (0.0, 100.0)
-      (Invalid_argument "Workout2.Speed.of_float")
+      (Invalid_argument "Workout.Speed.of_float")
 
   let zone_of_int = restricted (1, 10)
-      (Invalid_argument "Workout2.Speed.zone_of_int")
+      (Invalid_argument "Workout.Speed.zone_of_int")
 
   let from_kmph x = x *. 1000.0 /. 3600.0
 end
@@ -62,11 +62,11 @@ module Cadence = struct
   type zone = int
 
   let of_int = restricted (0, 500)
-      (Invalid_argument "Workout2.Cadence.of_int")
+      (Invalid_argument "Workout.Cadence.of_int")
 
   (* TODO: Max cadence zone? *)
   let zone_of_int = restricted (1, 10)
-      (Invalid_argument "Workout2.Cadence.zone_of_int")
+      (Invalid_argument "Workout.Cadence.zone_of_int")
 end
 
 module Heart_rate = struct
