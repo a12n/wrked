@@ -58,7 +58,7 @@ let lexer_tests =
   ]
 
 let assert_parses str expected ctxt =
-  assert_equal ~ctxt (Workout_repr.from_string str) expected
+  assert_equal ~ctxt (Repr.from_string str) expected
 
 let parser_tests =
   let open Workout in
@@ -73,7 +73,7 @@ let parser_tests =
   "Parser" >::: [
     "Empty input" >::
     (fun _ctxt ->
-       assert_raises Parser.Error (fun () -> Workout_repr.from_string ""))
+       assert_raises Parser.Error (fun () -> Repr.from_string ""))
   ; "Simplest workout" >::
     (assert_parses "[open]" empty_workout)
   ; "Simplest named workout" >::
