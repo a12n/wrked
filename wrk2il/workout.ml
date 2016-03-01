@@ -180,6 +180,19 @@ module Intensity = struct
          | Active
          | Rest
          | Cool_down
+
+  let of_string = function
+      "warmup"   -> Warm_up
+    | "active"   -> Active
+    | "rest"     -> Rest
+    | "cooldown" -> Cool_down
+    | _ -> raise (Invalid_argument "Workout.Intensity.of_string")
+
+  let to_string = function
+      Warm_up   -> "warmup"
+    | Active    -> "active"
+    | Rest      -> "rest"
+    | Cool_down -> "cooldown"
 end
 
 module Step = struct

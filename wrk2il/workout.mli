@@ -107,6 +107,10 @@ module Intensity : sig
          | Active
          | Rest
          | Cool_down
+
+  val of_string : string -> t
+
+  val to_string : t -> string
 end
 
 module Step : sig
