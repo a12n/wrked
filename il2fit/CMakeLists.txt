@@ -58,12 +58,6 @@ endif(EXISTS ${PROJECT_SOURCE_DIR}/.hg)
 #------------------------------------------------------------------------------
 # Targets
 
-configure_file(
-  ${PROJECT_SOURCE_DIR}/defs.h.in
-  ${PROJECT_BINARY_DIR}/defs.h
-  )
-include_directories(${PROJECT_BINARY_DIR})
-
 set(FIT_CXX_SRCS
   ${FIT_ROOT_DIR}/cpp/fit.cpp
   ${FIT_ROOT_DIR}/cpp/fit_crc.cpp
