@@ -183,11 +183,7 @@ module Il = struct
     Option.may (p_field ch "wkt_step_name") name;
     p_duration_opt ch duration;
     p_target_opt ch target;
-    Option.may (p_field ch "intensity" % Intensity.(
-        function Warm_up   -> "warmup"
-               | Active    -> "active"
-               | Rest      -> "rest"
-               | Cool_down -> "cooldown")) intensity;
+    Option.may (p_field ch "intensity" % Intensity.to_string) intensity;
     p_line ch "end_workout_step"
 
   let rec p_step ch i = function
