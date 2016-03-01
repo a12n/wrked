@@ -17,8 +17,8 @@ install: app
 	install -D -s wrk2il.native $(DESTDIR)/bin/wrk2il
 
 test:
-	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il_test.byte
-	@./wrk2il_test.byte
+	ocamlbuild $(OCAMLBUILD_FLAGS) test.byte
+	@./test.byte
 
 top: app
 	utop -I _build/ -require batteries
