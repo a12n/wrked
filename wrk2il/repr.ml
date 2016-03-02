@@ -6,22 +6,22 @@ let from_channel = from_lexbuf % Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
-let print_condition chan _condition = ()
+let condition_to_channel chan _condition = ()
 
-let print_target chan _target = ()
+let target_to_channel chan _target = ()
 
-let print_single_step chan
+let single_step_to_channel chan
     {Workout.Step.name; duration; target; intensity} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
   Option.may (IO.nwrite chan % Workout.Intensity.to_string) intensity;
   match duration, target with
     None, None -> IO.nwrite chan "open"
-  | Some c, None -> print_condition chan c
-  | None, Some t -> print_target chan t
+  | Some c, None -> condition_to_channel chan c
+  | None, Some t -> target_to_channel chan t
   | Some c, Some t ->
-    (print_condition chan c;
+    (condition_to_channel chan c;
      IO.nwrite chan ", ";
-     print_target chan t)
+     target_to_channel chan t)
 
 let step_to_channel chan = function
     Workout.Step.Single s -> ()
