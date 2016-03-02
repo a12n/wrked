@@ -20,7 +20,7 @@ let single_step_to_channel chan
   | None, Some t -> target_to_channel chan t
   | Some c, Some t ->
     (condition_to_channel chan c;
-     IO.nwrite chan ", ";
+     IO.write chan ',';
      target_to_channel chan t)
 
 let step_to_channel chan = function
