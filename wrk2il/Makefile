@@ -8,13 +8,14 @@ OCAMLBUILD_FLAGS += -use-ocamlfind
 all: app
 
 app:
-	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il.native
+	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il.native wrkfmt.native
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
 
 install: app
 	install -D -s wrk2il.native $(DESTDIR)/bin/wrk2il
+	install -D -s wrkfmt.native $(DESTDIR)/bin/wrkfmt
 
 test:
 	ocamlbuild $(OCAMLBUILD_FLAGS) test.byte
