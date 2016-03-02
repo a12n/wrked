@@ -24,7 +24,7 @@ let single_step_to_channel chan
      target_to_channel chan t)
 
 let step_to_channel chan = function
-    Workout.Step.Single s -> ()
+    Workout.Step.Single s -> single_step_to_channel chan s
   | Workout.Step.Repeat r -> ()
 
 let step_list_to_channel chan (s1, s) =
