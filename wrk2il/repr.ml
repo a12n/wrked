@@ -6,14 +6,6 @@ let from_channel = from_lexbuf % Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
-let print_sport chan sport =
-  IO.nwrite chan Workout.Sport.(
-      match sport with
-        Cycling  -> "cycling"
-      | Running  -> "running"
-      | Swimming -> "swimming"
-      | Walking  -> "walking")
-
 let print_condition chan _condition = ()
 
 let print_target chan _target = ()
@@ -37,7 +29,7 @@ let print_step chan = function
 
 let to_channel chan {Workout.name; sport; steps} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
-  Option.may (print_sport chan) sport;
+  Option.may (IO.nwrite chan % Workout.Sport.to_string) sport;
   IO.write chan '[';
   List.iter (print_step chan) (Non_empty_list.to_list steps);
   IO.write chan ']'
