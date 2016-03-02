@@ -23,16 +23,16 @@ let print_single_step chan
      IO.nwrite chan ", ";
      print_target chan t)
 
-let print_step chan = function
+let step_to_channel chan = function
     Workout.Step.Single s -> ()
   | Workout.Step.Repeat r -> ()
 
 let step_list_to_channel chan (s1, s) =
   IO.write chan '[';
-  print_step chan s1;
+  step_to_channel chan s1;
   List.iter (fun sn ->
       IO.write chan ';';
-      print_step chan sn) s;
+      step_to_channel chan sn) s;
   IO.write chan ']'
 
 let to_channel chan {Workout.name; sport; steps} =
