@@ -6,14 +6,6 @@ let from_channel = from_lexbuf % Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
-let print_intensity chan intensity =
-  IO.nwrite chan Workout.Intensity.(
-      match intensity with
-        Warm_up   -> "warm up"
-      | Active    -> "active"
-      | Rest      -> "rest"
-      | Cool_down -> "cool down")
-
 let print_sport chan sport =
   IO.nwrite chan Workout.Sport.(
       match sport with
@@ -29,7 +21,7 @@ let print_target chan _target = ()
 let print_single_step chan
     {Workout.Step.name; duration; target; intensity} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
-  Option.may (print_intensity chan) intensity;
+  Option.may (IO.nwrite chan % Workout.Intensity.to_string) intensity;
   match duration, target with
     None, None -> IO.nwrite chan "open"
   | Some c, None -> print_condition chan c
