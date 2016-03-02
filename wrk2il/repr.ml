@@ -10,6 +10,10 @@ let condition_to_channel chan _condition = ()
 
 let target_to_channel chan _target = ()
 
+let repeat_to_channel chan = function
+    Workout.Repeat.Times n -> Printf.fprintf chan "%dx" (n :> int)
+  | Workout.Repeat.Until c -> condition_to_channel chan c
+
 let single_step_to_channel chan
     {Workout.Step.name; duration; target; intensity} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
