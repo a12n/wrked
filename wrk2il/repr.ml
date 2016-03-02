@@ -27,12 +27,18 @@ let print_step chan = function
     Workout.Step.Single s -> ()
   | Workout.Step.Repeat r -> ()
 
+let step_list_to_channel chan (s1, s) =
+  IO.write chan '[';
+  print_step chan s1;
+  List.iter (fun sn ->
+      IO.write chan ';';
+      print_step chan sn) s;
+  IO.write chan ']'
+
 let to_channel chan {Workout.name; sport; steps} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
   Option.may (IO.nwrite chan % Workout.Sport.to_string) sport;
-  IO.write chan '[';
-  List.iter (print_step chan) (Non_empty_list.to_list steps);
-  IO.write chan ']'
+  step_list_to_channel chan steps
 
 let to_string w =
   let chan = IO.output_string () in
