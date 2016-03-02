@@ -27,17 +27,23 @@ let single_step_to_channel chan
      IO.write chan ',';
      target_to_channel chan t)
 
-let step_to_channel chan = function
-    Workout.Step.Single s -> single_step_to_channel chan s
-  | Workout.Step.Repeat r -> ()
+let rec repeat_step_to_channel chan {Workout.Step.condition; steps} =
+  IO.write chan '(';
+  repeat_to_channel chan condition;
+  IO.write chan ')';
+  step_list_to_channel chan steps
 
-let step_list_to_channel chan (s1, s) =
+and step_list_to_channel chan (s1, s) =
   IO.write chan '[';
   step_to_channel chan s1;
   List.iter (fun sn ->
       IO.write chan ';';
       step_to_channel chan sn) s;
   IO.write chan ']'
+
+and step_to_channel chan = function
+    Workout.Step.Single s -> single_step_to_channel chan s
+  | Workout.Step.Repeat r -> repeat_step_to_channel chan r
 
 let to_channel chan {Workout.name; sport; steps} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
