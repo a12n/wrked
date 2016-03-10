@@ -74,6 +74,7 @@ include_directories(${FIT_ROOT_DIR}/c)
 include_directories(${FIT_ROOT_DIR}/cpp)
 
 add_executable(il2fit il2fit.cpp ${FIT_CXX_SRCS})
+add_executable(xil2fit xil2fit.cpp ${FIT_CXX_SRCS})
 
 if(WRKED_WITH_TESTS)
   file(DOWNLOAD
@@ -90,3 +91,4 @@ endif(WRKED_WITH_TESTS)
 # Installation
 
 install(TARGETS il2fit DESTINATION bin)
+install(TARGETS xil2fit DESTINATION bin)
