@@ -127,6 +127,16 @@ value(istream& input, const T& a, const T& b)
 }
 
 //----------------------------------------------------------------------------
+// Parse enum value from input
+
+template <class T>
+T
+value(istream& input, const unordered_map<string, T>& table)
+{
+    return table.at(value<string>(input));
+}
+
+//----------------------------------------------------------------------------
 // Call actions on input tokens
 
 void
