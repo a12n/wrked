@@ -420,6 +420,11 @@ TEST_CASE("Trim string right", "[trim]")
     CHECK(trim("abc\t ") == "abc");
 }
 
+TEST_CASE("Trim left and right", "[trim]")
+{
+    CHECK(trim(" \tabc\t ") == "abc");
+}
+
 //----------------------------------------------------------------------------
 // Cases for line()
 
