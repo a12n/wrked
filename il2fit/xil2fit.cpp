@@ -262,13 +262,6 @@ template <>
 fit::WorkoutMesg
 value<fit::WorkoutMesg>(istream& input)
 {
-    fit::WorkoutMesg ans;
-
-    // Default values
-    ans.SetSport(FIT_SPORT_CYCLING);
-    ans.SetCapabilities(FIT_WORKOUT_CAPABILITIES_INVALID);
-    ans.SetNumValidSteps(1);
-
     static const unordered_map<string, FIT_SPORT> sports = {
         { "generic"                 , FIT_SPORT_GENERIC                 },
         { "running"                 , FIT_SPORT_RUNNING                 },
@@ -317,6 +310,13 @@ value<fit::WorkoutMesg>(istream& input)
         { "kitesurfing"             , FIT_SPORT_KITESURFING             }
     };
 
+    fit::WorkoutMesg ans;
+
+    // Default values
+    ans.SetSport(FIT_SPORT_CYCLING);
+    ans.SetCapabilities(FIT_WORKOUT_CAPABILITIES_INVALID);
+    ans.SetNumValidSteps(1);
+
     for (bool done = false; !done;) {
         match(input, {
                 { "capabilities", [&] {
@@ -341,13 +341,6 @@ template <>
 fit::WorkoutStepMesg
 value<fit::WorkoutStepMesg>(istream& input)
 {
-    fit::WorkoutStepMesg ans;
-
-    // Default values
-    ans.SetMessageIndex(FIT_MESSAGE_INDEX_INVALID);
-    ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
-    ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
-
     static const unordered_map<string, FIT_INTENSITY> intensities = {
         { "active"   , FIT_INTENSITY_ACTIVE   },
         { "rest"     , FIT_INTENSITY_REST     },
@@ -390,6 +383,13 @@ value<fit::WorkoutStepMesg>(istream& input)
 
     static const pair<FIT_WORKOUT_POWER, FIT_WORKOUT_POWER> power_range =
         make_pair(0, 11000);
+
+    fit::WorkoutStepMesg ans;
+
+    // Default values
+    ans.SetMessageIndex(FIT_MESSAGE_INDEX_INVALID);
+    ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
+    ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
 
     for (bool done = false; !done;) {
         match(input, {
