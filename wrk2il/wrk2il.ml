@@ -14,11 +14,22 @@ let parse_args () =
     "Translate workout description to intermediate language";
   !name, !sport
 
+let override ?name ?sport =
+  (fun workout ->
+     if Option.is_some name then
+       {workout with Workout.name}
+     else workout) %
+  (fun workout ->
+     if Option.is_some sport then
+       {workout with Workout.sport}
+     else workout)
+
 let () =
-  let _name, _sport = parse_args () in
+  let name, sport = parse_args () in
   let lexbuf = Lexing.from_channel stdin in
   try
     Repr.from_lexbuf lexbuf |>
+    override ?name ?sport |>
     Repr.Il.to_channel stdout
   with Lexer.Error | Parser.Error ->
     Lexing.(
