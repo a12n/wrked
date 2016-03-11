@@ -279,6 +279,10 @@ int main()
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
-// TODO
+TEST_CASE("EOF on empty line", "[line]")
+{
+    istringstream input;
+    CHECK(line(input) == none);
+}
 
 #endif  // _WITH_TESTS
