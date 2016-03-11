@@ -321,4 +321,16 @@ TEST_CASE("Parse string value", "[value]")
     CHECK(value<string>(input) == "abc");
 }
 
+TEST_CASE("Parse int value", "[value]")
+{
+    istringstream input("123\n");
+    CHECK(value<int>(input) == 123);
+}
+
+TEST_CASE("Parse double value", "[value]")
+{
+    istringstream input("45.6\n");
+    CHECK(value<double>(input) == 45.6);
+}
+
 #endif  // _WITH_TESTS
