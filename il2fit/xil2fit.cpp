@@ -19,6 +19,8 @@
 #include <fit_workout_step_mesg.hpp>
 
 using std::cerr;
+using std::cout;
+using std::experimental::bad_optional_access;
 using std::experimental::nullopt;
 using std::experimental::optional;
 using std::function;
@@ -27,6 +29,7 @@ using std::getline;
 using std::istream;
 using std::istringstream;
 using std::make_pair;
+using std::out_of_range;
 using std::pair;
 using std::runtime_error;
 using std::string;
@@ -121,57 +124,45 @@ value(istream& input)
     return ans;
 }
 
-template <>
-std::string
-value<std::string>(std::istream& input)
-{
-    return line(input).value();
-}
-
-typedef std::unordered_map<std::string, std::function<void()> > action_map;
-
-#define ACTION(_token, _expr) action_map::value_type((_token), [&] { _expr; })
+//----------------------------------------------------------------------------
 
 void
-match(const std::string& token, const action_map& actions)
+match(const string& token,
+      const unordered_map<string, function<void()> >& actions)
 {
     try {
         actions.at(token)();
-    } catch (const std::out_of_range&) {
-        error("Bad action \"" + token + "\"");
+    } catch (const out_of_range&) {
+        error("Bad token \"" + token + "\"");
     }
 }
 
 void
-match(std::istream& input, const action_map& actions)
+match(istream& input,
+      const unordered_map<string, function<void()> >& actions)
 {
-    match(value<std::string>(input), actions);
+    match(value<string>(input), actions);
 }
 
-std::istream&
-operator%=(std::istream& input, const action_map& actions)
-{
-    match(input, actions);
-    return input;
-}
+//----------------------------------------------------------------------------
 
 template <>
 fit::FileCreatorMesg
-value<fit::FileCreatorMesg>(std::istream& input)
+value<fit::FileCreatorMesg>(istream& input)
 {
     fit::FileCreatorMesg ans;
 
-    bool done = false;
-
-    while (!done) {
-        input %= {
-            ACTION( "hardware_version", ans.SetHardwareVersion(value<FIT_UINT8>(input)) ),
-            ACTION( "software_version", ans.SetSoftwareVersion(value<FIT_UINT16>(input)) ),
-            { "end", [&] {
-                    input %= {
-                        { "file_creator", [&] { done = true; } }
-                    }; } }
-        };
+    for (bool done = false; !done;) {
+        match(input, {
+                { "hardware_version", [&] {
+                        ans.SetHardwareVersion(value<FIT_UINT8>(input)); }},
+                { "software_version", [&] {
+                        ans.SetSoftwareVersion(value<FIT_UINT16>(input)); }},
+                { "end", [&] {
+                        match(input, {
+                                { "file_creator", [&] { done = true; }} });
+                    }}
+            });
     }
 
     return ans;
@@ -179,7 +170,7 @@ value<fit::FileCreatorMesg>(std::istream& input)
 
 template <>
 fit::FileIdMesg
-value<fit::FileIdMesg>(std::istream& input)
+value<fit::FileIdMesg>(istream& input)
 {
     fit::FileIdMesg ans;
 
@@ -191,7 +182,7 @@ value<fit::FileIdMesg>(std::istream& input)
     ans.SetTimeCreated(fit::DateTime(time(0)).GetTimeStamp());
 
     while (true) {
-        const auto k = value<std::string>(input);
+        const auto k = value<string>(input);
         // "number";
         // "serial_number";
         // "time_created";
@@ -204,7 +195,7 @@ value<fit::FileIdMesg>(std::istream& input)
 
 template <>
 fit::WorkoutMesg
-value<fit::WorkoutMesg>(std::istream& input)
+value<fit::WorkoutMesg>(istream& input)
 {
     fit::WorkoutMesg ans;
     // TODO
@@ -213,7 +204,7 @@ value<fit::WorkoutMesg>(std::istream& input)
 
 template <>
 fit::WorkoutStepMesg
-value<fit::WorkoutStepMesg>(std::istream& input)
+value<fit::WorkoutStepMesg>(istream& input)
 {
     fit::WorkoutStepMesg ans;
     // TODO
@@ -228,24 +219,19 @@ xil2fit(std::istream& input, std::iostream& output)
     encode.Open(output);
 
     while (const auto lopt = line(input)) {
-        const auto l = lopt.value();
         match(lopt.value(), {
                 { "begin", [&] {
-                        input %= {
-                            ACTION( "file_creator",
-                                    encode.Write(value<fit::FileCreatorMesg>(input))
-                                ),
-                            { "file_id", [&] {
-                                    encode.Write(value<fit::FileIdMesg>(input));
-                                } },
-                            { "workout", [&] {
-                                    encode.Write(value<fit::WorkoutMesg>(input));
-                                } },
-                            { "workout_step", [&] {
-                                    encode.Write(value<fit::WorkoutStepMesg>(input));
-                                } }
-                        };
-                    } }
+                        match(input, {
+                                { "file_creator", [&] {
+                                        encode.Write(value<fit::FileCreatorMesg>(input)); }},
+                                { "file_id", [&] {
+                                        encode.Write(value<fit::FileIdMesg>(input)); }},
+                                { "workout", [&] {
+                                        encode.Write(value<fit::WorkoutMesg>(input)); }},
+                                { "workout_step", [&] {
+                                        encode.Write(value<fit::WorkoutStepMesg>(input)); }}
+                            });
+                    }}
             });
     }
 
