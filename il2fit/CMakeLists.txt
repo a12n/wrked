@@ -33,14 +33,14 @@ endif(HAVE_STDINT_H)
 #------------------------------------------------------------------------------
 # Compiler-specific
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-gnu-keywords")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
   set_source_files_properties(il2fit.cpp COMPILE_FLAGS "-Wall -Wextra")
   set_source_files_properties(xil2fit.cpp COMPILE_FLAGS "-Wall -Wextra")
-endif(CMAKE_COMPILER_IS_GNUCXX)
+endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
 #------------------------------------------------------------------------------
 # Changeset detection
