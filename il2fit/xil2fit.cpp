@@ -345,4 +345,10 @@ TEST_CASE("Parse value with range", "[value]")
     CHECK(value<int>(input, 0, 100) == 55);
 }
 
+TEST_CASE("Parse value out of range", "[value]")
+{
+    istringstream input("55\n");
+    CHECK_THROWS_AS(value<int>(input, 0, 10), runtime_error);
+}
+
 #endif  // _WITH_TESTS
