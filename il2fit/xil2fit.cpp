@@ -133,7 +133,12 @@ template <class T>
 T
 value(istream& input, const unordered_map<string, T>& table)
 {
-    return table.at(value<string>(input));
+    const auto token = value<string>(input);
+    try {
+        return table.at(token);
+    } catch (const out_of_range&) {
+        error("Invalid enum value \"" + token + "\"");
+    }
 }
 
 //----------------------------------------------------------------------------
