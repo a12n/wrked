@@ -212,13 +212,19 @@ value<fit::FileIdMesg>(istream& input)
     ans.SetSerialNumber(54321);
     ans.SetTimeCreated(fit::DateTime(time(0)).GetTimeStamp());
 
-    while (true) {
-        const auto k = value<string>(input);
-        // "number";
-        // "serial_number";
-        // "time_created";
-        // 
-        // "end";
+    for (bool done = false; !done;) {
+        match(input, {
+                { "number", [&] {
+                        ans.SetNumber(value<FIT_UINT16>(input)); } },
+                { "serial_number", [&] {
+                        ans.SetSerialNumber(value<FIT_UINT32Z>(input)); } },
+                { "time_created", [&] {
+                        ans.SetTimeCreated(value<FIT_DATE_TIME>(input)); } },
+                { "end", [&] {
+                        match(input, {
+                                { "file_id", [&] { done = true; }} });
+                    }}
+            });
     }
 
     return ans;
