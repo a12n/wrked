@@ -84,7 +84,10 @@ if(WRKED_WITH_TESTS)
     )
   include_directories(${PROJECT_BINARY_DIR})
   add_executable(il2fit-test il2fit.cpp ${FIT_CXX_SRCS})
+  add_executable(xil2fit-test xil2fit.cpp ${FIT_CXX_SRCS})
   set_target_properties(il2fit-test PROPERTIES
+    COMPILE_DEFINITIONS "_WITH_TESTS=1")
+  set_target_properties(xil2fit-test PROPERTIES
     COMPILE_DEFINITIONS "_WITH_TESTS=1")
 endif(WRKED_WITH_TESTS)
 
