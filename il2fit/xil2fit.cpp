@@ -47,6 +47,7 @@ using std::wstring;
 
 namespace {
 
+[[noreturn]]
 void
 error(const string& descr = "")
 {
