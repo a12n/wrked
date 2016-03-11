@@ -1,8 +1,14 @@
 #include <ctime>
+#include <experimental/optional>
+#include <functional>
 #include <iostream>
+#include <iterator>
+#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <fit_date_time.hpp>
@@ -12,10 +18,187 @@
 #include <fit_workout_mesg.hpp>
 #include <fit_workout_step_mesg.hpp>
 
+using std::cerr;
+using std::experimental::nullopt;
+using std::experimental::optional;
+using std::function;
+using std::get;
+using std::getline;
+using std::istream;
+using std::make_pair;
+using std::pair;
+using std::runtime_error;
+using std::string;
+using std::unordered_map;
+using std::vector;
+
+#define STR(_expr)                                                      \
+    static_cast<std::ostringstream&>(                                   \
+        std::ostringstream().flush() << _expr).str()
+
 namespace {
+
+void
+error(const std::string& descr = "")
+{
+    throw std::runtime_error(descr);
+}
+
+//----------------------------------------------------------------------------
+// Optional
+
+const auto none = nullopt;
+
+template <class T>
+optional<T>
+some(const T& v)
+{
+    return optional<T>(v);
+}
+
+//----------------------------------------------------------------------------
+// Line-based input
+
+// struct line
+// {
+//     string str;
+// 
+//     operator string() const
+//     {
+//         return str;
+//     }
+// };
+// 
+// istream& operator>>(istream& input, line& ans)
+// {
+//     return getline(input, ans.str, '\n');
+// }
+
+optional<string>
+line(istream& input)
+{
+    string ans;
+    getline(input, ans, '\n');
+    if (input.bad()) {
+        error("I/O error");
+    }
+    return input.eof() ? none : some(ans);
+}
 
 //----------------------------------------------------------------------------
 // xil2fit
+
+template <class T>
+T
+value(std::istream& input)
+{
+    T ans;
+    std::istringstream iss(line(input).value());
+    iss >> ans;
+    if (iss.fail()) {
+        error("Bad syntax");
+    }
+    return ans;
+}
+
+template <>
+std::string
+value<std::string>(std::istream& input)
+{
+    return line(input).value();
+}
+
+typedef std::unordered_map<std::string, std::function<void()> > action_map;
+
+#define ACTION(_token, _expr) action_map::value_type((_token), [&] { _expr; })
+
+void
+match(const std::string& token, const action_map& actions)
+{
+    try {
+        actions.at(token)();
+    } catch (const std::out_of_range&) {
+        error("Bad action \"" + token + "\"");
+    }
+}
+
+void
+match(std::istream& input, const action_map& actions)
+{
+    match(value<std::string>(input), actions);
+}
+
+std::istream&
+operator%=(std::istream& input, const action_map& actions)
+{
+    match(input, actions);
+    return input;
+}
+
+template <>
+fit::FileCreatorMesg
+value<fit::FileCreatorMesg>(std::istream& input)
+{
+    fit::FileCreatorMesg ans;
+
+    bool done = false;
+
+    while (!done) {
+        input %= {
+            ACTION( "hardware_version", ans.SetHardwareVersion(value<FIT_UINT8>(input)) ),
+            ACTION( "software_version", ans.SetSoftwareVersion(value<FIT_UINT16>(input)) ),
+            { "end", [&] {
+                    input %= {
+                        { "file_creator", [&] { done = true; } }
+                    }; } }
+        };
+    }
+
+    return ans;
+}
+
+template <>
+fit::FileIdMesg
+value<fit::FileIdMesg>(std::istream& input)
+{
+    fit::FileIdMesg ans;
+
+    // Default values
+    ans.SetType(FIT_FILE_WORKOUT);
+    ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
+    ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
+    ans.SetSerialNumber(54321);
+    ans.SetTimeCreated(fit::DateTime(time(0)).GetTimeStamp());
+
+    while (true) {
+        const auto k = value<std::string>(input);
+        // "number";
+        // "serial_number";
+        // "time_created";
+        // 
+        // "end";
+    }
+
+    return ans;
+}
+
+template <>
+fit::WorkoutMesg
+value<fit::WorkoutMesg>(std::istream& input)
+{
+    fit::WorkoutMesg ans;
+    // TODO
+    return ans;
+}
+
+template <>
+fit::WorkoutStepMesg
+value<fit::WorkoutStepMesg>(std::istream& input)
+{
+    fit::WorkoutStepMesg ans;
+    // TODO
+    return ans;
+}
 
 void
 xil2fit(std::istream& input, std::iostream& output)
@@ -24,10 +207,30 @@ xil2fit(std::istream& input, std::iostream& output)
 
     encode.Open(output);
 
-    // TODO
+    while (const auto lopt = line(input)) {
+        const auto l = lopt.value();
+        match(lopt.value(), {
+                { "begin", [&] {
+                        input %= {
+                            ACTION( "file_creator",
+                                    encode.Write(value<fit::FileCreatorMesg>(input))
+                                ),
+                            { "file_id", [&] {
+                                    encode.Write(value<fit::FileIdMesg>(input));
+                                } },
+                            { "workout", [&] {
+                                    encode.Write(value<fit::WorkoutMesg>(input));
+                                } },
+                            { "workout_step", [&] {
+                                    encode.Write(value<fit::WorkoutStepMesg>(input));
+                                } }
+                        };
+                    } }
+            });
+    }
 
     if (!encode.Close()) {
-        throw std::runtime_error("FIT encoder failed");
+        error("FIT encoder failed");
     }
 }
 
