@@ -151,6 +151,12 @@ repeat_condition:
 | t = times_condition { Workout.Repeat.Times t }
 | c = condition       { Workout.Repeat.Until c }
 
+separated_nonempty_list2(separator, X):
+| x = X separator?
+  { [x] }
+| x = X; separator; xs = separated_nonempty_list2(separator, X)
+  { x :: xs }
+
 steps:
 | l = delimited(L_BRACKET,
     separated_nonempty_list(SEMICOLON, step), R_BRACKET)
