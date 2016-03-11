@@ -35,6 +35,7 @@ using std::runtime_error;
 using std::string;
 using std::stringstream;
 using std::unordered_map;
+using std::wstring;
 
 #define S(_expr)                                                   \
     static_cast<ostringstream&>(                                   \
@@ -159,6 +160,18 @@ match(istream& input,
       const unordered_map<string, function<void()> >& actions)
 {
     match(value<string>(input), actions);
+}
+
+//----------------------------------------------------------------------------
+// Parse basic FIT types
+
+template <>
+FIT_WSTRING
+value<FIT_WSTRING>(istream& input)
+{
+    // FIXME: Invalid conversion
+    const auto s = value<string>(input);
+    return wstring(s.begin(), s.end());
 }
 
 //----------------------------------------------------------------------------
