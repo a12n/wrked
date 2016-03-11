@@ -6,9 +6,9 @@ let from_channel = from_lexbuf % Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
-let condition_to_channel chan _condition = ()
+let condition_to_channel _chan _condition = ()
 
-let target_to_channel chan _target = ()
+let target_to_channel _chan _target = ()
 
 let repeat_to_channel chan = function
     Workout.Repeat.Times n -> Printf.fprintf chan "%dx" (n :> int)
