@@ -57,6 +57,9 @@ trim(const string& s)
     // Left
     const auto l = find_if_not(ans.begin(), ans.end(), isspace);
     ans.erase(ans.begin(), l);
+    // Right
+    const auto r = find_if_not(ans.rbegin(), ans.rend(), isspace).base();
+    ans.erase(r, ans.end());
     return ans;
 }
 
