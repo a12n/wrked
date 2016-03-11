@@ -176,12 +176,12 @@ module Il = struct
     | Some target -> p_target ch target
 
   let p_single_step ch {Step.name; duration; target; intensity} =
-    p_line ch "workout_step";
+    p_field ch "begin" "workout_step";
     Option.may (p_field ch "wkt_step_name") name;
     p_duration_opt ch duration;
     p_target_opt ch target;
     Option.may (p_field ch "intensity" % Intensity.to_string) intensity;
-    p_line ch "end_workout_step"
+    p_field ch "end" "workout_step"
 
   let rec p_step ch i = function
       Step.Single s -> p_single_step ch s; i + 1
@@ -189,7 +189,7 @@ module Il = struct
   and p_repeat_step ch i {Step.condition; steps} =
     let k = List.fold_left (p_step ch) i
         (Non_empty_list.to_list steps) in
-    p_line ch "workout_step";
+    p_field ch "begin" "workout_step";
     (match condition with
        Repeat.Times n -> (
          p_field ch "duration_type" "repeat_until_steps_cmplt";
@@ -225,7 +225,7 @@ module Il = struct
        )
     );
     p_int_field ch "duration_step" i; (* Repeat from step i *)
-    p_line ch "end_workout_step";
+    p_field ch "end" "workout_step";
     k + 1
 
   let rec n_steps = function
@@ -235,15 +235,15 @@ module Il = struct
       1 + (n_steps (Non_empty_list.to_list steps)) + (n_steps tail)
 
   let to_channel ch ({name; sport; steps} as workout) =
-    p_line ch "file_id";
-    p_line ch "end_file_id";
-    p_line ch "workout";
+    p_field ch "begin" "file_id";
+    p_field ch "end" "file_id";
+    p_field ch "begin" "workout";
     Option.may (p_field ch "wkt_name") name;
     Option.may (p_field ch "sport" % Sport.to_string) sport;
     p_int32_field ch "capabilities" (int32_caps workout);
     p_int_field ch "num_valid_steps"
       (n_steps (Non_empty_list.to_list steps));
-    p_line ch "end_workout";
+    p_field ch "end" "workout";
     ignore (
       List.fold_left (p_step ch) 0 (Non_empty_list.to_list steps))
 end
