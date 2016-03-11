@@ -441,6 +441,12 @@ TEST_CASE("Parse string value", "[value]")
     CHECK(value<string>(input) == "abc");
 }
 
+TEST_CASE("Parse string value with padding", "[value]")
+{
+    istringstream input(" abc\t\t\n");
+    CHECK(value<string>(input) == "abc");
+}
+
 TEST_CASE("Parse int value", "[value]")
 {
     istringstream input("123\n");
