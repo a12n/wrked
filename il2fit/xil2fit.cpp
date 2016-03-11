@@ -405,4 +405,12 @@ TEST_CASE("Empty match table", "[match]")
     CHECK_THROWS_AS(match(input, {}), runtime_error);
 }
 
+TEST_CASE("Match table", "[match]")
+{
+    istringstream input("xyz\nabc\n");
+    bool ok = false;
+    match(input, { { "xyz", [&] { ok = true; } } });
+    CHECK(ok);
+}
+
 #endif  // _WITH_TESTS
