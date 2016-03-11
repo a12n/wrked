@@ -773,6 +773,26 @@ TEST_CASE("Valid file_id", "[file_id][value]")
 }
 
 //----------------------------------------------------------------------------
+// Cases for value<fit::WorkoutMesg>
+
+TEST_CASE("Valid workout", "[value][workout]")
+{
+    istringstream input(
+        "wkt_name\n"
+        "Tempo\n"
+        "sport\n"
+        "fishing\n"
+        "num_valid_steps\n"
+        "15\n"
+        "capabilities\n"
+        "31\n"
+        "end\n"
+        "workout\n"
+        );
+    CHECK_NOTHROW(value<fit::WorkoutMesg>(input));
+}
+
+//----------------------------------------------------------------------------
 // Cases for xil2fit
 
 TEST_CASE("Empty XIL input", "[xil2fit]")
