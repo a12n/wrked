@@ -683,6 +683,13 @@ TEST_CASE("Parse value, range endpoints out of order", "[value]")
     CHECK(value<int>(input, 100, 0) == 55);
 }
 
+TEST_CASE("Parse value, range pair", "[value]")
+{
+    istringstream input("55\n55\n");
+    CHECK(value<int>(input, 0, 100) ==
+          value<int>(input, make_pair(0, 100)));
+}
+
 //----------------------------------------------------------------------------
 // Cases for value() for enumerations
 
