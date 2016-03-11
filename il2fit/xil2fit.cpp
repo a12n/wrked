@@ -738,4 +738,20 @@ TEST_CASE("Match table", "[match]")
     CHECK(ok);
 }
 
+//----------------------------------------------------------------------------
+// Cases for xil2fit
+
+TEST_CASE("Valid input", "[xil2fit]")
+{
+    istringstream input(
+        "begin\n"
+        "file_creator\n"
+        "end\n"
+        "file_creator\n"
+        );
+    stringstream output;
+    CHECK_NOTHROW(xil2fit(input, output));
+    CHECK_FALSE(output.str().empty());
+}
+
 #endif  // _WITH_TESTS
