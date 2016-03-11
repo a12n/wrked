@@ -63,21 +63,6 @@ some(const T& v)
 //----------------------------------------------------------------------------
 // Line-based input
 
-// struct line
-// {
-//     string str;
-// 
-//     operator string() const
-//     {
-//         return str;
-//     }
-// };
-// 
-// istream& operator>>(istream& input, line& ans)
-// {
-//     return getline(input, ans.str, '\n');
-// }
-
 optional<string>
 line(istream& input)
 {
@@ -93,7 +78,7 @@ line(istream& input)
 }
 
 //----------------------------------------------------------------------------
-// xil2fit
+// Parse value from input
 
 template <class T>
 T
@@ -125,6 +110,7 @@ value(istream& input)
 }
 
 //----------------------------------------------------------------------------
+// Call actions on input tokens
 
 void
 match(const string& token,
@@ -145,6 +131,7 @@ match(istream& input,
 }
 
 //----------------------------------------------------------------------------
+// Parse FIT messages from input
 
 template <>
 fit::FileCreatorMesg
