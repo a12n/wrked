@@ -25,6 +25,7 @@ using std::function;
 using std::get;
 using std::getline;
 using std::istream;
+using std::istringstream;
 using std::make_pair;
 using std::pair;
 using std::runtime_error;
@@ -90,13 +91,29 @@ line(istream& input)
 
 template <class T>
 T
-value(std::istream& input)
+value(istream& input);
+
+template <>
+string
+value<string>(istream& input)
 {
+    try {
+        return line(input).value();
+    } catch (const bad_optional_access&) {
+        error("Unexpected end of file");
+    }
+}
+
+template <class T>
+T
+value(istream& input)
+{
+    const auto k = value<string>(input);
     T ans;
-    std::istringstream iss(line(input).value());
+    istringstream iss(k);
     iss >> ans;
     if (iss.fail()) {
-        error("Bad syntax");
+        error("Bad syntax near \"" + k + "\"");
     }
     return ans;
 }
