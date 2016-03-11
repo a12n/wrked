@@ -386,7 +386,120 @@ value<fit::WorkoutStepMesg>(istream& input)
         make_pair(0, 11000);
 
     for (bool done = false; !done;) {
-        // TODO
+        match(input, {
+                { "custom_target_cadence_high", [&] {
+                        ans.SetCustomTargetCadenceHigh(
+                            value<FIT_UINT32>(input)); // rpm
+                    } },
+                { "custom_target_cadence_low", [&] {
+                        ans.SetCustomTargetCadenceLow(
+                            value<FIT_UINT32>(input)); // rpm
+                    } },
+                { "custom_target_heart_rate_high", [&] {
+                        ans.SetCustomTargetHeartRateHigh(
+                            value(input, hr_range)); // % or bpm
+                    } },
+                { "custom_target_heart_rate_low", [&] {
+                        ans.SetCustomTargetHeartRateLow(
+                            value(input, hr_range)); // % or bpm
+                    } },
+                { "custom_target_power_high", [&] {
+                        ans.SetCustomTargetPowerHigh(
+                            value(input, power_range)); // % or W
+                    } },
+                { "custom_target_power_low", [&] {
+                        ans.SetCustomTargetPowerLow(
+                            value(input, power_range)); // % or W
+                    } },
+                { "custom_target_speed_high", [&] {
+                        ans.SetCustomTargetSpeedHigh(
+                            value<FIT_FLOAT32>(input)); // m/s
+                    } },
+                { "custom_target_speed_low", [&] {
+                        ans.SetCustomTargetSpeedLow(
+                            value<FIT_FLOAT32>(input)); // m/s
+                    } },
+                { "custom_target_value_high", [&] {
+                        ans.SetCustomTargetValueHigh(value<FIT_UINT32>(input));
+                    } },
+                { "custom_target_value_low", [&] {
+                        ans.SetCustomTargetValueLow(value<FIT_UINT32>(input));
+                    } },
+                { "duration_calories", [&] {
+                        // TODO: restrict by range?
+                        ans.SetDurationCalories(
+                            value<FIT_UINT32>(input)); // kcal
+                    } },
+                { "duration_distance", [&] {
+                        // TODO: restrict by range?
+                        ans.SetDurationDistance(value<FIT_FLOAT32>(input)); // m
+                    } },
+                { "duration_hr", [&] {
+                        ans.SetDurationHr(value(input, hr_range)); // % or bpm
+                    } },
+                { "duration_power", [&] {
+                        ans.SetDurationPower(
+                            value(input, power_range)); // % or W
+                    } },
+                { "duration_step", [&] {
+                        ans.SetDurationStep(value<FIT_UINT32>(input));
+                    } },
+                { "duration_time", [&] {
+                        // TODO: restrict by range?
+                        ans.SetDurationTime(value<FIT_FLOAT32>(input)); // s
+                    } },
+                { "duration_type", [&] {
+                        ans.SetDurationType(value(input, duration_types));
+                    } },
+                { "duration_value", [&] {
+                        ans.SetDurationValue(value<FIT_UINT32>(input));
+                    } },
+                { "intensity", [&] {
+                        ans.SetIntensity(value(input, intensities));
+                    } },
+                { "repeat_calories", [&] {
+                        // TODO: restrict by range?
+                        ans.SetRepeatCalories(value<FIT_UINT32>(input)); // kcal
+                    } },
+                { "repeat_distance", [&] {
+                        // TODO: restrict by range?
+                        ans.SetRepeatDistance(value<FIT_FLOAT32>(input)); // m
+                    } },
+                { "repeat_hr", [&] {
+                        ans.SetRepeatHr(value(input, hr_range)); // % or bpm
+                    } },
+                { "repeat_power", [&] {
+                        ans.SetRepeatPower(value(input, power_range)); // % or W
+                    } },
+                { "repeat_steps", [&] {
+                        ans.SetRepeatSteps(value<FIT_UINT32>(input, 1, 1000));
+                    } },
+                { "repeat_time", [&] {
+                        // TODO: restrict by range?
+                        ans.SetRepeatTime(value<FIT_FLOAT32>(input)); // s
+                    } },
+                { "target_hr_zone", [&] {
+                        // HR Zone (1-5); Custom = 0;
+                        ans.SetTargetHrZone(value<FIT_UINT32>(input, 0, 5));
+                    } },
+                { "target_power_zone", [&] {
+                        // Power Zone (1-7); Custom = 0;
+                        ans.SetTargetPowerZone(value<FIT_UINT32>(input, 0, 7));
+                    } },
+                { "target_type", [&] {
+                        ans.SetTargetType(value(input, target_types));
+                    } },
+                { "target_value", [&] {
+                        ans.SetTargetValue(value<FIT_UINT32>(input));
+                    } },
+                { "wkt_step_name", [&] {
+                        ans.SetWktStepName(value<FIT_WSTRING>(input));
+                    } },
+                { "end", [&] {
+                        match(input, {
+                                { "workout_step", [&] { done = true; }} });
+                    }}
+            });
     }
 
     return ans;
