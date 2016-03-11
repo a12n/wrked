@@ -394,4 +394,15 @@ TEST_CASE("Parse enum value, invalid token", "[value]")
             }), runtime_error);
 }
 
+//----------------------------------------------------------------------------
+// Cases for match()
+
+TEST_CASE("Empty match table", "[match]")
+{
+    istringstream input("xyz\n\nabc\n");
+    CHECK_THROWS_AS(match(input, {}), runtime_error);
+    CHECK_THROWS_AS(match(input, {}), runtime_error);
+    CHECK_THROWS_AS(match(input, {}), runtime_error);
+}
+
 #endif  // _WITH_TESTS
