@@ -311,12 +311,23 @@ fit::WorkoutStepMesg
 value<fit::WorkoutStepMesg>(istream& input)
 {
     fit::WorkoutStepMesg ans;
-    static const unordered_map<string, FIT_INTENSITY> intensity_table = {
+
+    // Default values
+    ans.SetMessageIndex(FIT_MESSAGE_INDEX_INVALID);
+    ans.SetDurationType(FIT_WKT_STEP_DURATION_OPEN);
+    ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
+
+    static const unordered_map<string, FIT_INTENSITY> intensities = {
         {"active"   , FIT_INTENSITY_ACTIVE   },
         {"rest"     , FIT_INTENSITY_REST     },
         {"warmup"   , FIT_INTENSITY_WARMUP   },
         {"cooldown" , FIT_INTENSITY_COOLDOWN }
     };
+
+    for (bool done = false; !done;) {
+        // TODO
+    }
+
     return ans;
 }
 
