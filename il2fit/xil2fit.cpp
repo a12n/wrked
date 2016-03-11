@@ -755,6 +755,24 @@ TEST_CASE("Valid file_creator", "[file_creator][value]")
 }
 
 //----------------------------------------------------------------------------
+// Cases for value<fit::FileIdMesg>
+
+TEST_CASE("Valid file_id", "[file_id][value]")
+{
+    istringstream input(
+        "time_created\n"
+        "1457736704\n"
+        "serial_number\n"
+        "2501\n"
+        "number\n"
+        "5\n"
+        "end\n"
+        "file_id\n"
+        );
+    CHECK_NOTHROW(value<fit::FileIdMesg>(input));
+}
+
+//----------------------------------------------------------------------------
 // Cases for xil2fit
 
 TEST_CASE("Valid input", "[xil2fit]")
