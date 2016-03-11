@@ -349,6 +349,42 @@ value<fit::WorkoutStepMesg>(istream& input)
         { "cooldown" , FIT_INTENSITY_COOLDOWN }
     };
 
+    static const unordered_map<string, FIT_WKT_STEP_DURATION> duration_types = {
+        { "time"                            , FIT_WKT_STEP_DURATION_TIME                            },
+        { "distance"                        , FIT_WKT_STEP_DURATION_DISTANCE                        },
+        { "hr_less_than"                    , FIT_WKT_STEP_DURATION_HR_LESS_THAN                    },
+        { "hr_greater_than"                 , FIT_WKT_STEP_DURATION_HR_GREATER_THAN                 },
+        { "colories"                        , FIT_WKT_STEP_DURATION_CALORIES                        },
+        { "open"                            , FIT_WKT_STEP_DURATION_OPEN                            },
+        { "repeat_until_steps_cmplt"        , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_STEPS_CMPLT        },
+        { "repeat_until_time"               , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_TIME               },
+        { "repeat_until_distance"           , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_DISTANCE           },
+        { "repeat_until_calories"           , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_CALORIES           },
+        { "repeat_until_hr_less_than"       , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_HR_LESS_THAN       },
+        { "repeat_until_hr_greater_than"    , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_HR_GREATER_THAN    },
+        { "repeat_until_power_less_than"    , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_POWER_LESS_THAN    },
+        { "repeat_until_power_greater_than" , FIT_WKT_STEP_DURATION_REPEAT_UNTIL_POWER_GREATER_THAN },
+        { "power_less_than"                 , FIT_WKT_STEP_DURATION_POWER_LESS_THAN                 },
+        { "power_greater_than"              , FIT_WKT_STEP_DURATION_POWER_GREATER_THAN              },
+        { "repetition_time"                 , FIT_WKT_STEP_DURATION_REPETITION_TIME                 }
+    };
+
+    static const unordered_map<string, FIT_WKT_STEP_TARGET> target_types = {
+        { "speed"      , FIT_WKT_STEP_TARGET_SPEED      },
+        { "heart_rate" , FIT_WKT_STEP_TARGET_HEART_RATE },
+        { "open"       , FIT_WKT_STEP_TARGET_OPEN       },
+        { "cadence"    , FIT_WKT_STEP_TARGET_CADENCE    },
+        { "power"      , FIT_WKT_STEP_TARGET_POWER      },
+        { "grade"      , FIT_WKT_STEP_TARGET_GRADE      },
+        { "resistance" , FIT_WKT_STEP_TARGET_RESISTANCE }
+    };
+
+    static const pair<FIT_WORKOUT_HR, FIT_WORKOUT_HR> hr_range =
+        make_pair(0, 355);
+
+    static const pair<FIT_WORKOUT_POWER, FIT_WORKOUT_POWER> power_range =
+        make_pair(0, 11000);
+
     for (bool done = false; !done;) {
         // TODO
     }
