@@ -8,12 +8,17 @@
 #include <unordered_map>
 #include <utility>
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wignored-qualifiers"
+
 #include <fit_date_time.hpp>
 #include <fit_encode.hpp>
 #include <fit_file_creator_mesg.hpp>
 #include <fit_file_id_mesg.hpp>
 #include <fit_workout_mesg.hpp>
 #include <fit_workout_step_mesg.hpp>
+
+#pragma GCC diagnostic pop
 
 using std::cerr;
 using std::cin;
