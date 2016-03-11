@@ -666,7 +666,7 @@ TEST_CASE("Parse int value", "[value]")
 TEST_CASE("Parse double value", "[value]")
 {
     istringstream input("45.6\n");
-    CHECK(value<double>(input) == 45.6);
+    CHECK(value<double>(input) == Approx(45.6));
 }
 
 //----------------------------------------------------------------------------
