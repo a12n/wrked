@@ -302,4 +302,19 @@ TEST_CASE("Incomplete line", "[line]")
     CHECK(line(input) == none);
 }
 
+TEST_CASE("Single complete line", "[line]")
+{
+    istringstream input("abc\n");
+    CHECK(line(input) == some(string("abc")));
+    CHECK(line(input) == none);
+}
+
+TEST_CASE("Multiple lines", "[line]")
+{
+    istringstream input("abc\ndef\n");
+    CHECK(line(input) == some(string("abc")));
+    CHECK(line(input) == some(string("def")));
+    CHECK(line(input) == none);
+}
+
 #endif  // _WITH_TESTS
