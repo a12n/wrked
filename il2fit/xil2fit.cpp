@@ -111,6 +111,21 @@ value(istream& input)
 }
 
 //----------------------------------------------------------------------------
+// Parse value from input and check range
+
+template <class T>
+T
+value(istream& input, const T& min, const T& max)
+{
+    const T ans = value<T>(input);
+    if (ans < min || ans > max) {
+        error(S("Value " << ans << " is "
+                "out of range [" << min << ", " << max << "]"));
+    }
+    return ans;
+}
+
+//----------------------------------------------------------------------------
 // Call actions on input tokens
 
 void
