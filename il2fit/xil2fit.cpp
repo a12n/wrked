@@ -232,8 +232,13 @@ fit::WorkoutMesg
 value<fit::WorkoutMesg>(istream& input)
 {
     fit::WorkoutMesg ans;
-    // TODO
-    static const unordered_map<string, FIT_SPORT> sport_table = {
+
+    // Default values
+    ans.SetSport(FIT_SPORT_CYCLING);
+    ans.SetCapabilities(FIT_WORKOUT_CAPABILITIES_INVALID);
+    ans.SetNumValidSteps(1);
+
+    static const unordered_map<string, FIT_SPORT> sports = {
         { "generic"                 , FIT_SPORT_GENERIC                 },
         { "running"                 , FIT_SPORT_RUNNING                 },
         { "cycling"                 , FIT_SPORT_CYCLING                 },
@@ -280,6 +285,24 @@ value<fit::WorkoutMesg>(istream& input)
         { "windsurfing"             , FIT_SPORT_WINDSURFING             },
         { "kitesurfing"             , FIT_SPORT_KITESURFING             }
     };
+
+    for (bool done = false; !done;) {
+        match(input, {
+                { "capabilities", [&] {
+                        ans.SetCapabilities(value<FIT_WORKOUT_CAPABILITIES>(input)); } },
+                { "num_valid_steps", [&] {
+                        ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000)); } },
+                { "sport", [&] {
+                        ans.SetSport(value<FIT_SPORT>(input, sports)); } },
+                { "wkt_name", [&] {
+                        ans.SetWktName(value<FIT_WSTRING>(input)); } },
+                { "end", [&] {
+                        match(input, {
+                                { "workout", [&] { done = true; }} });
+                    }}
+            });
+    }
+
     return ans;
 }
 
