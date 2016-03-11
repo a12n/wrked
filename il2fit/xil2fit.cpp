@@ -315,4 +315,10 @@ TEST_CASE("Error on empty input", "[value]")
     CHECK_THROWS_AS(value<string>(input), runtime_error);
 }
 
+TEST_CASE("Parse string value", "[value]")
+{
+    istringstream input("abc\n");
+    CHECK(value<string>(input) == "abc");
+}
+
 #endif  // _WITH_TESTS
