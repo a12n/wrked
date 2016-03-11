@@ -358,4 +358,16 @@ TEST_CASE("Parse value, range endpoints out of order", "[value]")
     CHECK(value<int>(input, 100, 0) == 55);
 }
 
+//----------------------------------------------------------------------------
+// Cases for value() for enumerations
+
+TEST_CASE("Parse enum value", "[value]")
+{
+    istringstream input("xyz\n");
+    CHECK(value<int>(input, {
+                { "xyz", 10 },
+                { "abc", 12 }
+            }) == 10);
+}
+
 #endif  // _WITH_TESTS
