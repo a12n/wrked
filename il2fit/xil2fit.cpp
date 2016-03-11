@@ -465,6 +465,10 @@ value<fit::WorkoutStepMesg>(istream& input)
                 { "intensity", [&] {
                         ans.SetIntensity(value(input, intensities));
                     } },
+                { "message_index", [&] {
+                        ans.SetMessageIndex(
+                            value<FIT_MESSAGE_INDEX>(input, 0, 0xFFF));
+                    } },
                 { "repeat_calories", [&] {
                         // TODO: restrict by range?
                         ans.SetRepeatCalories(value<FIT_UINT32>(input)); // kcal
