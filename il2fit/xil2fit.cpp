@@ -143,10 +143,12 @@ template <class T>
 T
 value(istream& input, const T& a, const T& b)
 {
+    const auto p = min(a, b);
+    const auto q = max(a, b);
     const T ans = value<T>(input);
-    if (ans < min(a, b) || ans > max(a, b)) {
+    if (ans < p || ans > q) {
         error(S("Value " << ans << " is out of range "
-                "[" << min(a, b) << ", " << max(a, b) << "]"));
+                "[" << p << ", " << q << "]"));
     }
     return ans;
 }
