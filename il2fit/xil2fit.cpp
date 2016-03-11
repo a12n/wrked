@@ -724,9 +724,10 @@ TEST_CASE("Parse enum value, invalid token", "[value]")
 TEST_CASE("Empty match table", "[match]")
 {
     istringstream input("xyz\n\nabc\n");
-    CHECK_THROWS_AS(match(input, {}), runtime_error);
-    CHECK_THROWS_AS(match(input, {}), runtime_error);
-    CHECK_THROWS_AS(match(input, {}), runtime_error);
+    static const unordered_map<string, function<void()> > empty;
+    CHECK_THROWS_AS(match(input, empty), runtime_error);
+    CHECK_THROWS_AS(match(input, empty), runtime_error);
+    CHECK_THROWS_AS(match(input, empty), runtime_error);
 }
 
 TEST_CASE("Match table", "[match]")
