@@ -153,6 +153,13 @@ value(istream& input, const T& a, const T& b)
     return ans;
 }
 
+template <class T>
+T
+value(istream& input, const pair<T, T>& range)
+{
+    return value<T>(input, range.first, range.second);
+}
+
 //----------------------------------------------------------------------------
 // Parse enum value from input
 
