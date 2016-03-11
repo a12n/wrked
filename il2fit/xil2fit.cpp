@@ -793,6 +793,30 @@ TEST_CASE("Valid workout", "[value][workout]")
 }
 
 //----------------------------------------------------------------------------
+// Cases for value<fit::WorkoutStepMesg>
+
+TEST_CASE("Valid workout_step", "[value][workout_step]")
+{
+    istringstream input(
+        "wkt_step_name\n"
+        "Intro\n"
+        "intensity\n"
+        "warmup\n"
+        "duration_time\n"
+        "31.5\n"
+        "target_value\n"
+        "0\n"
+        "custom_target_heart_rate_low\n"
+        "50\n"
+        "custom_target_heart_rate_high\n"
+        "270\n"
+        "end\n"
+        "workout_step\n"
+        );
+    CHECK_NOTHROW(value<fit::WorkoutStepMesg>(input));
+}
+
+//----------------------------------------------------------------------------
 // Cases for xil2fit
 
 TEST_CASE("Empty XIL input", "[xil2fit]")
