@@ -190,6 +190,7 @@ module Il = struct
     let k = List.fold_left (p_step ch) i
         (Non_empty_list.to_list steps) in
     p_field ch "begin" "workout_step";
+    p_int_field ch "message_index" k;
     (match condition with
        Repeat.Times n -> (
          p_field ch "duration_type" "repeat_until_steps_cmplt";
