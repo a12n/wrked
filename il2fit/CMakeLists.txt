@@ -38,10 +38,10 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
-  set_source_files_properties(xil2fit.cpp COMPILE_FLAGS "-Wall -Wextra")
+  set_source_files_properties(il2fit.cpp COMPILE_FLAGS "-Wall -Wextra")
 elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
-  set_source_files_properties(xil2fit.cpp COMPILE_FLAGS "-Weverything")
+  set_source_files_properties(il2fit.cpp COMPILE_FLAGS "-Weverything")
 endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
 #------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ set(FIT_CXX_SRCS
 include_directories(${FIT_ROOT_DIR}/c)
 include_directories(${FIT_ROOT_DIR}/cpp)
 
-add_executable(xil2fit xil2fit.cpp ${FIT_CXX_SRCS})
+add_executable(il2fit il2fit.cpp ${FIT_CXX_SRCS})
 
 if(WRKED_WITH_TESTS)
   file(DOWNLOAD
@@ -84,12 +84,12 @@ if(WRKED_WITH_TESTS)
     EXPECTED_MD5 "f21d005ecf1e5c576d4f8abad0a08ace" SHOW_PROGRESS
     )
   include_directories(${PROJECT_BINARY_DIR})
-  add_executable(xil2fit-test xil2fit.cpp ${FIT_CXX_SRCS})
-  set_target_properties(xil2fit-test PROPERTIES
+  add_executable(il2fit-test il2fit.cpp ${FIT_CXX_SRCS})
+  set_target_properties(il2fit-test PROPERTIES
     COMPILE_DEFINITIONS "_WITH_TESTS=1")
 endif(WRKED_WITH_TESTS)
 
 #------------------------------------------------------------------------------
 # Installation
 
-install(TARGETS xil2fit DESTINATION bin)
+install(TARGETS il2fit DESTINATION bin)
