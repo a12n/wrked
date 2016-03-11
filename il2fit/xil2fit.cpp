@@ -115,12 +115,13 @@ value(istream& input)
 
 template <class T>
 T
-value(istream& input, const T& min, const T& max)
+value(istream& input, const T& a, const T& b)
 {
+    const auto range = (a < b) ? make_pair(a, b) : make_pair(b, a);
     const T ans = value<T>(input);
-    if (ans < min || ans > max) {
-        error(S("Value " << ans << " is "
-                "out of range [" << min << ", " << max << "]"));
+    if (ans < range.first || ans > range.second) {
+        error(S("Value " << ans << " is out of range "
+                "[" << range.first << ", " << range.second << "]"));
     }
     return ans;
 }
