@@ -798,6 +798,8 @@ TEST_CASE("Valid workout", "[value][workout]")
 TEST_CASE("Valid workout_step", "[value][workout_step]")
 {
     istringstream input(
+        "message_index\n"
+        "3\n"
         "wkt_step_name\n"
         "Intro\n"
         "intensity\n"
