@@ -159,7 +159,7 @@ separated_nonempty_list2(separator, X):
 
 steps:
 | l = delimited(L_BRACKET,
-    separated_nonempty_list(SEMICOLON, step), R_BRACKET)
+    separated_nonempty_list2(SEMICOLON, step), R_BRACKET)
   { Non_empty_list.of_list l }
 
 step:
