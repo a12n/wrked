@@ -795,7 +795,7 @@ TEST_CASE("Invalid XIL input", "[xil2fit]")
     CHECK_THROWS_AS(xil2fit(input, output), runtime_error);
 }
 
-TEST_CASE("Valix XIL input", "[xil2fit]")
+TEST_CASE("Valid XIL input", "[xil2fit]")
 {
     istringstream input(
         "begin\n"
