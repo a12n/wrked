@@ -739,6 +739,22 @@ TEST_CASE("Match table", "[match]")
 }
 
 //----------------------------------------------------------------------------
+// Cases for value<fit::FileCreatorMesg>
+
+TEST_CASE("Valid file_creator", "[file_creator][value]")
+{
+    istringstream input(
+        "hardware_version\n"
+        "150\n"
+        "software_version\n"
+        "330\n"
+        "end\n"
+        "file_creator\n"
+        );
+    CHECK_NOTHROW(value<fit::FileCreatorMesg>(input));
+}
+
+//----------------------------------------------------------------------------
 // Cases for xil2fit
 
 TEST_CASE("Valid input", "[xil2fit]")
