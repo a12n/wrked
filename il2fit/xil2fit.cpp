@@ -389,6 +389,14 @@ int main()
 #include <catch.hpp>
 
 //----------------------------------------------------------------------------
+// Cases for trim()
+
+TEST_CASE("Trim empty string", "[trim]")
+{
+    CHECK(trim("") == "");
+}
+
+//----------------------------------------------------------------------------
 // Cases for line()
 
 TEST_CASE("EOF on empty input", "[line]")
