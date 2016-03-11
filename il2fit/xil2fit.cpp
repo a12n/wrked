@@ -351,4 +351,10 @@ TEST_CASE("Parse value out of range", "[value]")
     CHECK_THROWS_AS(value<int>(input, 0, 10), runtime_error);
 }
 
+TEST_CASE("Parse value, range endpoints out of order", "[value]")
+{
+    istringstream input("55\n");
+    CHECK(value<int>(input, 100, 0) == 55);
+}
+
 #endif  // _WITH_TESTS
