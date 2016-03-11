@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <experimental/optional>
 #include <functional>
 #include <iostream>
@@ -47,6 +48,14 @@ void
 error(const string& descr = "")
 {
     throw runtime_error(descr);
+}
+
+string
+trim(const string& s)
+{
+    string ans = s;
+    // TODO
+    return ans;
 }
 
 //----------------------------------------------------------------------------
