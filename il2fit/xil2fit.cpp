@@ -318,10 +318,10 @@ value<fit::WorkoutStepMesg>(istream& input)
     ans.SetTargetType(FIT_WKT_STEP_TARGET_OPEN);
 
     static const unordered_map<string, FIT_INTENSITY> intensities = {
-        {"active"   , FIT_INTENSITY_ACTIVE   },
-        {"rest"     , FIT_INTENSITY_REST     },
-        {"warmup"   , FIT_INTENSITY_WARMUP   },
-        {"cooldown" , FIT_INTENSITY_COOLDOWN }
+        { "active"   , FIT_INTENSITY_ACTIVE   },
+        { "rest"     , FIT_INTENSITY_REST     },
+        { "warmup"   , FIT_INTENSITY_WARMUP   },
+        { "cooldown" , FIT_INTENSITY_COOLDOWN }
     };
 
     for (bool done = false; !done;) {
