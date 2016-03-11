@@ -380,4 +380,13 @@ TEST_CASE("Parse enum value", "[value]")
             }) == 10);
 }
 
+TEST_CASE("Parse enum value, invalid token", "[value]")
+{
+    istringstream input("xyz\n");
+    CHECK_THROWS_AS(value<int>(input, {
+                { "abc", 20 },
+                { "def", 30 }
+            }), runtime_error);
+}
+
 #endif  // _WITH_TESTS
