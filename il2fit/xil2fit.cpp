@@ -83,7 +83,10 @@ line(istream& input)
     if (input.bad()) {
         error("I/O error");
     }
-    return input.eof() ? none : some(ans);
+    if (input.eof() && ans.empty()) {
+        return none;
+    }
+    return some(ans);
 }
 
 //----------------------------------------------------------------------------
