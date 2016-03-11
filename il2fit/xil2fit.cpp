@@ -320,9 +320,11 @@ value<fit::WorkoutMesg>(istream& input)
     for (bool done = false; !done;) {
         match(input, {
                 { "capabilities", [&] {
-                        ans.SetCapabilities(value<FIT_WORKOUT_CAPABILITIES>(input)); } },
+                        ans.SetCapabilities(
+                            value<FIT_WORKOUT_CAPABILITIES>(input)); } },
                 { "num_valid_steps", [&] {
-                        ans.SetNumValidSteps(value<FIT_UINT16>(input, 1, 10000)); } },
+                        ans.SetNumValidSteps(
+                            value<FIT_UINT16>(input, 1, 10000)); } },
                 { "sport", [&] {
                         ans.SetSport(value<FIT_SPORT>(input, sports)); } },
                 { "wkt_name", [&] {
