@@ -321,4 +321,13 @@ TEST_CASE("Parse double value", "[value]")
     CHECK(value<double>(input) == 45.6);
 }
 
+//----------------------------------------------------------------------------
+// Cases for value() with range
+
+TEST_CASE("Parse value with range", "[value]")
+{
+    istringstream input("55\n");
+    CHECK(value<int>(input, 0, 100) == 55);
+}
+
 #endif  // _WITH_TESTS
