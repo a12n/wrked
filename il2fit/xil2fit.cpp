@@ -96,6 +96,15 @@ value<string>(istream& input)
     }
 }
 
+template <>
+wstring
+value<wstring>(istream& input)
+{
+    // FIXME: Invalid conversion
+    const auto s = value<string>(input);
+    return wstring(s.begin(), s.end());
+}
+
 template <class T>
 T
 value(istream& input)
@@ -160,18 +169,6 @@ match(istream& input,
       const unordered_map<string, function<void()> >& actions)
 {
     match(value<string>(input), actions);
-}
-
-//----------------------------------------------------------------------------
-// Parse basic FIT types
-
-template <>
-FIT_WSTRING
-value<FIT_WSTRING>(istream& input)
-{
-    // FIXME: Invalid conversion
-    const auto s = value<string>(input);
-    return wstring(s.begin(), s.end());
 }
 
 //----------------------------------------------------------------------------
