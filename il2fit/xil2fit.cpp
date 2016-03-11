@@ -268,6 +268,9 @@ int main()
 #define CATCH_CONFIG_MAIN
 #include <catch.hpp>
 
+//----------------------------------------------------------------------------
+// Cases for line()
+
 TEST_CASE("EOF on empty input", "[line]")
 {
     istringstream input;
@@ -301,6 +304,15 @@ TEST_CASE("Multiple lines", "[line]")
     CHECK(line(input) == some(string("abc")));
     CHECK(line(input) == some(string("def")));
     CHECK(line(input) == none);
+}
+
+//----------------------------------------------------------------------------
+// Cases for value()
+
+TEST_CASE("Error on empty input", "[value]")
+{
+    istringstream input;
+    CHECK_THROWS_AS(value<string>(input), runtime_error);
 }
 
 #endif  // _WITH_TESTS
