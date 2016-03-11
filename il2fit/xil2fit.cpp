@@ -29,6 +29,7 @@ using std::getline;
 using std::istream;
 using std::istringstream;
 using std::make_pair;
+using std::ostringstream;
 using std::out_of_range;
 using std::pair;
 using std::runtime_error;
@@ -36,9 +37,9 @@ using std::string;
 using std::unordered_map;
 using std::vector;
 
-#define STR(_expr)                                                      \
-    static_cast<std::ostringstream&>(                                   \
-        std::ostringstream().flush() << _expr).str()
+#define S(_expr)                                                   \
+    static_cast<ostringstream&>(                                   \
+        ostringstream().flush() << _expr).str()
 
 namespace {
 
