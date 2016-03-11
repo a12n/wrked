@@ -175,16 +175,18 @@ module Il = struct
       None        -> p_field ch "target_type" "open"
     | Some target -> p_target ch target
 
-  let p_single_step ch {Step.name; duration; target; intensity} =
+  let p_single_step ch i {Step.name; duration; target; intensity} =
     p_field ch "begin" "workout_step";
+    p_int_field ch "message_index" i;
     Option.may (p_field ch "wkt_step_name") name;
     p_duration_opt ch duration;
     p_target_opt ch target;
     Option.may (p_field ch "intensity" % Intensity.to_string) intensity;
-    p_field ch "end" "workout_step"
+    p_field ch "end" "workout_step";
+    i + 1
 
   let rec p_step ch i = function
-      Step.Single s -> p_single_step ch s; i + 1
+      Step.Single s -> p_single_step ch i s
     | Step.Repeat r -> p_repeat_step ch i r
   and p_repeat_step ch i {Step.condition; steps} =
     let k = List.fold_left (p_step ch) i
