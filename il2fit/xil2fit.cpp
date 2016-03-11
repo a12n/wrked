@@ -54,7 +54,9 @@ string
 trim(const string& s)
 {
     string ans = s;
-    // TODO
+    // Left
+    const auto l = find_if_not(ans.begin(), ans.end(), isspace);
+    ans.erase(ans.begin(), l);
     return ans;
 }
 
