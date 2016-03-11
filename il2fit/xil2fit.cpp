@@ -166,71 +166,6 @@ match(istream& input,
 // Parse basic FIT types
 
 template <>
-FIT_INTENSITY
-value<FIT_INTENSITY>(istream& input)
-{
-    return value<FIT_INTENSITY>(input, {
-            {"active"   , FIT_INTENSITY_ACTIVE   },
-            {"rest"     , FIT_INTENSITY_REST     },
-            {"warmup"   , FIT_INTENSITY_WARMUP   },
-            {"cooldown" , FIT_INTENSITY_COOLDOWN }
-        });
-}
-
-template <>
-FIT_SPORT
-value<FIT_SPORT>(istream& input)
-{
-    return value<FIT_SPORT>(input, {
-            { "generic"                 , FIT_SPORT_GENERIC                 },
-            { "running"                 , FIT_SPORT_RUNNING                 },
-            { "cycling"                 , FIT_SPORT_CYCLING                 },
-            { "transition"              , FIT_SPORT_TRANSITION              },
-            { "fitness_equipment"       , FIT_SPORT_FITNESS_EQUIPMENT       },
-            { "swimming"                , FIT_SPORT_SWIMMING                },
-            { "basketball"              , FIT_SPORT_BASKETBALL              },
-            { "soccer"                  , FIT_SPORT_SOCCER                  },
-            { "tennis"                  , FIT_SPORT_TENNIS                  },
-            { "american_football"       , FIT_SPORT_AMERICAN_FOOTBALL       },
-            { "training"                , FIT_SPORT_TRAINING                },
-            { "walking"                 , FIT_SPORT_WALKING                 },
-            { "cross_country_skiing"    , FIT_SPORT_CROSS_COUNTRY_SKIING    },
-            { "alpine_skiing"           , FIT_SPORT_ALPINE_SKIING           },
-            { "snowboarding"            , FIT_SPORT_SNOWBOARDING            },
-            { "rowing"                  , FIT_SPORT_ROWING                  },
-            { "mountaineering"          , FIT_SPORT_MOUNTAINEERING          },
-            { "hiking"                  , FIT_SPORT_HIKING                  },
-            { "multisport"              , FIT_SPORT_MULTISPORT              },
-            { "paddling"                , FIT_SPORT_PADDLING                },
-            { "flying"                  , FIT_SPORT_FLYING                  },
-            { "e_biking"                , FIT_SPORT_E_BIKING                },
-            { "motorcycling"            , FIT_SPORT_MOTORCYCLING            },
-            { "boating"                 , FIT_SPORT_BOATING                 },
-            { "driving"                 , FIT_SPORT_DRIVING                 },
-            { "golf"                    , FIT_SPORT_GOLF                    },
-            { "hang_gliding"            , FIT_SPORT_HANG_GLIDING            },
-            { "horseback_riding"        , FIT_SPORT_HORSEBACK_RIDING        },
-            { "hunting"                 , FIT_SPORT_HUNTING                 },
-            { "fishing"                 , FIT_SPORT_FISHING                 },
-            { "inline_skating"          , FIT_SPORT_INLINE_SKATING          },
-            { "rock_climbing"           , FIT_SPORT_ROCK_CLIMBING           },
-            { "sailing"                 , FIT_SPORT_SAILING                 },
-            { "ice_skating"             , FIT_SPORT_ICE_SKATING             },
-            { "sky_diving"              , FIT_SPORT_SKY_DIVING              },
-            { "snowshoeing"             , FIT_SPORT_SNOWSHOEING             },
-            { "snowmobiling"            , FIT_SPORT_SNOWMOBILING            },
-            { "stand_up_paddleboarding" , FIT_SPORT_STAND_UP_PADDLEBOARDING },
-            { "surfing"                 , FIT_SPORT_SURFING                 },
-            { "wakeboarding"            , FIT_SPORT_WAKEBOARDING            },
-            { "water_skiing"            , FIT_SPORT_WATER_SKIING            },
-            { "kayaking"                , FIT_SPORT_KAYAKING                },
-            { "rafting"                 , FIT_SPORT_RAFTING                 },
-            { "windsurfing"             , FIT_SPORT_WINDSURFING             },
-            { "kitesurfing"             , FIT_SPORT_KITESURFING             }
-        });
-}
-
-template <>
 FIT_WSTRING
 value<FIT_WSTRING>(istream& input)
 {
@@ -301,6 +236,53 @@ value<fit::WorkoutMesg>(istream& input)
 {
     fit::WorkoutMesg ans;
     // TODO
+    static const unordered_map<string, FIT_SPORT> sport_table = {
+        { "generic"                 , FIT_SPORT_GENERIC                 },
+        { "running"                 , FIT_SPORT_RUNNING                 },
+        { "cycling"                 , FIT_SPORT_CYCLING                 },
+        { "transition"              , FIT_SPORT_TRANSITION              },
+        { "fitness_equipment"       , FIT_SPORT_FITNESS_EQUIPMENT       },
+        { "swimming"                , FIT_SPORT_SWIMMING                },
+        { "basketball"              , FIT_SPORT_BASKETBALL              },
+        { "soccer"                  , FIT_SPORT_SOCCER                  },
+        { "tennis"                  , FIT_SPORT_TENNIS                  },
+        { "american_football"       , FIT_SPORT_AMERICAN_FOOTBALL       },
+        { "training"                , FIT_SPORT_TRAINING                },
+        { "walking"                 , FIT_SPORT_WALKING                 },
+        { "cross_country_skiing"    , FIT_SPORT_CROSS_COUNTRY_SKIING    },
+        { "alpine_skiing"           , FIT_SPORT_ALPINE_SKIING           },
+        { "snowboarding"            , FIT_SPORT_SNOWBOARDING            },
+        { "rowing"                  , FIT_SPORT_ROWING                  },
+        { "mountaineering"          , FIT_SPORT_MOUNTAINEERING          },
+        { "hiking"                  , FIT_SPORT_HIKING                  },
+        { "multisport"              , FIT_SPORT_MULTISPORT              },
+        { "paddling"                , FIT_SPORT_PADDLING                },
+        { "flying"                  , FIT_SPORT_FLYING                  },
+        { "e_biking"                , FIT_SPORT_E_BIKING                },
+        { "motorcycling"            , FIT_SPORT_MOTORCYCLING            },
+        { "boating"                 , FIT_SPORT_BOATING                 },
+        { "driving"                 , FIT_SPORT_DRIVING                 },
+        { "golf"                    , FIT_SPORT_GOLF                    },
+        { "hang_gliding"            , FIT_SPORT_HANG_GLIDING            },
+        { "horseback_riding"        , FIT_SPORT_HORSEBACK_RIDING        },
+        { "hunting"                 , FIT_SPORT_HUNTING                 },
+        { "fishing"                 , FIT_SPORT_FISHING                 },
+        { "inline_skating"          , FIT_SPORT_INLINE_SKATING          },
+        { "rock_climbing"           , FIT_SPORT_ROCK_CLIMBING           },
+        { "sailing"                 , FIT_SPORT_SAILING                 },
+        { "ice_skating"             , FIT_SPORT_ICE_SKATING             },
+        { "sky_diving"              , FIT_SPORT_SKY_DIVING              },
+        { "snowshoeing"             , FIT_SPORT_SNOWSHOEING             },
+        { "snowmobiling"            , FIT_SPORT_SNOWMOBILING            },
+        { "stand_up_paddleboarding" , FIT_SPORT_STAND_UP_PADDLEBOARDING },
+        { "surfing"                 , FIT_SPORT_SURFING                 },
+        { "wakeboarding"            , FIT_SPORT_WAKEBOARDING            },
+        { "water_skiing"            , FIT_SPORT_WATER_SKIING            },
+        { "kayaking"                , FIT_SPORT_KAYAKING                },
+        { "rafting"                 , FIT_SPORT_RAFTING                 },
+        { "windsurfing"             , FIT_SPORT_WINDSURFING             },
+        { "kitesurfing"             , FIT_SPORT_KITESURFING             }
+    };
     return ans;
 }
 
@@ -309,7 +291,12 @@ fit::WorkoutStepMesg
 value<fit::WorkoutStepMesg>(istream& input)
 {
     fit::WorkoutStepMesg ans;
-    // TODO
+    static const unordered_map<string, FIT_INTENSITY> intensity_table = {
+        {"active"   , FIT_INTENSITY_ACTIVE   },
+        {"rest"     , FIT_INTENSITY_REST     },
+        {"warmup"   , FIT_INTENSITY_WARMUP   },
+        {"cooldown" , FIT_INTENSITY_COOLDOWN }
+    };
     return ans;
 }
 
