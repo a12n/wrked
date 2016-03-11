@@ -396,6 +396,11 @@ TEST_CASE("Trim empty string", "[trim]")
     CHECK(trim("") == "");
 }
 
+TEST_CASE("Trim string left", "[trim]")
+{
+    CHECK(trim(" \tabc") == "abc");
+}
+
 //----------------------------------------------------------------------------
 // Cases for line()
 
