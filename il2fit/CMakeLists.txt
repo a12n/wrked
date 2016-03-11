@@ -40,6 +40,10 @@ if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
   set_source_files_properties(il2fit.cpp COMPILE_FLAGS "-Wall -Wextra")
   set_source_files_properties(xil2fit.cpp COMPILE_FLAGS "-Wall -Wextra")
+elseif(${CMAKE_CXX_COMPILER_ID} MATCHES "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y")
+  set_source_files_properties(il2fit.cpp COMPILE_FLAGS "-Weverything")
+  set_source_files_properties(xil2fit.cpp COMPILE_FLAGS "-Weverything")
 endif(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 
 #------------------------------------------------------------------------------
