@@ -39,9 +39,9 @@ using std::vector;
 namespace {
 
 void
-error(const std::string& descr = "")
+error(const string& descr = "")
 {
-    throw std::runtime_error(descr);
+    throw runtime_error(descr);
 }
 
 //----------------------------------------------------------------------------
