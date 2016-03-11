@@ -30,6 +30,7 @@ using std::function;
 using std::get;
 using std::getline;
 using std::ios;
+using std::iostream;
 using std::istream;
 using std::istringstream;
 using std::make_pair;
