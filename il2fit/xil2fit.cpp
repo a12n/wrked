@@ -1,15 +1,11 @@
-#include <ctime>
 #include <experimental/optional>
 #include <functional>
 #include <iostream>
-#include <iterator>
-#include <map>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>
-#include <vector>
 
 #include <fit_date_time.hpp>
 #include <fit_encode.hpp>
