@@ -30,8 +30,11 @@ using std::iostream;
 using std::istream;
 using std::istringstream;
 using std::make_pair;
+using std::max;
+using std::min;
 using std::ostringstream;
 using std::out_of_range;
+using std::pair;
 using std::runtime_error;
 using std::string;
 using std::stringstream;
@@ -140,11 +143,10 @@ template <class T>
 T
 value(istream& input, const T& a, const T& b)
 {
-    const auto range = (a < b) ? make_pair(a, b) : make_pair(b, a);
     const T ans = value<T>(input);
-    if (ans < range.first || ans > range.second) {
+    if (ans < min(a, b) || ans > max(a, b)) {
         error(S("Value " << ans << " is out of range "
-                "[" << range.first << ", " << range.second << "]"));
+                "[" << min(a, b) << ", " << max(a, b) << "]"));
     }
     return ans;
 }
