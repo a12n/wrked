@@ -19,13 +19,17 @@
 #include <fit_workout_step_mesg.hpp>
 
 using std::cerr;
+using std::cin;
 using std::cout;
+using std::endl;
+using std::exception;
 using std::experimental::bad_optional_access;
 using std::experimental::nullopt;
 using std::experimental::optional;
 using std::function;
 using std::get;
 using std::getline;
+using std::ios;
 using std::istream;
 using std::istringstream;
 using std::make_pair;
@@ -34,6 +38,7 @@ using std::out_of_range;
 using std::pair;
 using std::runtime_error;
 using std::string;
+using std::stringstream;
 using std::unordered_map;
 using std::vector;
 
@@ -231,7 +236,7 @@ value<fit::WorkoutStepMesg>(istream& input)
 }
 
 void
-xil2fit(std::istream& input, std::iostream& output)
+xil2fit(istream& input, iostream& output)
 {
     fit::Encode encode;
 
@@ -268,16 +273,16 @@ xil2fit(std::istream& input, std::iostream& output)
 
 int main()
 {
-    std::stringstream output(std::ios::out | std::ios::binary);
+    stringstream output(ios::out | ios::binary);
 
     try {
-        xil2fit(std::cin, output);
-    } catch (const std::exception& exn) {
-        std::cerr << exn.what() << std::endl;
+        xil2fit(cin, output);
+    } catch (const exception& exn) {
+        cerr << exn.what() << endl;
         return 1;
     }
 
-    std::cout << output.str();
+    cout << output.str();
 
     return 0;
 }
