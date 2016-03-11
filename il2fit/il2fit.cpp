@@ -518,7 +518,7 @@ value<fit::WorkoutStepMesg>(istream& input)
 }
 
 void
-xil2fit(istream& input, iostream& output)
+il2fit(istream& input, iostream& output)
 {
     fit::Encode encode;
 
@@ -558,7 +558,7 @@ int main()
     stringstream output(ios::out | ios::binary);
 
     try {
-        xil2fit(cin, output);
+        il2fit(cin, output);
     } catch (const exception& exn) {
         cerr << exn.what() << endl;
         return 1;
@@ -823,17 +823,17 @@ TEST_CASE("Valid workout_step", "[value][workout_step]")
 }
 
 //----------------------------------------------------------------------------
-// Cases for xil2fit
+// Cases for il2fit
 
-TEST_CASE("Empty XIL input", "[xil2fit]")
+TEST_CASE("Empty IL input", "[il2fit]")
 {
     istringstream input;
     stringstream output;
-    CHECK_NOTHROW(xil2fit(input, output));
+    CHECK_NOTHROW(il2fit(input, output));
     CHECK_FALSE(output.str().empty());
 }
 
-TEST_CASE("Invalid XIL input", "[xil2fit]")
+TEST_CASE("Invalid IL input", "[il2fit]")
 {
     istringstream input(
         "begin\n"
@@ -842,10 +842,10 @@ TEST_CASE("Invalid XIL input", "[xil2fit]")
         "nonsense\n"
         );
     stringstream output;
-    CHECK_THROWS_AS(xil2fit(input, output), runtime_error);
+    CHECK_THROWS_AS(il2fit(input, output), runtime_error);
 }
 
-TEST_CASE("Valid XIL input", "[xil2fit]")
+TEST_CASE("Valid IL input", "[il2fit]")
 {
     istringstream input(
         "begin\n"
@@ -866,7 +866,7 @@ TEST_CASE("Valid XIL input", "[xil2fit]")
         "workout_step\n"
         );
     stringstream output;
-    CHECK_NOTHROW(xil2fit(input, output));
+    CHECK_NOTHROW(il2fit(input, output));
     CHECK_FALSE(output.str().empty());
 }
 
