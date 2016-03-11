@@ -775,13 +775,45 @@ TEST_CASE("Valid file_id", "[file_id][value]")
 //----------------------------------------------------------------------------
 // Cases for xil2fit
 
-TEST_CASE("Valid input", "[xil2fit]")
+TEST_CASE("Empty XIL input", "[xil2fit]")
+{
+    istringstream input;
+    stringstream output;
+    CHECK_NOTHROW(xil2fit(input, output));
+    CHECK_FALSE(output.str().empty());
+}
+
+TEST_CASE("Invalid XIL input", "[xil2fit]")
 {
     istringstream input(
+        "begin\n"
+        "nonsense\n"
+        "end\n"
+        "nonsense\n"
+        );
+    stringstream output;
+    CHECK_THROWS_AS(xil2fit(input, output), runtime_error);
+}
+
+TEST_CASE("Valix XIL input", "[xil2fit]")
+{
+    istringstream input(
+        "begin\n"
+        "file_id\n"
+        "end\n"
+        "file_id\n"
         "begin\n"
         "file_creator\n"
         "end\n"
         "file_creator\n"
+        "begin\n"
+        "workout\n"
+        "end\n"
+        "workout\n"
+        "begin\n"
+        "workout_step\n"
+        "end\n"
+        "workout_step\n"
         );
     stringstream output;
     CHECK_NOTHROW(xil2fit(input, output));
