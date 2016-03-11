@@ -104,7 +104,7 @@ string
 value<string>(istream& input)
 {
     try {
-        return line(input).value();
+        return trim(line(input).value());
     } catch (const bad_optional_access&) {
         error("Unexpected end of file");
     }
