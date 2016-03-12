@@ -19,5 +19,6 @@ trap "rm -f $TEMP_FILE" EXIT
 
 curl $FIT_URL -o $TEMP_FILE || exit 1
 unzip $TEMP_FILE -d $OUT_DIR || exit 1
-sed -i.orig '/#include <string>/a #include <cstring>' \
-    $OUT_DIR/cpp/fit.hpp || exit 1
+sed -i.orig '/#include <string>/a\
+#include <cstring>
+' $OUT_DIR/cpp/fit.hpp || exit 1
