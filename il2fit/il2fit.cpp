@@ -238,7 +238,8 @@ value<fit::FileIdMesg>(istream& input)
     ans.SetManufacturer(FIT_MANUFACTURER_GARMIN);
     ans.SetProduct(FIT_GARMIN_PRODUCT_EDGE500);
     ans.SetSerialNumber(54321);
-    ans.SetTimeCreated(fit::DateTime(time(0)).GetTimeStamp());
+    ans.SetTimeCreated(
+        fit::DateTime(static_cast<time_t>(1454942443)).GetTimeStamp());
 
     for (bool done = false; !done;) {
         match(input, {
