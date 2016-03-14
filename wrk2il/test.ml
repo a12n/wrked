@@ -55,6 +55,9 @@ let lexer_tests =
     (fun ctxt -> assert_tokens ~ctxt
         "12.25 0.0 001.001"
         [FLOAT 12.25; FLOAT 0.0; FLOAT 1.001; EOF])
+  ; "String with \\n" >::
+    (fun ctxt -> assert_raises
+        Lexer.Error (fun () -> tokens "\"abc\ndef\""))
   ]
 
 let assert_parses str expected ctxt =
