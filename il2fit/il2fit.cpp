@@ -826,12 +826,11 @@ TEST_CASE("Valid workout_step", "[value][workout_step]")
 //----------------------------------------------------------------------------
 // Cases for il2fit
 
-TEST_CASE("Empty IL input", "[il2fit]")
+TEST_CASE("Fail on empty IL input", "[il2fit]")
 {
     istringstream input;
     stringstream output;
-    CHECK_NOTHROW(il2fit(input, output));
-    CHECK_FALSE(output.str().empty());
+    CHECK_THROWS_AS(il2fit(input, output), runtime_error);
 }
 
 TEST_CASE("Invalid IL input", "[il2fit]")
