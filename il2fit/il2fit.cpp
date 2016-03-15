@@ -525,21 +525,31 @@ il2fit(istream& input, iostream& output)
 
     encode.Open(output);
 
+    bool empty = true;
+
     while (const auto lopt = line(input)) {
         match(lopt.value(), {
                 { "begin", [&] {
                         match(input, {
                                 { "file_creator", [&] {
-                                        encode.Write(value<fit::FileCreatorMesg>(input)); }},
+                                        encode.Write(value<fit::FileCreatorMesg>(input));
+                                        empty = false; }},
                                 { "file_id", [&] {
-                                        encode.Write(value<fit::FileIdMesg>(input)); }},
+                                        encode.Write(value<fit::FileIdMesg>(input));
+                                        empty = false; }},
                                 { "workout", [&] {
-                                        encode.Write(value<fit::WorkoutMesg>(input)); }},
+                                        encode.Write(value<fit::WorkoutMesg>(input));
+                                        empty = false; }},
                                 { "workout_step", [&] {
-                                        encode.Write(value<fit::WorkoutStepMesg>(input)); }}
+                                        encode.Write(value<fit::WorkoutStepMesg>(input));
+                                        empty = false; }}
                             });
                     }}
             });
+    }
+
+    if (empty) {
+        error("No messages in the FIT file");
     }
 
     if (!encode.Close()) {
