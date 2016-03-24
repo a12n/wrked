@@ -32,12 +32,10 @@ let override ?name ?sport =
      else workout)
 
 let () =
-  let name, sport, _to_channel = parse_args () in
+  let name, sport, to_channel = parse_args () in
   let lexbuf = Lexing.from_channel stdin in
   try
-    Repr.from_lexbuf lexbuf |>
-    override ?name ?sport |>
-    Repr.Il.to_channel stdout
+    Repr.from_lexbuf lexbuf |> override ?name ?sport |> to_channel stdout
   with Lexer.Error | Parser.Error ->
     Lexing.(
       let {pos_lnum; pos_bol; pos_cnum; _} = lexeme_start_p lexbuf in
