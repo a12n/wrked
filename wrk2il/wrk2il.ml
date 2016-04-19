@@ -15,7 +15,7 @@ let parse_args () =
                                    Ref.set mode % (function
                                        | "pp" -> Repr.to_channel
                                        | "tr" -> Repr.Il.to_channel
-                                       | _ -> raise (Invalid_argument "mode"))),
+                                       | _ -> invalid_arg "mode")),
               " Translate or pretty-print" ]
     (fun _anon -> ())
     "Process workout description language";

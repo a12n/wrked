@@ -31,7 +31,7 @@ module Sport = struct
     | "running"  -> Running
     | "swimming" -> Swimming
     | "walking"  -> Walking
-    | _ -> raise (Invalid_argument "Workout.Sport.of_string")
+    | _ -> invalid_arg "Workout.Sport.of_string"
 
   let to_string = function
       Cycling  -> "cycling"
@@ -186,7 +186,7 @@ module Intensity = struct
     | "active"   -> Active
     | "rest"     -> Rest
     | "cooldown" -> Cool_down
-    | _ -> raise (Invalid_argument "Workout.Intensity.of_string")
+    | _ -> invalid_arg "Workout.Intensity.of_string"
 
   let to_string = function
       Warm_up   -> "warmup"
