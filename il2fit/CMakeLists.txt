@@ -5,7 +5,7 @@ include(CheckIncludeFile)
 #------------------------------------------------------------------------------
 # Project variables
 
-project(workoued)
+project(wrked)
 
 set(WRKED_MAJOR_VERSION 0)
 set(WRKED_MINOR_VERSION 0)
