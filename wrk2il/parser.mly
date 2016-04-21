@@ -54,7 +54,9 @@ workout:
 time_spec_1:
 | s = INTEGER S?    { Workout.Condition.time_of_int s }
 | min = INTEGER MIN { Workout.Condition.time_of_int (60 * min) }
+| min = FLOAT MIN   { Workout.Condition.time_of_int (int_of_float (60.0 *. min)) }
 | h = INTEGER H     { Workout.Condition.time_of_int (3600 * h) }
+| h = FLOAT H       { Workout.Condition.time_of_int (int_of_float (3600.0 *. h)) }
 
 %inline
 separated_triplet(X, a, Y, b, Z): x = X a y = Y b z = Z { x, y, z }
