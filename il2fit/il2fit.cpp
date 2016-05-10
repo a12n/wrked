@@ -528,6 +528,8 @@ il2fit(istream& input, iostream& output)
     bool empty = true;
 
     while (const auto lopt = line(input)) {
+        bool eof = false;
+
         match(lopt.value(), {
                 { "begin", [&] {
                         match(input, {
@@ -544,8 +546,13 @@ il2fit(istream& input, iostream& output)
                                         encode.Write(value<fit::WorkoutStepMesg>(input));
                                         empty = false; }}
                             });
-                    }}
+                    }},
+                { "EOF", [&] { eof = true; }}
             });
+
+        if (eof) {
+            break;
+        }
     }
 
     if (empty) {
