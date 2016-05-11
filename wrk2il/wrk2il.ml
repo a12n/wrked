@@ -11,12 +11,12 @@ let parse_args () =
                                      (Ref.set sport % Option.some %
                                       Workout.Sport.of_string)),
               " Override workout sport";
-              "-mode", Arg.Symbol ([ "pp"; "tr" ],
+              "-mode", Arg.Symbol ([ "min"; "tr" ],
                                    Ref.set mode % (function
-                                       | "pp" -> Repr.to_channel
+                                       | "min" -> Repr.to_channel
                                        | "tr" -> Repr.Il.to_channel
                                        | _ -> invalid_arg "mode")),
-              " Translate or pretty-print" ]
+              " Translate or minimize" ]
     (fun _anon -> ())
     "Process workout description language";
   !name, !sport, !mode
