@@ -1,7 +1,7 @@
 #!/bin/sh
 
-FIT_VSN=16.60.0
-FIT_BASE=https://www.thisisant.com/assets/resources/FIT
+FIT_VSN=16.73.0
+FIT_BASE=https://bitbucket.org/a12n/wrked/downloads
 FIT_URL=$FIT_BASE/FitSDKRelease_$FIT_VSN.zip
 
 #-----------------------------------------------------------------------
@@ -17,7 +17,7 @@ mkdir -p $OUT_DIR || exit 1
 TEMP_FILE=$(mktemp)
 trap "rm -f $TEMP_FILE" EXIT
 
-curl $FIT_URL -o $TEMP_FILE || exit 1
+curl -L -u a12n $FIT_URL -o $TEMP_FILE || exit 1
 unzip $TEMP_FILE -d $OUT_DIR || exit 1
 sed -i.orig '/#include <string>/a\
 #include <cstring>
