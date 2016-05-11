@@ -6,7 +6,38 @@ let from_channel = from_lexbuf % Lexing.from_channel
 
 let from_string = from_lexbuf % Lexing.from_string
 
-let condition_to_channel _chan _condition = ()
+let heart_rate_to_channel chan hr =
+  Workout.Heart_rate.(
+    match hr with
+      Absolute bpm    -> Printf.fprintf chan "%d" (bpm :> int)
+    | Percent percent -> Printf.fprintf chan "%d%%" (percent :> int)
+  )
+
+let power_to_channel chan power =
+  Workout.Power.(
+    match power with
+      Absolute w      -> Printf.fprintf chan "%d" (w :> int)
+    | Percent percent -> Printf.fprintf chan "%d%%" (percent :> int)
+  )
+
+let condition_to_channel chan condition =
+  Workout.Condition.(
+    let order_to_channel = function
+      | Less -> IO.write chan '<'
+      | Greater -> IO.write chan '>' in
+    match condition with
+      Time s -> Printf.fprintf chan "time%d" (s :> int)
+    | Distance m -> Printf.fprintf chan "distance%d" (m :> int)
+    | Calories kcal -> Printf.fprintf chan "calories%d" (kcal :> int)
+    | Heart_rate (rel, hr) ->
+      (IO.nwrite chan "hr";
+       order_to_channel rel;
+       heart_rate_to_channel chan hr)
+    | Power (rel, power) ->
+      (IO.nwrite chan "power";
+       order_to_channel rel;
+       power_to_channel chan power)
+  )
 
 let target_to_channel _chan _target = ()
 
