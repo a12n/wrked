@@ -40,5 +40,6 @@ let () =
     Lexing.(
       let {pos_lnum; pos_bol; pos_cnum; _} = lexeme_start_p lexbuf in
       Printf.eprintf "Error near \"%s\" at line %d, column %d\n"
-        (lexeme lexbuf) pos_lnum (pos_cnum - pos_bol)
+        (lexeme lexbuf) pos_lnum (pos_cnum - pos_bol);
+      exit 1
     )
