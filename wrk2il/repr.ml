@@ -39,7 +39,44 @@ let condition_to_channel chan condition =
        power_to_channel chan power)
   )
 
-let target_to_channel _chan _target = ()
+(* TODO: cleanup *)
+let target_to_channel chan target =
+  Workout.Target.(
+    match target with
+    | Speed speed ->
+      (IO.nwrite chan "speed";
+       match speed with
+         Speed_value.Zone z ->
+         Printf.fprintf chan "zone%d" (z :> int)
+       | Speed_value.Range r ->
+         let (a, b) = (r :> (Workout.Speed.t * Workout.Speed.t)) in
+         Printf.fprintf chan "%f-%f" (a :> float) (b :> float))
+    | Heart_rate hr ->
+      (IO.nwrite chan "hr";
+       match hr with
+         Heart_rate_value.Zone z -> Printf.fprintf chan "zone%d" (z :> int)
+       | Heart_rate_value.Range r ->
+         let (a, b) = (r :> (Workout.Heart_rate.t * Workout.Heart_rate.t)) in
+         heart_rate_to_channel chan a;
+         IO.write chan '-';
+         heart_rate_to_channel chan b)
+    | Cadence cad ->
+      (IO.nwrite chan "cadence";
+       match cad with
+         Cadence_value.Zone z -> Printf.fprintf chan "zone%d" (z :> int)
+       | Cadence_value.Range r ->
+         let (a, b) = (r :> (Workout.Cadence.t * Workout.Cadence.t)) in
+         Printf.fprintf chan "%d-%d" (a :> int) (b :> int))
+    | Power power ->
+      (IO.nwrite chan "power";
+       match power with
+         Power_value.Zone z -> Printf.fprintf chan "zone%d" (z :> int)
+       | Power_value.Range r ->
+         let (a, b) = (r :> (Workout.Power.t * Workout.Power.t)) in
+         power_to_channel chan a;
+         IO.write chan '-';
+         power_to_channel chan b)
+  )
 
 let repeat_to_channel chan = function
     Workout.Repeat.Times n -> Printf.fprintf chan "%dx" (n :> int)
