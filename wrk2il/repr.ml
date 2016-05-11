@@ -85,7 +85,9 @@ let repeat_to_channel chan = function
 let single_step_to_channel chan
     {Workout.Step.name; duration; target; intensity} =
   Option.may (Printf.fprintf chan "\"%s\":") name;
-  Option.may (IO.nwrite chan % Workout.Intensity.to_string) intensity;
+  Option.may (fun i ->
+      IO.nwrite chan (Workout.Intensity.to_string i);
+      IO.write chan ',') intensity;
   match duration, target with
     None, None -> IO.nwrite chan "open"
   | Some c, None -> condition_to_channel chan c
