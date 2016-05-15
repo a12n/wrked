@@ -1,0 +1,6 @@
+"Over/Under":
+[ warmup, time 20 min;
+  (4x) [ (2x) [ active, time 3 min, hr 161-165;
+                active, time 1 min, hr 166-170 ];
+         rest, time 4 min ];
+  cooldown, time 15 min ]
