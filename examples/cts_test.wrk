@@ -1,0 +1,14 @@
+{ The CTS Field Test can be completed on an indoor trainer, or you can
+  find a relatively flat course or a course that is a consistent climb
+  of about a 6 percent grade. (A course with steep climbs or descents
+  will dictate your effort more than you will.) Above all, find a
+  course that’s safe, without stop signs or traffic lights. For the
+  sake of being able to compare one test to another, complete the test
+  in weather conditions that are reasonably common for your area. }
+
+"CTS Test":
+[ warmup, time 15 min;
+  active, time 8 min;
+  rest, time 10 min;
+  active, time 8 min;
+  cooldown, time 15 min ]
