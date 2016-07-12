@@ -60,18 +60,7 @@ endif(EXISTS ${PROJECT_SOURCE_DIR}/.hg)
 #------------------------------------------------------------------------------
 # Targets
 
-set(FIT_CXX_SRCS
-  ${FIT_ROOT_DIR}/cpp/fit.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_crc.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_date_time.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_encode.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_field.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_field_definition.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_mesg.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_mesg_definition.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_profile.cpp
-  ${FIT_ROOT_DIR}/cpp/fit_unicode.cpp
-  )
+file(GLOB FIT_CXX_SRCS ${FIT_ROOT_DIR}/cpp/*.cpp)
 include_directories(${FIT_ROOT_DIR}/c)
 include_directories(${FIT_ROOT_DIR}/cpp)
 
