@@ -63,8 +63,10 @@ endif(EXISTS ${PROJECT_SOURCE_DIR}/.hg)
 file(GLOB FIT_CXX_SRCS ${FIT_ROOT_DIR}/cpp/*.cpp)
 include_directories(${FIT_ROOT_DIR}/c)
 include_directories(${FIT_ROOT_DIR}/cpp)
+add_library(fit STATIC ${FIT_CXX_SRCS})
 
-add_executable(il2fit il2fit.cpp ${FIT_CXX_SRCS})
+add_executable(il2fit il2fit.cpp)
+target_link_libraries(il2fit fit)
 
 if(IL2FIT_WITH_TESTS)
   file(DOWNLOAD
@@ -73,7 +75,8 @@ if(IL2FIT_WITH_TESTS)
     EXPECTED_MD5 "f21d005ecf1e5c576d4f8abad0a08ace" SHOW_PROGRESS
     )
   include_directories(${PROJECT_BINARY_DIR})
-  add_executable(il2fit-test il2fit.cpp ${FIT_CXX_SRCS})
+  add_executable(il2fit-test il2fit.cpp)
+  target_link_libraries(il2fit-test fit)
   set_target_properties(il2fit-test PROPERTIES
     COMPILE_DEFINITIONS "_WITH_TESTS=1")
 endif(IL2FIT_WITH_TESTS)
