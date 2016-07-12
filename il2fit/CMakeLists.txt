@@ -5,18 +5,18 @@ include(CheckIncludeFile)
 #------------------------------------------------------------------------------
 # Project variables
 
-project(wrked)
+project(il2fit)
 
-set(WRKED_MAJOR_VERSION 0)
-set(WRKED_MINOR_VERSION 0)
-set(WRKED_PATCH_VERSION 7)
-set(WRKED_VERSION
-  "${WRKED_MAJOR_VERSION}.${WRKED_MINOR_VERSION}.${WRKED_PATCH_VERSION}")
+set(IL2FIT_MAJOR_VERSION 0)
+set(IL2FIT_MINOR_VERSION 0)
+set(IL2FIT_PATCH_VERSION 7)
+set(IL2FIT_VERSION
+  "${IL2FIT_MAJOR_VERSION}.${IL2FIT_MINOR_VERSION}.${IL2FIT_PATCH_VERSION}")
 
 #------------------------------------------------------------------------------
 # Build options
 
-option(WRKED_WITH_TESTS
+option(IL2FIT_WITH_TESTS
   "Build tests."
   OFF)
 
@@ -52,7 +52,7 @@ if(EXISTS ${PROJECT_SOURCE_DIR}/.hg)
   if(HG_FOUND)
     execute_process(COMMAND ${HG_EXECUTABLE} id --id
       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-      OUTPUT_VARIABLE WRKED_VERSION_ID
+      OUTPUT_VARIABLE IL2FIT_VERSION_ID
       OUTPUT_STRIP_TRAILING_WHITESPACE)
   endif(HG_FOUND)
 endif(EXISTS ${PROJECT_SOURCE_DIR}/.hg)
@@ -77,7 +77,7 @@ include_directories(${FIT_ROOT_DIR}/cpp)
 
 add_executable(il2fit il2fit.cpp ${FIT_CXX_SRCS})
 
-if(WRKED_WITH_TESTS)
+if(IL2FIT_WITH_TESTS)
   file(DOWNLOAD
     https://raw.githubusercontent.com/philsquared/Catch/v1.3.3/single_include/catch.hpp
     ${PROJECT_BINARY_DIR}/catch.hpp
@@ -87,7 +87,7 @@ if(WRKED_WITH_TESTS)
   add_executable(il2fit-test il2fit.cpp ${FIT_CXX_SRCS})
   set_target_properties(il2fit-test PROPERTIES
     COMPILE_DEFINITIONS "_WITH_TESTS=1")
-endif(WRKED_WITH_TESTS)
+endif(IL2FIT_WITH_TESTS)
 
 #------------------------------------------------------------------------------
 # Installation
