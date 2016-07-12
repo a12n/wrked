@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FIT_VSN=16.73.0
+FIT_VSN=20.03.00
 FIT_BASE=https://bitbucket.org/a12n/wrked/downloads
 FIT_URL=$FIT_BASE/FitSDKRelease_$FIT_VSN.zip
 
