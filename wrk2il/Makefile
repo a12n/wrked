@@ -12,6 +12,7 @@ app:
 
 clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
+	rm -f qtest.targets.log
 
 install: app
 	install -D -s wrk2il.native $(DESTDIR)/bin/wrk2il
