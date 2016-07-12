@@ -1,4 +1,6 @@
-_build.*/
-rebar3$
-test.byte
-wrk2il.native
+syntax: glob
+
+*.byte
+*.native
+_build/
+qtest.targets.log
