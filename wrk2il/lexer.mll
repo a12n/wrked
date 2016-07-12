@@ -65,13 +65,12 @@ rule read = parse
 | _ { raise Error }
 
 {
-open Batteries
-
-let enum lexbuf =
-  Enum.from_loop true
-    (fun continue ->
-       if continue then
-         let token = read lexbuf in
-         token, token <> Parser.EOF
-       else raise Enum.No_more_elements)
+let tokens lexbuf =
+  let rec loop ans =
+    let token = read lexbuf in
+    let ans' = token :: ans in
+    if token <> Parser.EOF then
+      loop ans'
+    else List.rev ans' in
+  loop []
 }

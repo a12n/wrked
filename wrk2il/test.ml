@@ -1,7 +1,7 @@
 open Batteries
 open OUnit2
 
-let tokens str = Lexer.enum (Lexing.from_string str) |> List.of_enum
+let tokens = Lexer.tokens % Lexing.from_string
 
 let assert_tokens ~ctxt str toks =
   assert_equal ~ctxt (tokens str) toks
