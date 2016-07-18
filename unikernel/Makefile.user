@@ -1,0 +1,17 @@
+# -*- mode: makefile -*-
+
+.PHONY: configure distclean
+
+configure:
+	mirage configure --unix --net=socket
+
+distclean: clean
+	rm -f	\
+		Makefile	\
+		key_gen.ml	\
+		log	\
+		main.ml	\
+		wrked.xe	\
+		wrked.xl	\
+		wrked.xl.in	\
+		wrked_libvirt.xml
