@@ -11,6 +11,7 @@ distclean: clean
 		key_gen.ml	\
 		log	\
 		main.ml	\
+		mir-wrked.xen	\
 		wrked.xe	\
 		wrked.xl	\
 		wrked.xl.in	\
