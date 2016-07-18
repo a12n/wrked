@@ -1,5 +1,3 @@
-open Batteries
-
 module Capability = struct
   type t = Speed
          | Heart_rate
@@ -210,8 +208,12 @@ module Step = struct
   let rec caps = function
       Single {duration; target; _} ->
       List.append
-        (Option.map_default Condition.caps [] duration)
-        (Option.map_default Target.caps [] target)
+        (match duration with
+         | Some duration -> Condition.caps duration
+         | None          -> [])
+        (match target with
+         | Some target -> Target.caps target
+         | None        -> [])
     | Repeat {condition; steps} ->
       List.append
         (Repeat.caps condition)
