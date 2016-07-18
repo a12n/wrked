@@ -1,6 +1,6 @@
 open Batteries
 
-let from_lexbuf = Parser.workout Lexer.read
+let from_lexbuf = Parser.workout Lexer.token
 
 let from_channel = from_lexbuf % Lexing.from_channel
 

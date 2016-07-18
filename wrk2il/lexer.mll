@@ -5,13 +5,13 @@ open Workout
 exception Error
 }
 
-rule read = parse
-| [' ' '\t' '\n'] { read lexbuf }
+rule token = parse
+| [' ' '\t' '\n'] { token lexbuf }
 
 | ['0'-'9']+ as i                  { INTEGER (int_of_string i) }
 | (['0'-'9']+ '.' ['0'-'9']+) as f { FLOAT (float_of_string f) }
 | '"' ([^'"' '\n']+ as s) '"'      { STRING s }
-| '{' [^'}']*  '}'                 { read lexbuf }
+| '{' [^'}']*  '}'                 { token lexbuf }
 
 | "warmup"   { INTENSITY Intensity.Warm_up }
 | "active"   { INTENSITY Intensity.Active }
@@ -67,9 +67,9 @@ rule read = parse
 {
 let tokens lexbuf =
   let rec loop ans =
-    let token = read lexbuf in
-    let ans' = token :: ans in
-    if token <> Parser.EOF then
+    let tok = token lexbuf in
+    let ans' = tok :: ans in
+    if tok <> Parser.EOF then
       loop ans'
     else List.rev ans' in
   loop []
