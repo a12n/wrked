@@ -1,5 +1,7 @@
 # -*- mode: makefile -*-
 
+LIBS += -pkg wrk
+
 .PHONY: configure distclean
 
 configure:
