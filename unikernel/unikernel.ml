@@ -2,15 +2,15 @@ module Server_log = (val Logs.src_log (Logs.Src.create "server") : Logs.LOG)
 
 module Main (Server : Cohttp_lwt.Server) = struct
   let callback _id request _body =
-    let status =
+    let status, headers, body =
       let path = Cohttp.Request.uri request |> Uri.path in
       let wrk = String.(sub path 1 (length path - 1)) |> Uri.pct_decode in
+      let hdrs = Cohttp.Header.init () in
       match Wrk.Repr.from_string wrk with
-      | _workout                   -> `OK
-      | exception Wrk.Lexer.Error  -> `Bad_request
-      | exception Wrk.Parser.Error -> `Bad_request in
-    let body = "" in
-    Server.respond_string ~status ~body ()
+      | _workout                   -> `OK, hdrs, ""
+      | exception Wrk.Lexer.Error  -> `Bad_request, hdrs, ""
+      | exception Wrk.Parser.Error -> `Bad_request, hdrs, "" in
+    Server.respond_string ~headers ~status ~body ()
 
   let conn_closed _id =
     (* TODO *)
