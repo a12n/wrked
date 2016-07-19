@@ -1,6 +1,8 @@
 module Server_log = (val Logs.src_log (Logs.Src.create "server") : Logs.LOG)
 
 module Main (Server : Cohttp_lwt.Server) = struct
+  open Wrk
+
   let callback _id request _body =
     let status, headers, body =
       let path = Cohttp.Request.uri request |> Uri.path in
