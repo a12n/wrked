@@ -3,6 +3,20 @@ module Server_log = (val Logs.src_log (Logs.Src.create "server") : Logs.LOG)
 module Main (Server : Cohttp_lwt.Server) = struct
   open Wrk
 
+  let filename {Workout.name; sport; _} =
+    "workout-" ^
+    (match sport with
+     | Some sport -> Workout.Sport.to_string sport ^ "-"
+     | None       -> "") ^
+    (match name with
+     | Some name -> name
+     | None      -> "") ^
+    ".fit"
+
+  let content_disposition fname = "attachment; filename=" ^ fname
+
+  let content_type = "application/vnd.ant.fit"
+
   let callback _id request _body =
     let status, headers, body =
       let path = Cohttp.Request.uri request |> Uri.path in
