@@ -1,0 +1,5 @@
+version = "0.0.1"
+description = "Workout description parser/formatter library"
+requires = "batteries"
+archive(byte) = "wrk.cma"
+archive(native) = "wrk.cmxa"
