@@ -26,6 +26,7 @@ install-lib: lib
 		_build/wrk$(EXT_LIB)	\
 		_build/wrk.cma	\
 		_build/wrk.cmi	\
+		_build/wrk.cmx	\
 		_build/wrk.cmxa
 
 uninstall-lib:
