@@ -10,7 +10,11 @@ module Main (Server : Cohttp_lwt.Server) = struct
      | None       -> "") ^
     (match name with
      | Some name -> name
-     | None      -> "") ^
+     | None ->
+       let {Unix.tm_year; tm_mon; tm_mday;
+            tm_hour; tm_min; tm_sec} = Unix.(gmtime (time ())) in
+       Printf.sprintf "%04d%02d%02dT%02d%02d%02dZ"
+         (tm_year + 1900) (tm_mon + 1) tm_mday tm_hour tm_min tm_sec) ^
     ".fit"
 
   let content_disposition fname = "attachment; filename=" ^ fname
