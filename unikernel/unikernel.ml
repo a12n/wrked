@@ -1,3 +1,5 @@
+module Server_log = (val Logs.src_log (Logs.Src.create "server") : Logs.LOG)
+
 module Main (Server : Cohttp_lwt.Server) = struct
   let callback _id _request _body =
     (* TODO *)
