@@ -1,5 +1,15 @@
 <parser.ml>: warn(-A)
+
+<lexer.cmx>: for-pack(Wrk)
+<non_empty_list.cmx>: for-pack(Wrk)
+<parser.cmx>: for-pack(Wrk)
+<repr.cmx>: for-pack(Wrk)
+<workout.cmx>: for-pack(Wrk)
+
 <test.*>: package(oUnit)
+
 true: package(batteries)
 true: safe_string
 true: use_menhir
+
+<wrk2il.*>: package(wrk)

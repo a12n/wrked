@@ -1,4 +1,5 @@
 open Batteries
+open Wrk
 
 let parse_args () =
   let name = ref None in

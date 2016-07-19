@@ -1,11 +1,14 @@
 OCAMLBUILD_FLAGS ?=
-OCAMLBUILD_FLAGS += -cflag -safe-string
-OCAMLBUILD_FLAGS += -cflags -w,+A-32-34-44
 OCAMLBUILD_FLAGS += -use-ocamlfind
 
-.PHONY: all app clean install test top
+OCAML_LIB_DIR != ocamlc -where
 
-all: app
+include $(OCAML_LIB_DIR)/Makefile.config
+
+.PHONY: app lib clean install-app install-lib test uninstall-lib utop
+
+lib:
+	ocamlbuild $(OCAMLBUILD_FLAGS) wrk.cma wrk.cmxa
 
 app:
 	ocamlbuild $(OCAMLBUILD_FLAGS) wrk2il.native
@@ -14,12 +17,23 @@ clean:
 	ocamlbuild $(OCAMLBUILD_FLAGS) -clean
 	rm -f qtest.targets.log
 
-install: app
+install-app: app
 	install -D -s wrk2il.native $(DESTDIR)/bin/wrk2il
+
+install-lib: lib
+	ocamlfind install wrk	\
+		META	\
+		_build/wrk$(EXT_LIB)	\
+		_build/wrk.cma	\
+		_build/wrk.cmi	\
+		_build/wrk.cmxa
+
+uninstall-lib:
+	ocamlfind remove wrk
 
 test:
 	ocamlbuild $(OCAMLBUILD_FLAGS) test.byte
 	@./test.byte
 
-top: app
-	utop -I _build/ -require batteries
+utop: lib
+	utop -I _build/
