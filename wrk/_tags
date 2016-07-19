@@ -8,3 +8,5 @@ true: use_menhir
 <parser.cmx>: for-pack(Wrk)
 <repr.cmx>: for-pack(Wrk)
 <workout.cmx>: for-pack(Wrk)
+
+<test.*>: package(oUnit)

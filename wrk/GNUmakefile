@@ -26,6 +26,8 @@ uninstall:
 	ocamlfind remove wrk
 
 test:
+	ocamlbuild $(OCAMLBUILD_FLAGS) test.byte
+	@./test.byte
 
 utop: lib
 	utop -I _build/
