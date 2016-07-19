@@ -1,4 +1,5 @@
 <parser.ml>: warn(-A)
 <test.*>: package(oUnit)
 true: package(batteries)
+true: safe_string
 true: use_menhir
