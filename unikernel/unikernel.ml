@@ -19,13 +19,17 @@ module Main (Server : Cohttp_lwt.Server) = struct
 
   let callback _id request _body =
     let status, headers, body =
-      let path = Cohttp.Request.uri request |> Uri.path in
-      let wrk = String.(sub path 1 (length path - 1)) |> Uri.pct_decode in
-      let hdrs = Cohttp.Header.init () in
-      match Wrk.Repr.from_string wrk with
-      | _workout                   -> `OK, hdrs, ""
-      | exception Wrk.Lexer.Error  -> `Bad_request, hdrs, ""
-      | exception Wrk.Parser.Error -> `Bad_request, hdrs, "" in
+      try
+        let path = Cohttp.Request.uri request |> Uri.path in
+        let wrk = String.(sub path 1 (length path - 1)) |> Uri.pct_decode in
+        let workout = Repr.from_string wrk in
+        `OK,
+        Cohttp.Header.of_list
+          [ "content-disposition", content_disposition (filename workout);
+            "content-type", content_type ],
+        Repr.to_string workout
+      with Lexer.Error | Parser.Error ->
+        `Bad_request, Cohttp.Header.init (), "" in
     Server.respond_string ~headers ~status ~body ()
 
   let conn_closed _id =
