@@ -28,13 +28,13 @@ module Main (Server : Cohttp_lwt.Server) = struct
         let wrk = String.(sub path 1 (length path - 1)) |> Uri.pct_decode in
         let workout = Repr.from_string wrk in
         `OK,
-        Cohttp.Header.of_list
-          [ "content-disposition", content_disposition (filename workout);
-            "content-type", content_type ],
+        Some (Cohttp.Header.of_list
+                [ "content-disposition", content_disposition (filename workout);
+                  "content-type", content_type ]),
         Repr.to_string workout
       with Lexer.Error | Parser.Error ->
-        `Bad_request, Cohttp.Header.init (), "" in
-    Server.respond_string ~headers ~status ~body ()
+        `Bad_request, None, "" in
+    Server.respond_string ?headers ~status ~body ()
 
   let conn_closed _id =
     (* TODO *)
