@@ -521,7 +521,7 @@ value<fit::WorkoutStepMesg>(istream& input)
 void
 il2fit(istream& input, iostream& output)
 {
-    fit::Encode encode;
+    fit::Encode encode(fit::ProtocolVersion::V10);
 
     encode.Open(output);
 
