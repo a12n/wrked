@@ -46,7 +46,7 @@ module Speed = struct
   type t = float
   type zone = int
 
-  let of_float = restricted (0.0, 100.0)
+  let of_float = restricted (1.0, 100.0)
       (Invalid_argument "Workout.Speed.of_float")
 
   let zone_of_int = restricted (1, 10)
@@ -59,7 +59,7 @@ module Cadence = struct
   type t = int
   type zone = int
 
-  let of_int = restricted (0, 500)
+  let of_int = restricted (1, 500)
       (Invalid_argument "Workout.Cadence.of_int")
 
   (* TODO: Max cadence zone? *)
@@ -72,10 +72,10 @@ module Heart_rate = struct
   type percent = int
   type zone = int
 
-  let absolute_of_int = restricted (0, 255)
+  let absolute_of_int = restricted (1, 255)
       (Invalid_argument "Workout.Heart_rate.absolute_of_int")
 
-  let percent_of_int = restricted (0, 100)
+  let percent_of_int = restricted (1, 100)
       (Invalid_argument "Workout.Heart_rate.percent_of_int")
 
   let zone_of_int = restricted (1, 5)
@@ -90,10 +90,10 @@ module Power = struct
   type percent = int
   type zone = int
 
-  let absolute_of_int = restricted (0, 10000)
+  let absolute_of_int = restricted (1, 10000)
       (Invalid_argument "Workout.Power.absolute_of_int")
 
-  let percent_of_int = restricted (0, 1000)
+  let percent_of_int = restricted (1, 1000)
       (Invalid_argument "Workout.Power.percent_of_int")
 
   let zone_of_int = restricted (1, 7)
@@ -110,13 +110,13 @@ module Condition = struct
   type distance = int
   type time = int
 
-  let calories_of_int = restricted (0, max_int)
+  let calories_of_int = restricted (1, max_int)
       (Invalid_argument "Workout.Condition.calories_of_int")
 
-  let distance_of_int = restricted (0, max_int)
+  let distance_of_int = restricted (1, max_int)
       (Invalid_argument "Workout.Condition.distance_of_int")
 
-  let time_of_int = restricted (0, max_int)
+  let time_of_int = restricted (1, max_int)
       (Invalid_argument "Workout.Condition.time_of_int")
 
   type t = Time of time
