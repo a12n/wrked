@@ -1,7 +1,5 @@
 type 'a non_empty_list = 'a * 'a list
 
-let non_empty_list_to_list (x, xs) = x :: xs
-
 module Capability = struct
   type t =
     | Speed
@@ -196,9 +194,9 @@ module Step = struct
           | Some duration -> Condition.caps duration
           | None -> [])
           (match target with Some target -> Target.caps target | None -> [])
-    | Repeat { condition; steps } ->
+    | Repeat { condition; steps = step0, steps } ->
         List.append (Repeat.caps condition)
-          (non_empty_list_to_list steps |> List.map caps |> List.flatten)
+          (step0 :: steps |> List.map caps |> List.flatten)
 end
 
 type t = {
@@ -208,6 +206,5 @@ type t = {
   steps : Step.t non_empty_list;
 }
 
-let caps { steps; _ } =
-  non_empty_list_to_list steps
-  |> List.map Step.caps |> List.flatten |> List.sort_uniq compare
+let caps { steps = step0, steps; _ } =
+  step0 :: steps |> List.map Step.caps |> List.flatten |> List.sort_uniq compare
