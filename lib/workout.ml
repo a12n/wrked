@@ -51,7 +51,7 @@ module Sport = struct
     | "cycling" -> Cycling None
     | "running" -> Running None
     | "swimming" -> Swimming None
-    | _ -> invalid_arg "Workout.Sport.of_string"
+    | _ -> invalid_arg __FUNCTION__
 
   let to_string = function
     | Cycling _ -> "cycling"
@@ -67,12 +67,8 @@ module Speed = struct
   type t = float
   type zone = int
 
-  let of_float =
-    restricted (1.0, 100.0) (Invalid_argument "Workout.Speed.of_float")
-
-  let zone_of_int =
-    restricted (1, 10) (Invalid_argument "Workout.Speed.zone_of_int")
-
+  let of_float = restricted (1.0, 100.0) (Invalid_argument __FUNCTION__)
+  let zone_of_int = restricted (1, 10) (Invalid_argument __FUNCTION__)
   let of_float_kmph x = x *. 1000.0 /. 3600.0
 end
 
@@ -80,11 +76,10 @@ module Cadence = struct
   type t = int
   type zone = int
 
-  let of_int = restricted (1, 500) (Invalid_argument "Workout.Cadence.of_int")
+  let of_int = restricted (1, 500) (Invalid_argument __FUNCTION__)
 
   (* TODO: Max cadence zone? *)
-  let zone_of_int =
-    restricted (1, 10) (Invalid_argument "Workout.Cadence.zone_of_int")
+  let zone_of_int = restricted (1, 10) (Invalid_argument __FUNCTION__)
 end
 
 module Heart_rate = struct
@@ -92,14 +87,9 @@ module Heart_rate = struct
   type relative = int
   type zone = int
 
-  let absolute_of_int =
-    restricted (1, 255) (Invalid_argument "Workout.Heart_rate.absolute_of_int")
-
-  let relative_of_int =
-    restricted (1, 100) (Invalid_argument "Workout.Heart_rate.relative_of_int")
-
-  let zone_of_int =
-    restricted (1, 5) (Invalid_argument "Workout.Heart_rate.zone_of_int")
+  let absolute_of_int = restricted (1, 255) (Invalid_argument __FUNCTION__)
+  let relative_of_int = restricted (1, 100) (Invalid_argument __FUNCTION__)
+  let zone_of_int = restricted (1, 5) (Invalid_argument __FUNCTION__)
 
   type t = Absolute of absolute | Relative of relative
 end
@@ -109,14 +99,9 @@ module Power = struct
   type relative = int
   type zone = int
 
-  let absolute_of_int =
-    restricted (1, 10000) (Invalid_argument "Workout.Power.absolute_of_int")
-
-  let relative_of_int =
-    restricted (1, 1000) (Invalid_argument "Workout.Power.relative_of_int")
-
-  let zone_of_int =
-    restricted (1, 7) (Invalid_argument "Workout.Power.zone_of_int")
+  let absolute_of_int = restricted (1, 10000) (Invalid_argument __FUNCTION__)
+  let relative_of_int = restricted (1, 1000) (Invalid_argument __FUNCTION__)
+  let zone_of_int = restricted (1, 7) (Invalid_argument __FUNCTION__)
 
   type t = Absolute of absolute | Relative of relative
 end
@@ -127,16 +112,9 @@ module Condition = struct
   type distance = int
   type time = int
 
-  let calories_of_int =
-    restricted (1, max_int)
-      (Invalid_argument "Workout.Condition.calories_of_int")
-
-  let distance_of_int =
-    restricted (1, max_int)
-      (Invalid_argument "Workout.Condition.distance_of_int")
-
-  let time_of_int =
-    restricted (1, max_int) (Invalid_argument "Workout.Condition.time_of_int")
+  let calories_of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
+  let distance_of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
+  let time_of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
 
   type t =
     | Time of time
@@ -155,8 +133,7 @@ end
 module Repeat = struct
   type times = int
 
-  let times_of_int =
-    restricted (2, 1000000) (Invalid_argument "Workout.Repeat.times_of_int")
+  let times_of_int = restricted (2, 1000000) (Invalid_argument __FUNCTION__)
 
   type t = Times of times | Until of Condition.t
 
@@ -204,7 +181,7 @@ module Intensity = struct
     | "recovery" -> Rest
     | "interval" -> Active
     | "other" -> Other
-    | _ -> invalid_arg "Workout.Intensity.of_string"
+    | _ -> invalid_arg __FUNCTION__
 
   let to_string = function
     | Active -> "active"
