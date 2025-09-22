@@ -152,16 +152,16 @@ module Target = struct
     let range_of_pair (a, b) = if a < b then (a, b) else (b, a)
   end
 
-  module Cadence_value = Value (Cadence)
-  module Heart_rate_value = Value (Heart_rate)
-  module Power_value = Value (Power)
-  module Speed_value = Value (Speed)
+  module Cadence = Value (Cadence)
+  module Heart_rate = Value (Heart_rate)
+  module Power = Value (Power)
+  module Speed = Value (Speed)
 
   type t =
-    | Speed of Speed_value.t
-    | Heart_rate of Heart_rate_value.t
-    | Cadence of Cadence_value.t
-    | Power of Power_value.t
+    | Speed of Speed.t
+    | Heart_rate of Heart_rate.t
+    | Cadence of Cadence.t
+    | Power of Power.t
 
   let caps = function
     | Speed _ -> [ Capability.Speed ]

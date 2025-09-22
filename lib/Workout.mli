@@ -108,16 +108,16 @@ module Target : sig
     val range_of_pair : S.t * S.t -> range
   end
 
-  module Cadence_value : module type of Value (Cadence)
-  module Heart_rate_value : module type of Value (Heart_rate)
-  module Power_value : module type of Value (Power)
-  module Speed_value : module type of Value (Speed)
+  module Cadence : module type of Value (Cadence)
+  module Heart_rate : module type of Value (Heart_rate)
+  module Power : module type of Value (Power)
+  module Speed : module type of Value (Speed)
 
   type t =
-    | Speed of Speed_value.t
-    | Heart_rate of Heart_rate_value.t
-    | Cadence of Cadence_value.t
-    | Power of Power_value.t
+    | Speed of Speed.t
+    | Heart_rate of Heart_rate.t
+    | Cadence of Cadence.t
+    | Power of Power.t
 end
 
 module Intensity : sig
