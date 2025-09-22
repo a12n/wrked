@@ -37,10 +37,10 @@ module Sport = struct
     | BMX
     | Gravel
     | Commuting
-    | Mixed_Surface
+    | Mixed_surface
 
   type running = Treadmill | Street | Trail | Track | Indoor
-  type swimming = Lap | Open_Water
+  type swimming = Lap | Open_water
 
   type t =
     | Cycling of cycling option
