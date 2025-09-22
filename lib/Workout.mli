@@ -129,6 +129,7 @@ end
 module Step : sig
   type single = {
     name : string option;
+    descr : string option;
     duration : Condition.t option;
     target : Target.t option;
     intensity : Intensity.t option;
