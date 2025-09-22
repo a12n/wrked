@@ -218,6 +218,7 @@ end
 
 type t = {
   name : string option;
+  descr : string option;
   sport : Sport.t option;
   steps : Step.t non_empty_list;
 }
