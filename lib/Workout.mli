@@ -139,6 +139,20 @@ module Step : sig
   and t = Single of single | Repeat of repeat
 end
 
+module Capabilities : sig
+  type t = {
+    speed : bool;
+    heart_rate : bool;
+    distance : bool;
+    cadence : bool;
+    power : bool;
+    grade : bool;
+    resistance : bool;
+  }
+
+  val zero : t
+end
+
 type t = {
   name : string option;
   descr : string option;
@@ -146,19 +160,4 @@ type t = {
   steps : Step.t non_empty_list;
 }
 
-(* {2 Capabilities flags} *)
-
-module Capability : sig
-  type t =
-    | Speed
-    | Heart_rate
-    | Distance
-    | Cadence
-    | Power
-    | Grade
-    | Resistance
-
-  val to_int32 : t -> int32
-end
-
-val caps : t -> Capability.t list
+val caps : t -> Capabilities.t

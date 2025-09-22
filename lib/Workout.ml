@@ -1,24 +1,37 @@
 type 'a non_empty_list = 'a * 'a list
 
-module Capability = struct
-  type t =
-    | Speed
-    | Heart_rate
-    | Distance
-    | Cadence
-    | Power
-    | Grade
-    | Resistance
+module Capabilities = struct
+  type t = {
+    speed : bool;
+    heart_rate : bool;
+    distance : bool;
+    cadence : bool;
+    power : bool;
+    grade : bool;
+    resistance : bool;
+  }
 
-  (* Values from FIT SDK *)
-  let to_int32 = function
-    | Speed -> 0x00000080l
-    | Heart_rate -> 0x00000100l
-    | Distance -> 0x00000200l
-    | Cadence -> 0x00000400l
-    | Power -> 0x00000800l
-    | Grade -> 0x00001000l
-    | Resistance -> 0x00002000l
+  let zero =
+    {
+      speed = false;
+      heart_rate = false;
+      distance = false;
+      cadence = false;
+      power = false;
+      grade = false;
+      resistance = false;
+    }
+
+  let logor n m =
+    {
+      speed = n.speed || m.speed;
+      heart_rate = n.heart_rate || m.heart_rate;
+      distance = n.distance || m.distance;
+      cadence = n.cadence || m.cadence;
+      power = n.power || m.power;
+      grade = n.grade || m.grade;
+      resistance = n.resistance || m.resistance;
+    }
 end
 
 module Sport = struct
@@ -116,10 +129,10 @@ module Condition = struct
     | Power of (relation * Power.t)
 
   let caps = function
-    | Distance _ -> [ Capability.Distance ]
-    | Heart_rate _ -> [ Capability.Heart_rate ]
-    | Power _ -> [ Capability.Power ]
-    | Calories _ | Time _ -> []
+    | Distance _ -> Capabilities.{ zero with distance = true }
+    | Heart_rate _ -> Capabilities.{ zero with heart_rate = true }
+    | Power _ -> Capabilities.{ zero with power = true }
+    | Calories _ | Time _ -> Capabilities.zero
 end
 
 module Repeat = struct
@@ -129,7 +142,9 @@ module Repeat = struct
 
   type t = Times of times | Until of Condition.t
 
-  let caps = function Times _ -> [] | Until c -> Condition.caps c
+  let caps = function
+    | Times _ -> Capabilities.zero
+    | Until c -> Condition.caps c
 end
 
 module Target = struct
@@ -156,10 +171,10 @@ module Target = struct
     | Power of Power.t
 
   let caps = function
-    | Speed _ -> [ Capability.Speed ]
-    | Heart_rate _ -> [ Capability.Heart_rate ]
-    | Cadence _ -> [ Capability.Cadence ]
-    | Power _ -> [ Capability.Power ]
+    | Speed _ -> Capabilities.{ zero with speed = true }
+    | Heart_rate _ -> Capabilities.{ zero with heart_rate = true }
+    | Cadence _ -> Capabilities.{ zero with cadence = true }
+    | Power _ -> Capabilities.{ zero with power = true }
 end
 
 module Intensity = struct
@@ -189,14 +204,16 @@ module Step = struct
 
   let rec caps = function
     | Single { duration; target; _ } ->
-        List.append
+        Capabilities.logor
           (match duration with
           | Some duration -> Condition.caps duration
-          | None -> [])
-          (match target with Some target -> Target.caps target | None -> [])
+          | None -> Capabilities.zero)
+          (match target with
+          | Some target -> Target.caps target
+          | None -> Capabilities.zero)
     | Repeat { condition; steps = step0, steps } ->
-        List.append (Repeat.caps condition)
-          (step0 :: steps |> List.map caps |> List.flatten)
+        Capabilities.logor (Repeat.caps condition)
+          (List.fold_left Capabilities.logor (caps step0) (List.map caps steps))
 end
 
 type t = {
@@ -207,4 +224,4 @@ type t = {
 }
 
 let caps { steps = step0, steps; _ } =
-  step0 :: steps |> List.map Step.caps |> List.flatten |> List.sort_uniq compare
+  List.fold_left Capabilities.logor (Step.caps step0) (List.map Step.caps steps)
