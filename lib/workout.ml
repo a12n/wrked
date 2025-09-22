@@ -24,20 +24,46 @@ module Capability = struct
 end
 
 module Sport = struct
-  type t = Cycling | Running | Swimming | Walking
+  module Cycling = struct
+    type t =
+      | Spin
+      | Indoor
+      | Road
+      | Mountain
+      | Downhill
+      | Recumbent
+      | Cyclocross
+      | Hand
+      | Track
+      | BMX
+      | Gravel
+      | Commuting
+      | Mixed_Surface
+  end
+
+  module Running = struct
+    type t = Treadmill | Street | Trail | Track | Indoor
+  end
+
+  module Swimming = struct
+    type t = Lap | Open_Water
+  end
+
+  type t =
+    | Cycling of Cycling.t option
+    | Running of Running.t option
+    | Swimming of Swimming.t option
 
   let of_string = function
-    | "cycling" -> Cycling
-    | "running" -> Running
-    | "swimming" -> Swimming
-    | "walking" -> Walking
+    | "cycling" -> Cycling None
+    | "running" -> Running None
+    | "swimming" -> Swimming None
     | _ -> invalid_arg "Workout.Sport.of_string"
 
   let to_string = function
-    | Cycling -> "cycling"
-    | Running -> "running"
-    | Swimming -> "swimming"
-    | Walking -> "walking"
+    | Cycling _ -> "cycling"
+    | Running _ -> "running"
+    | Swimming _ -> "swimming"
 end
 
 let restricted (min, max) exn = function
