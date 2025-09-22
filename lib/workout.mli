@@ -128,7 +128,7 @@ module Target : sig
 end
 
 module Intensity : sig
-  type t = Warm_up | Active | Rest | Cool_down
+  type t = Active | Rest | Warmup | Cooldown | Recovery | Interval | Other
 
   val of_string : string -> t
   val to_string : t -> string

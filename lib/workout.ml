@@ -201,20 +201,26 @@ module Target = struct
 end
 
 module Intensity = struct
-  type t = Warm_up | Active | Rest | Cool_down
+  type t = Active | Rest | Warmup | Cooldown | Recovery | Interval | Other
 
   let of_string = function
-    | "warmup" -> Warm_up
     | "active" -> Active
     | "rest" -> Rest
-    | "cooldown" -> Cool_down
+    | "warmup" -> Warmup
+    | "cooldown" -> Cooldown
+    | "recovery" -> Rest
+    | "interval" -> Active
+    | "other" -> Other
     | _ -> invalid_arg "Workout.Intensity.of_string"
 
   let to_string = function
-    | Warm_up -> "warmup"
     | Active -> "active"
     | Rest -> "rest"
-    | Cool_down -> "cooldown"
+    | Warmup -> "warmup"
+    | Cooldown -> "cooldown"
+    | Recovery -> "recovery"
+    | Interval -> "interval"
+    | Other -> "other"
 end
 
 module Step = struct
