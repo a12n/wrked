@@ -70,7 +70,7 @@ module Power : sig
 end
 
 module Condition : sig
-  type order = Less | Greater
+  type relation = Less | Greater
   type calories = private int (* kcal *)
   type distance = private int (* m *)
   type time = private int (* s *)
@@ -82,9 +82,9 @@ module Condition : sig
   type t =
     | Time of time
     | Distance of distance
-    | Heart_rate of (order * Heart_rate.t)
+    | Heart_rate of (relation * Heart_rate.t)
     | Calories of calories
-    | Power of (order * Power.t)
+    | Power of (relation * Power.t)
 end
 
 module Repeat : sig
