@@ -47,12 +47,6 @@ module Sport = struct
     | Running of running option
     | Swimming of swimming option
 
-  let of_string = function
-    | "cycling" -> Cycling None
-    | "running" -> Running None
-    | "swimming" -> Swimming None
-    | _ -> invalid_arg __FUNCTION__
-
   let to_string = function
     | Cycling _ -> "cycling"
     | Running _ -> "running"
@@ -172,16 +166,6 @@ end
 
 module Intensity = struct
   type t = Active | Rest | Warmup | Cooldown | Recovery | Interval | Other
-
-  let of_string = function
-    | "active" -> Active
-    | "rest" -> Rest
-    | "warmup" -> Warmup
-    | "cooldown" -> Cooldown
-    | "recovery" -> Rest
-    | "interval" -> Active
-    | "other" -> Other
-    | _ -> invalid_arg __FUNCTION__
 
   let to_string = function
     | Active -> "active"
