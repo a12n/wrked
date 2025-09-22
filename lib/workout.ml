@@ -54,7 +54,7 @@ module Speed = struct
   let zone_of_int =
     restricted (1, 10) (Invalid_argument "Workout.Speed.zone_of_int")
 
-  let from_kmph x = x *. 1000.0 /. 3600.0
+  let of_float_kmph x = x *. 1000.0 /. 3600.0
 end
 
 module Cadence = struct
