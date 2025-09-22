@@ -1,3 +1,7 @@
+type 'a non_empty_list = 'a * 'a list
+
+let non_empty_list_to_list (x, xs) = x :: xs
+
 module Capability = struct
   type t = Speed
          | Heart_rate
@@ -201,7 +205,7 @@ module Step = struct
     intensity : Intensity.t option;
   } and repeat = {
     condition : Repeat.t;
-    steps     : t Non_empty_list.t;
+    steps     : t non_empty_list;
   } and t = Single of single
           | Repeat of repeat
 
@@ -217,17 +221,17 @@ module Step = struct
     | Repeat {condition; steps} ->
       List.append
         (Repeat.caps condition)
-        (Non_empty_list.to_list steps |>
+        (non_empty_list_to_list steps |>
          List.map caps |> List.flatten)
 end
 
 type t = {
   name  : string option;
   sport : Sport.t option;
-  steps : Step.t Non_empty_list.t;
+  steps : Step.t non_empty_list;
 }
 
 let caps {steps; _} =
-  Non_empty_list.to_list steps |>
+  non_empty_list_to_list steps |>
   List.map Step.caps |> List.flatten |>
   List.sort_uniq compare

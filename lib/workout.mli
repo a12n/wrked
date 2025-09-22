@@ -1,3 +1,5 @@
+type 'a non_empty_list = 'a * 'a list
+
 module Sport : sig
   type t = Cycling
          | Running
@@ -121,7 +123,7 @@ module Step : sig
     intensity : Intensity.t option;
   } and repeat = {
     condition : Repeat.t;
-    steps     : t Non_empty_list.t;
+    steps     : t non_empty_list;
   } and t = Single of single
           | Repeat of repeat
 end
@@ -129,7 +131,7 @@ end
 type t = {
   name  : string option;
   sport : Sport.t option;
-  steps : Step.t Non_empty_list.t;
+  steps : Step.t non_empty_list;
 }
 
 (* {2 Capabilities flags} *)
