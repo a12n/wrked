@@ -96,36 +96,36 @@ end
 
 module Heart_rate = struct
   type absolute = int
-  type percent = int
+  type relative = int
   type zone = int
 
   let absolute_of_int =
     restricted (1, 255) (Invalid_argument "Workout.Heart_rate.absolute_of_int")
 
-  let percent_of_int =
-    restricted (1, 100) (Invalid_argument "Workout.Heart_rate.percent_of_int")
+  let relative_of_int =
+    restricted (1, 100) (Invalid_argument "Workout.Heart_rate.relative_of_int")
 
   let zone_of_int =
     restricted (1, 5) (Invalid_argument "Workout.Heart_rate.zone_of_int")
 
-  type t = Absolute of absolute | Percent of percent
+  type t = Absolute of absolute | Relative of relative
 end
 
 module Power = struct
   type absolute = int
-  type percent = int
+  type relative = int
   type zone = int
 
   let absolute_of_int =
     restricted (1, 10000) (Invalid_argument "Workout.Power.absolute_of_int")
 
-  let percent_of_int =
-    restricted (1, 1000) (Invalid_argument "Workout.Power.percent_of_int")
+  let relative_of_int =
+    restricted (1, 1000) (Invalid_argument "Workout.Power.relative_of_int")
 
   let zone_of_int =
     restricted (1, 7) (Invalid_argument "Workout.Power.zone_of_int")
 
-  type t = Absolute of absolute | Percent of percent
+  type t = Absolute of absolute | Relative of relative
 end
 
 module Condition = struct
