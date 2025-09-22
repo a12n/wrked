@@ -9,7 +9,7 @@ end
 
 module Speed : sig
   type t = private float (* m/s *)
-  type zone = private int
+  type zone = private int (* 1–10 *)
 
   val of_float : float -> t
   val zone_of_int : int -> zone
@@ -18,7 +18,7 @@ end
 
 module Cadence : sig
   type t = private int (* rpm *)
-  type zone = private int
+  type zone = private int (* 1–? *)
 
   val of_int : int -> t
   val zone_of_int : int -> zone
