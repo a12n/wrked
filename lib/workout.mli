@@ -1,35 +1,28 @@
 type 'a non_empty_list = 'a * 'a list
 
 module Sport : sig
-  module Cycling : sig
-    type t =
-      | Spin
-      | Indoor
-      | Road
-      | Mountain
-      | Downhill
-      | Recumbent
-      | Cyclocross
-      | Hand
-      | Track
-      | BMX
-      | Gravel
-      | Commuting
-      | Mixed_Surface
-  end
+  type cycling =
+    | Spin
+    | Indoor
+    | Road
+    | Mountain
+    | Downhill
+    | Recumbent
+    | Cyclocross
+    | Hand
+    | Track
+    | BMX
+    | Gravel
+    | Commuting
+    | Mixed_Surface
 
-  module Running : sig
-    type t = Treadmill | Street | Trail | Track | Indoor
-  end
-
-  module Swimming : sig
-    type t = Lap | Open_Water
-  end
+  type running = Treadmill | Street | Trail | Track | Indoor
+  type swimming = Lap | Open_Water
 
   type t =
-    | Cycling of Cycling.t option
-    | Running of Running.t option
-    | Swimming of Swimming.t option
+    | Cycling of cycling option
+    | Running of running option
+    | Swimming of swimming option
 
   val of_string : string -> t
   val to_string : t -> string
