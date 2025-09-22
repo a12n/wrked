@@ -32,6 +32,16 @@ module Capabilities = struct
       grade = n.grade || m.grade;
       resistance = n.resistance || m.resistance;
     }
+
+  (* Values from FIT SDK *)
+  let to_int c =
+    (if c.speed then 0x00000080 else 0)
+    lor (if c.heart_rate then 0x00000100 else 0)
+    lor (if c.distance then 0x00000200 else 0)
+    lor (if c.cadence then 0x00000400 else 0)
+    lor (if c.power then 0x00000800 else 0)
+    lor (if c.grade then 0x00001000 else 0)
+    lor if c.resistance then 0x00002000 else 0
 end
 
 module Sport = struct
