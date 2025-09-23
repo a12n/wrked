@@ -189,26 +189,22 @@ module Target = struct
     | Power _ -> Capabilities.{ zero with power = true }
 end
 
-module Intensity = struct
-  type t = Active | Rest | Warmup | Cooldown | Recovery | Interval | Other
-
-  let to_string = function
-    | Active -> "active"
-    | Rest -> "rest"
-    | Warmup -> "warmup"
-    | Cooldown -> "cooldown"
-    | Recovery -> "recovery"
-    | Interval -> "interval"
-    | Other -> "other"
-end
-
 module Step = struct
+  type intensity =
+    | Active
+    | Rest
+    | Warmup
+    | Cooldown
+    | Recovery
+    | Interval
+    | Other
+
   type single = {
     name : string option;
     descr : string option;
     duration : Condition.t option;
     target : Target.t option;
-    intensity : Intensity.t option;
+    intensity : intensity option;
   }
 
   and repeat = { condition : Repeat.t; steps : t non_empty_list }

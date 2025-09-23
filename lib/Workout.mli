@@ -121,19 +121,22 @@ module Target : sig
     | Power of Power.t
 end
 
-module Intensity : sig
-  type t = Active | Rest | Warmup | Cooldown | Recovery | Interval | Other
-
-  val to_string : t -> string
-end
-
 module Step : sig
+  type intensity =
+    | Active
+    | Rest
+    | Warmup
+    | Cooldown
+    | Recovery
+    | Interval
+    | Other
+
   type single = {
     name : string option;
     descr : string option;
     duration : Condition.t option;
     target : Target.t option;
-    intensity : Intensity.t option;
+    intensity : intensity option;
   }
 
   and repeat = { condition : Repeat.t; steps : t non_empty_list }
