@@ -1,5 +1,19 @@
 type 'a non_empty_list = 'a * 'a list
 
+module Capabilities : sig
+  type t = {
+    speed : bool;
+    heart_rate : bool;
+    distance : bool;
+    cadence : bool;
+    power : bool;
+    grade : bool;
+    resistance : bool;
+  }
+
+  val zero : t
+end
+
 module Sport : sig
   type cycling =
     | Spin
@@ -92,6 +106,8 @@ module Condition : sig
     | Heart_rate of (relation * Heart_rate.t)
     | Calories of Calories.t
     | Power of (relation * Power.t)
+
+  val caps : t -> Capabilities.t
 end
 
 module Repeat : sig
@@ -100,6 +116,8 @@ module Repeat : sig
   val times_of_int : int -> times
 
   type t = Times of times | Until of Condition.t
+
+  val caps : t -> Capabilities.t
 end
 
 module Target : sig
@@ -125,6 +143,8 @@ module Target : sig
     | Heart_rate of Heart_rate.t
     | Cadence of Cadence.t
     | Power of Power.t
+
+  val caps : t -> Capabilities.t
 end
 
 module Step : sig
@@ -147,20 +167,8 @@ module Step : sig
 
   and repeat = { condition : Repeat.t; steps : t non_empty_list }
   and t = Single of single | Repeat of repeat
-end
 
-module Capabilities : sig
-  type t = {
-    speed : bool;
-    heart_rate : bool;
-    distance : bool;
-    cadence : bool;
-    power : bool;
-    grade : bool;
-    resistance : bool;
-  }
-
-  val zero : t
+  val caps : t -> Capabilities.t
 end
 
 type t = {
