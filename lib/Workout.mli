@@ -33,7 +33,6 @@ module Speed : sig
   type zone = private int (* 1–10 *)
 
   val of_float : float -> t
-  val of_float_kmph : float -> t
   val zone_of_int : int -> zone
 end
 

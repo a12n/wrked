@@ -83,7 +83,6 @@ module Speed = struct
   type zone = int
 
   let of_float = restricted (1.0, 100.0) (Invalid_argument __FUNCTION__)
-  let of_float_kmph x = of_float (x *. 1000.0 /. 3600.0)
   let zone_of_int = restricted (1, 10) (Invalid_argument __FUNCTION__)
 end
 
