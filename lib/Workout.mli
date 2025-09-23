@@ -45,27 +45,29 @@ module Cadence : sig
 end
 
 module Heart_rate : sig
-  type absolute = private int (* bpm *)
-  type relative = private int (* 0-100 % of max *)
+  type t = private
+    | Absolute of int (* bpm *)
+    | Relative of int (* 0-100 % of max *)
+
   type zone = private int (* 1-5 *)
 
-  val absolute_of_int : int -> absolute
-  val relative_of_int : int -> relative
+  val of_int : int -> t
+  val of_int_relative : int -> t
   val zone_of_int : int -> zone
-
-  type t = Absolute of absolute | Relative of relative
 end
 
 module Power : sig
-  type absolute = private int (* W *)
-  type relative = private int (* 0-1000 % of FTP *)
+  type t = private
+    | Absolute of int (* W *)
+    | Relative of int (* 0-1000 % of FTP *)
+
   type zone = private int (* 1-7 *)
 
-  val absolute_of_int : int -> absolute
-  val relative_of_int : int -> relative
+  val of_int : int -> t
+  val of_int_relative : int -> t
   val zone_of_int : int -> zone
+end
 
-  type t = Absolute of absolute | Relative of relative
 end
 
 module Condition : sig

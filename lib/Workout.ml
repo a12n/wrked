@@ -97,27 +97,30 @@ module Cadence = struct
 end
 
 module Heart_rate = struct
-  type absolute = int
-  type relative = int
+  type t = Absolute of int | Relative of int
   type zone = int
 
-  let absolute_of_int = restricted (1, 255) (Invalid_argument __FUNCTION__)
-  let relative_of_int = restricted (1, 100) (Invalid_argument __FUNCTION__)
-  let zone_of_int = restricted (1, 5) (Invalid_argument __FUNCTION__)
+  let of_int bpm =
+    Absolute (restricted (1, 255) (Invalid_argument __FUNCTION__) bpm)
 
-  type t = Absolute of absolute | Relative of relative
+  let of_int_relative pct =
+    Relative (restricted (1, 100) (Invalid_argument __FUNCTION__) pct)
+
+  let zone_of_int = restricted (1, 5) (Invalid_argument __FUNCTION__)
 end
 
 module Power = struct
-  type absolute = int
-  type relative = int
+  type t = Absolute of int | Relative of int
   type zone = int
 
-  let absolute_of_int = restricted (1, 10000) (Invalid_argument __FUNCTION__)
-  let relative_of_int = restricted (1, 1000) (Invalid_argument __FUNCTION__)
+  let of_int w =
+    Absolute (restricted (1, 10000) (Invalid_argument __FUNCTION__) w)
+
+  let of_int_relative pct =
+    Relative (restricted (1, 1000) (Invalid_argument __FUNCTION__) pct)
+
   let zone_of_int = restricted (1, 7) (Invalid_argument __FUNCTION__)
 
-  type t = Absolute of absolute | Relative of relative
 end
 
 module Condition = struct
