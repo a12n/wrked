@@ -165,7 +165,7 @@ module Step : sig
     intensity : intensity option;
   }
 
-  and repeat = { condition : Repeat.t; steps : t non_empty_list }
+  and repeat = { repeat : Repeat.t; steps : t non_empty_list }
   and t = Single of single | Repeat of repeat
 
   val caps : t -> Capabilities.t

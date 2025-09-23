@@ -212,7 +212,7 @@ module Step = struct
     intensity : intensity option;
   }
 
-  and repeat = { condition : Repeat.t; steps : t non_empty_list }
+  and repeat = { repeat : Repeat.t; steps : t non_empty_list }
   and t = Single of single | Repeat of repeat
 
   let rec caps = function
@@ -224,8 +224,8 @@ module Step = struct
           (match target with
           | Some target -> Target.caps target
           | None -> Capabilities.zero)
-    | Repeat { condition; steps = step0, steps } ->
-        Capabilities.logor (Repeat.caps condition)
+    | Repeat { repeat; steps = step0, steps } ->
+        Capabilities.logor (Repeat.caps repeat)
           (List.fold_left Capabilities.logor (caps step0) (List.map caps steps))
 end
 
