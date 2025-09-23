@@ -67,11 +67,6 @@ module Sport = struct
     | Cycling of cycling option
     | Running of running option
     | Swimming of swimming option
-
-  let to_string = function
-    | Cycling _ -> "cycling"
-    | Running _ -> "running"
-    | Swimming _ -> "swimming"
 end
 
 let restricted (min, max) exn = function

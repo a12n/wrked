@@ -23,9 +23,6 @@ module Sport : sig
     | Cycling of cycling option
     | Running of running option
     | Swimming of swimming option
-
-  val of_string : string -> t
-  val to_string : t -> string
 end
 
 module Speed : sig
