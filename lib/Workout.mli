@@ -68,23 +68,32 @@ module Power : sig
   val zone_of_int : int -> zone
 end
 
+module Time : sig
+  type t = private int (* s *)
+
+  val of_int : int -> t
+end
+
+module Distance : sig
+  type t = private int (* m *)
+
+  val of_int : int -> t
+end
+
+module Calories : sig
+  type t = private int (* kcal *)
+
+  val of_int : int -> t
 end
 
 module Condition : sig
   type relation = Less | Greater
-  type calories = private int (* kcal *)
-  type distance = private int (* m *)
-  type time = private int (* s *)
-
-  val calories_of_int : int -> calories
-  val distance_of_int : int -> distance
-  val time_of_int : int -> time
 
   type t =
-    | Time of time
-    | Distance of distance
+    | Time of Time.t
+    | Distance of Distance.t
     | Heart_rate of (relation * Heart_rate.t)
-    | Calories of calories
+    | Calories of Calories.t
     | Power of (relation * Power.t)
 end
 

@@ -120,24 +120,34 @@ module Power = struct
     Relative (restricted (1, 1000) (Invalid_argument __FUNCTION__) pct)
 
   let zone_of_int = restricted (1, 7) (Invalid_argument __FUNCTION__)
+end
 
+module Time = struct
+  type t = int
+
+  let of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
+end
+
+module Distance = struct
+  type t = int
+
+  let of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
+end
+
+module Calories = struct
+  type t = int
+
+  let of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
 end
 
 module Condition = struct
   type relation = Less | Greater
-  type calories = int
-  type distance = int
-  type time = int
-
-  let calories_of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
-  let distance_of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
-  let time_of_int = restricted (1, max_int) (Invalid_argument __FUNCTION__)
 
   type t =
-    | Time of time
-    | Distance of distance
+    | Time of Time.t
+    | Distance of Distance.t
     | Heart_rate of (relation * Heart_rate.t)
-    | Calories of calories
+    | Calories of Calories.t
     | Power of (relation * Power.t)
 
   let caps = function
