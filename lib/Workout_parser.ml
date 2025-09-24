@@ -21,6 +21,11 @@ let float =
 
 let number = float <|> (float_of_int <$> int)
 
+(* Time units/suffixes. *)
+let unit_h = lwsp *> string_ci "h"
+let unit_min = lwsp *> string_ci "min"
+let unit_s = lwsp *> option "s" (string_ci "s")
+
 module Sport = struct
   let cycling =
     lwsp
@@ -120,17 +125,15 @@ module Power = struct
 end
 
 module Time = struct
-  (* FIXME: no seconds part in "1 h" *)
-  (* TODO: "1.5 h" *)
   let t =
-    let h = lwsp *> string_ci "h" in
-    let min = lwsp *> string_ci "min" in
-    let s = lwsp *> option "s" (string_ci "s") in
     lift3
-      (fun h min s -> Workout.Time.of_int ((3600 * h) + (60 * min) + s))
-      (option 0 (lwsp *> int <* h))
-      (option 0 (lwsp *> int <* min))
-      (lwsp *> int <* s)
+      (fun h min s ->
+        let s_h = 3600.0 *. h |> Float.round |> Float.to_int in
+        let s_min = 60.0 *. min |> Float.round |> Float.to_int in
+        Workout.Time.of_int (s_h + s_min + s))
+      (option 0.0 (lwsp *> number <* unit_h))
+      (option 0.0 (lwsp *> number <* unit_min))
+      (option 0 (lwsp *> int <* unit_s))
 end
 
 module Distance = struct
