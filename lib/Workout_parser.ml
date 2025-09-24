@@ -285,20 +285,6 @@ module Step = struct
       <|> (Condition.t >>| fun c -> (Some c, None))
       <|> (Target.t >>| fun t -> (None, Some t)))
 
-  let t =
-    (* TODO *)
-    lwsp *> string_ci "TODO"
-    *> return
-         Workout.Step.(
-           Single
-             {
-               name = Some "TODO";
-               descr = Some "TODO";
-               duration = None;
-               target = None;
-               intensity = None;
-             })
-
   let non_empty_list step =
     let* list =
       lwsp *> char '[' *> sep_by1 (lwsp *> char ';') step <* lwsp <* char ']'
@@ -312,6 +298,12 @@ module Step = struct
       (fun repeat steps -> Workout.Step.{ repeat; steps })
       (lwsp *> char '(' *> Repeat.t <* lwsp <* char ')')
       (non_empty_list step)
+
+  let t =
+    fix (fun step ->
+        single
+        >>| (fun s -> Workout.Step.Single s)
+        <|> (repeat step >>| fun r -> Workout.Step.Repeat r))
 end
 
 let t =
