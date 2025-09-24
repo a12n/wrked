@@ -269,10 +269,16 @@ module Step = struct
            Workout.Step.{ name; descr = None; duration; target; intensity })
          (option None
             (lwsp *> quoted_string <* lwsp <* char ':' >>| Option.some))
-         (option None (lwsp *> intensity <* lwsp <* char ',' >>| Option.some))
-         (lwsp *> string_ci "open" >>| fun _ -> (None, None))
+         (option None (intensity <* lwsp <* char ',' >>| Option.some))
+         (lwsp
+         *> (string_ci "open"
+            >>| (fun _ -> (None, None))
+            <|> ( both Condition.t (lwsp *> char ',' *> Target.t)
+                >>| fun (c, t) -> (Some c, Some t) )
+            <|> (Condition.t >>| fun c -> (Some c, None))
+            <|> (Target.t >>| fun t -> (None, Some t))))
 end
 
 let t =
   let consume = Consume.All in
-  parse_string ~consume (Target.t <* lwsp <* end_of_input)
+  parse_string ~consume (Step.single <* lwsp <* end_of_input)
