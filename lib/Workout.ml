@@ -57,6 +57,30 @@ module Sport = struct
     | Cycling of cycling option
     | Running of running option
     | Swimming of swimming option
+
+  let cycling_to_string = function
+    | Spin -> "spin"
+    | Indoor -> "indoor"
+    | Road -> "road"
+    | Mountain -> "mountain"
+    | Downhill -> "downhill"
+    | Recumbent -> "recumbent"
+    | Cyclocross -> "cyclocross"
+    | Hand -> "hand"
+    | Track -> "track"
+    | BMX -> "bmx"
+    | Gravel -> "gravel"
+    | Commuting -> "commuting"
+    | Mixed_surface -> "mixed_surface"
+
+  let running_to_string = function
+    | Treadmill -> "treadmill"
+    | Street -> "street"
+    | Trail -> "trail"
+    | Track -> "track"
+    | Indoor -> "indoor"
+
+  let swimming_to_string = function Lap -> "lap" | Open_water -> "open_water"
 end
 
 let restricted (min, max) exn = function
@@ -217,6 +241,15 @@ module Step = struct
     | Repeat { repeat; steps = step0, steps } ->
         Capabilities.logor (Repeat.caps repeat)
           (List.fold_left Capabilities.logor (caps step0) (List.map caps steps))
+
+  let intensity_to_string = function
+    | Active -> "active"
+    | Rest -> "rest"
+    | Warmup -> "warmup"
+    | Cooldown -> "cooldown"
+    | Recovery -> "recovery"
+    | Interval -> "interval"
+    | Other -> "other"
 end
 
 type t = {
