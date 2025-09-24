@@ -261,6 +261,16 @@ module Step = struct
          <|> string_ci "recovery" *> return Recovery
          <|> string_ci "interval" *> return Interval
          <|> string_ci "other" *> return Other)
+
+  let single =
+    lwsp
+    *> lift3
+         (fun name intensity (duration, target) ->
+           Workout.Step.{ name; descr = None; duration; target; intensity })
+         (option None
+            (lwsp *> quoted_string <* lwsp <* char ':' >>| Option.some))
+         (option None (lwsp *> intensity <* lwsp <* char ',' >>| Option.some))
+         (lwsp *> string_ci "open" >>| fun _ -> (None, None))
 end
 
 let t =
