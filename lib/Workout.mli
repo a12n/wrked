@@ -134,7 +134,7 @@ module Repeat : sig
 end
 
 module Target : sig
-  module Value : functor
+  module Make : functor
     (S : sig
        type t
        type zone
@@ -150,10 +150,10 @@ module Target : sig
     val to_buffer : Buffer.t -> t -> unit
   end
 
-  module Cadence : module type of Value (Cadence)
-  module Heart_rate : module type of Value (Heart_rate)
-  module Power : module type of Value (Power)
-  module Speed : module type of Value (Speed)
+  module Cadence : module type of Make (Cadence)
+  module Heart_rate : module type of Make (Heart_rate)
+  module Power : module type of Make (Power)
+  module Speed : module type of Make (Speed)
 
   type t =
     | Speed of Speed.t

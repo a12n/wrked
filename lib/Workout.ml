@@ -270,7 +270,7 @@ module Repeat = struct
 end
 
 module Target = struct
-  module Value (S : sig
+  module Make (S : sig
     type t
     type zone
 
@@ -293,10 +293,10 @@ module Target = struct
           S.to_buffer b h
   end
 
-  module Cadence = Value (Cadence)
-  module Heart_rate = Value (Heart_rate)
-  module Power = Value (Power)
-  module Speed = Value (Speed)
+  module Cadence = Make (Cadence)
+  module Heart_rate = Make (Heart_rate)
+  module Power = Make (Power)
+  module Speed = Make (Speed)
 
   type t =
     | Speed of Speed.t
