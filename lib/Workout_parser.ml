@@ -26,6 +26,25 @@ let unit_h = lwsp *> string_ci "h"
 let unit_min = lwsp *> string_ci "min"
 let unit_s = lwsp *> option "s" (string_ci "s")
 
+(* Speed units/suffixes. *)
+let unit_kmph = lwsp *> option "km/h" (string_ci "km/h")
+let unit_mps = lwsp *> string_ci "m/s"
+
+(* Cadence units. *)
+let unit_rpm = lwsp *> option "rpm" (string_ci "rpm")
+
+(* Heart rate and power units. *)
+let unit_bpm = lwsp *> option "bpm" (string_ci "bpm")
+let unit_pct = lwsp *> char '%'
+let unit_w = lwsp *> option "W" (string_ci "W")
+
+(* Distance units. *)
+let unit_km = lwsp *> string_ci "km"
+let unit_m = lwsp *> option "m" (string_ci "m")
+
+(* Calories units. *)
+let unit_kcal = lwsp *> option "kcal" (string_ci "kcal")
+
 module Sport = struct
   let cycling =
     lwsp
@@ -88,40 +107,33 @@ module Speed = struct
   let zone = lwsp *> int >>| Workout.Speed.zone_of_int
 
   let t =
-    let kmph = lwsp *> option "km/h" (string_ci "km/h") in
-    let mps = lwsp *> string_ci "m/s" in
     lwsp
     *> lift Workout.Speed.of_float
-         (number <* mps <|> (number <* kmph >>| ( *. ) (1000.0 /. 3600.0)))
+         (number <* unit_mps
+         <|> (number <* unit_kmph >>| ( *. ) (1000.0 /. 3600.0)))
 end
 
 module Cadence = struct
   let zone = lwsp *> int >>| Workout.Cadence.zone_of_int
-
-  let t =
-    let rpm = lwsp *> option "rpm" (string_ci "rpm") in
-    lift Workout.Cadence.of_int (lwsp *> int <* rpm)
+  let t = lwsp *> int <* unit_rpm >>| Workout.Cadence.of_int
 end
 
 module Heart_rate = struct
   let zone = lwsp *> int >>| Workout.Heart_rate.zone_of_int
 
   let t =
-    let bpm = lwsp *> option "bpm" (string_ci "bpm") in
-    let pct = lwsp *> char '%' in
     lwsp
-    *> Workout.Heart_rate.(
-         int <* pct >>| of_int_relative <|> (int <* bpm >>| of_int))
+    *> (int <* unit_pct >>| Workout.Heart_rate.of_int_relative
+       <|> (int <* unit_bpm >>| Workout.Heart_rate.of_int))
 end
 
 module Power = struct
   let zone = lwsp *> int >>| Workout.Power.zone_of_int
 
   let t =
-    let w = lwsp *> option "W" (string_ci "W") in
-    let pct = lwsp *> char '%' in
     lwsp
-    *> Workout.Power.(int <* pct >>| of_int_relative <|> (int <* w >>| of_int))
+    *> (int <* unit_pct >>| Workout.Power.of_int_relative
+       <|> (int <* unit_w >>| Workout.Power.of_int))
 end
 
 module Time = struct
@@ -138,16 +150,12 @@ end
 
 module Distance = struct
   let t =
-    let km = lwsp *> string_ci "km" in
-    let m = lwsp *> option "m" (string_ci "m") in
-    lift Workout.Distance.of_int
-      (lwsp *> (int <* km >>| ( * ) 1000 <|> (int <* m)))
+    lwsp *> (int <* unit_km >>| ( * ) 1000 <|> (int <* unit_m))
+    >>| Workout.Distance.of_int
 end
 
 module Calories = struct
-  let t =
-    let kcal = lwsp *> option "kcal" (string_ci "kcal") in
-    lift Workout.Calories.of_int (lwsp *> int <* kcal)
+  let t = lwsp *> int <* unit_kcal >>| Workout.Calories.of_int
 end
 
 module Condition = struct
