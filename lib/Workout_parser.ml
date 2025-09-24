@@ -284,6 +284,20 @@ module Step = struct
             (Some c, Some t) )
       <|> (Condition.t >>| fun c -> (Some c, None))
       <|> (Target.t >>| fun t -> (None, Some t)))
+
+  let t =
+    (* TODO *)
+    lwsp *> string_ci "TODO"
+    *> return
+         Workout.Step.(
+           Single
+             {
+               name = Some "TODO";
+               descr = Some "TODO";
+               duration = None;
+               target = None;
+               intensity = None;
+             })
 end
 
 let t =
