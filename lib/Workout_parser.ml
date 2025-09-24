@@ -1,7 +1,5 @@
 open Angstrom
 
-let quoted_string = char '"' *> take_while (( <> ) '"') <* char '"'
-
 (* let step = take_while (fun d -> d >= '0' && d <= '9') *)
 (* let step_list = char '[' *> both step (many (char ';' *> step)) <* char ']' *)
 let is_digit = function '0' .. '9' -> true | _ -> false
@@ -20,6 +18,7 @@ let float =
     (char '.' *> take_while1 is_digit)
 
 let number = float <|> (int >>| float_of_int)
+let quoted_string = char '"' *> take_while (( <> ) '"') <* char '"'
 
 (* Time units/suffixes. *)
 let unit_h = lwsp *> string_ci "h"
