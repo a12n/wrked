@@ -165,6 +165,8 @@ module Condition = struct
     | Heart_rate _ -> Capabilities.{ zero with heart_rate = true }
     | Power _ -> Capabilities.{ zero with power = true }
     | Calories _ | Time _ -> Capabilities.zero
+
+  let relation_to_char = function Less -> '<' | Greater -> '>'
 end
 
 module Repeat = struct
@@ -286,53 +288,27 @@ module Printer = struct
       Print.char out ':'
 
     module Sport_printer = struct
-      let cycling_to_string = function
-        | Sport.Spin -> "spin"
-        | Indoor -> "indoor"
-        | Road -> "road"
-        | Mountain -> "mountain"
-        | Downhill -> "downhill"
-        | Recumbent -> "recumbent"
-        | Cyclocross -> "cyclocross"
-        | Hand -> "hand"
-        | Track -> "track"
-        | BMX -> "bmx"
-        | Gravel -> "gravel"
-        | Commuting -> "commuting"
-        | Mixed_surface -> "mixed_surface"
-
-      let running_to_string = function
-        | Sport.Treadmill -> "treadmill"
-        | Street -> "street"
-        | Trail -> "trail"
-        | Track -> "track"
-        | Indoor -> "indoor"
-
-      let swimming_to_string = function
-        | Sport.Lap -> "lap"
-        | Open_water -> "open_water"
-
       let print out = function
         | Sport.Cycling c ->
             Print.string out "cycling";
             Option.iter
               (fun c ->
                 Print.char out '/';
-                Print.string out (cycling_to_string c))
+                Print.string out (Sport.cycling_to_string c))
               c
         | Running r ->
             Print.string out "running";
             Option.iter
               (fun r ->
                 Print.char out '/';
-                Print.string out (running_to_string r))
+                Print.string out (Sport.running_to_string r))
               r
         | Swimming s ->
             Print.string out "swimming";
             Option.iter
               (fun s ->
                 Print.char out '/';
-                Print.string out (swimming_to_string s))
+                Print.string out (Sport.swimming_to_string s))
               s
     end
 
@@ -396,8 +372,6 @@ module Printer = struct
     end
 
     module Condition_printer = struct
-      let relation_to_char = function Condition.Less -> '<' | Greater -> '>'
-
       let print out = function
         | Condition.Time t ->
             Print.string out "time";
@@ -407,11 +381,11 @@ module Printer = struct
             Distance_printer.print out dist
         | Heart_rate (rel, hr) ->
             Print.string out "hr";
-            Print.char out (relation_to_char rel);
+            Print.char out (Condition.relation_to_char rel);
             Heart_rate_printer.print out hr
         | Power (rel, pwr) ->
             Print.string out "power";
-            Print.char out (relation_to_char rel);
+            Print.char out (Condition.relation_to_char rel);
             Power_printer.print out pwr
         | Calories cal ->
             Print.string out "calories";
@@ -469,20 +443,11 @@ module Printer = struct
     end
 
     module Step_printer = struct
-      let intensity_to_string = function
-        | Step.Active -> "active"
-        | Rest -> "rest"
-        | Warmup -> "warmup"
-        | Cooldown -> "cooldown"
-        | Recovery -> "recovery"
-        | Interval -> "interval"
-        | Other -> "other"
-
       let print_single out Step.{ name; duration; target; intensity; _ } =
         Option.iter (print_name out) name;
         Option.iter
           (fun intensity ->
-            Print.string out (intensity_to_string intensity);
+            Print.string out (Step.intensity_to_string intensity);
             Print.char out ',')
           intensity;
         match (duration, target) with

@@ -192,9 +192,6 @@ module Printer : sig
      end)
     -> sig
     module Sport_printer : sig
-      val cycling_to_string : Sport.cycling -> string
-      val running_to_string : Sport.running -> string
-      val swimming_to_string : Sport.swimming -> string
       val print : Print.t -> Sport.t -> unit
     end
 
@@ -231,7 +228,6 @@ module Printer : sig
     end
 
     module Condition_printer : sig
-      val relation_to_char : Condition.relation -> char
       val print : Print.t -> Condition.t -> unit
     end
 
@@ -244,7 +240,6 @@ module Printer : sig
     end
 
     module Step_printer : sig
-      val intensity_to_string : Step.intensity -> string
       val print_single : Print.t -> Step.single -> unit
       val print_repeat : Print.t -> Step.repeat -> unit
       val print : Print.t -> Step.t -> unit
