@@ -11,14 +11,13 @@ let is_space = function
   | _ -> false
 
 let lwsp = skip_while is_space
-let int = lift int_of_string (take_while1 is_digit) <?> "int"
+let int = lift int_of_string (take_while1 is_digit)
 
 let float =
   lift2
     (fun a b -> float_of_string (a ^ "." ^ b))
-    (take_while1 is_digit <?> "float integer")
-    (char '.' *> take_while1 is_digit <?> "float fraction")
-  <?> "float"
+    (take_while1 is_digit)
+    (char '.' *> take_while1 is_digit)
 
 let number = float <|> (float_of_int <$> int)
 
