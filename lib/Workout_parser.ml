@@ -11,7 +11,7 @@ let is_space = function
   | _ -> false
 
 let lwsp = skip_while is_space
-let int = lift int_of_string (take_while1 is_digit)
+let int = take_while1 is_digit >>| int_of_string
 
 let float =
   lift2
@@ -19,7 +19,7 @@ let float =
     (take_while1 is_digit)
     (char '.' *> take_while1 is_digit)
 
-let number = float <|> (float_of_int <$> int)
+let number = float <|> (int >>| float_of_int)
 
 (* Time units/suffixes. *)
 let unit_h = lwsp *> string_ci "h"
@@ -108,9 +108,9 @@ module Speed = struct
 
   let t =
     lwsp
-    *> lift Workout.Speed.of_float
-         (number <* unit_mps
-         <|> (number <* unit_kmph >>| ( *. ) (1000.0 /. 3600.0)))
+    *> (number <* unit_mps
+       <|> (number <* unit_kmph >>| ( *. ) (1000.0 /. 3600.0)))
+    >>| Workout.Speed.of_float
 end
 
 module Cadence = struct
