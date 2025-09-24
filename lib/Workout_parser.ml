@@ -299,9 +299,9 @@ module Step = struct
                intensity = None;
              })
 
-  let non_empty_list =
+  let non_empty_list step =
     let* list =
-      lwsp *> char '[' *> sep_by1 (lwsp *> char ';') t <* lwsp <* char ']'
+      lwsp *> char '[' *> sep_by1 (lwsp *> char ';') step <* lwsp <* char ']'
     in
     match list with
     | [] -> fail "empty step list"
@@ -313,6 +313,6 @@ let t =
     (fun name sport steps -> Workout.{ name; descr = None; sport; steps })
     (lwsp *> option None (quoted_string <* lwsp <* char ':' >>| Option.some))
     (option None (Sport.t >>| Option.some))
-    (Step.non_empty_list <* lwsp <* end_of_input)
+    (Step.non_empty_list Step.t <* lwsp <* end_of_input)
 
 let parse = parse_string ~consume:Consume.All t
