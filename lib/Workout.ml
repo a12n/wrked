@@ -132,12 +132,10 @@ module Speed = struct
 
   let of_float = restricted (1.0, 100.0) (Invalid_argument __FUNCTION__)
   let zone_of_int = restricted (1, 10) (Invalid_argument __FUNCTION__)
+  let to_float_kmph = ( *. ) (3600.0 /. 1000.0)
 
   (* While speed is in m/s internally, it's in km/h in the text format *)
-  let to_buffer b mps =
-    let kmph = mps *. (3600.0 /. 1000.0) in
-    Printf.bprintf b "%f" kmph
-
+  let to_buffer b mps = Printf.bprintf b "%f" (to_float_kmph mps)
   let zone_to_buffer b z = Printf.bprintf b "%d" z
 end
 
