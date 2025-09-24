@@ -119,24 +119,10 @@ module Power = struct
     *> Workout.Power.(int <* pct >>| of_int_relative <|> (int <* w >>| of_int))
 end
 
-module Condition = struct
-  let relation =
-    Workout.Condition.(
-      lwsp *> (char '<' *> return Less <|> char '>' *> return Greater))
-
-  let calories =
-    let kcal = lwsp *> option "kcal" (string_ci "kcal") in
-    lift Workout.Calories.of_int (lwsp *> int <* kcal)
-
-  let distance =
-    let km = lwsp *> string_ci "km" in
-    let m = lwsp *> option "m" (string_ci "m") in
-    lift Workout.Distance.of_int
-      (lwsp *> (int <* km >>| ( * ) 1000 <|> (int <* m)))
-
+module Time = struct
   (* FIXME: no seconds part in "1 h" *)
   (* TODO: "1.5 h" *)
-  let time =
+  let t =
     let h = lwsp *> string_ci "h" in
     let min = lwsp *> string_ci "min" in
     let s = lwsp *> option "s" (string_ci "s") in
@@ -145,27 +131,46 @@ module Condition = struct
       (option 0 (lwsp *> int <* h))
       (option 0 (lwsp *> int <* min))
       (lwsp *> int <* s)
+end
 
-  let condition =
+module Distance = struct
+  let t =
+    let km = lwsp *> string_ci "km" in
+    let m = lwsp *> option "m" (string_ci "m") in
+    lift Workout.Distance.of_int
+      (lwsp *> (int <* km >>| ( * ) 1000 <|> (int <* m)))
+end
+
+module Calories = struct
+  let t =
+    let kcal = lwsp *> option "kcal" (string_ci "kcal") in
+    lift Workout.Calories.of_int (lwsp *> int <* kcal)
+end
+
+module Condition = struct
+  let relation =
+    Workout.Condition.(
+      lwsp *> (char '<' *> return Less <|> char '>' *> return Greater))
+
+  let t =
     let time_condition =
-      let* t = string_ci "time" *> lwsp *> time in
-      return (Workout.Condition.Time t)
+      string_ci "time" *> lwsp *> Time.t >>| fun t -> Workout.Condition.Time t
     in
     let distance_condition =
-      let* d = string_ci "distance" *> lwsp *> distance in
-      return (Workout.Condition.Distance d)
+      string_ci "distance" *> lwsp *> Distance.t >>| fun d ->
+      Workout.Condition.Distance d
     in
     let heart_rate_condition =
-      let* h = string_ci "hr" *> lwsp *> both relation Heart_rate.t in
-      return (Workout.Condition.Heart_rate h)
+      string_ci "hr" *> lwsp *> both relation Heart_rate.t >>| fun h ->
+      Workout.Condition.Heart_rate h
     in
     let calories_condition =
-      let* c = string_ci "calories" *> lwsp *> calories in
-      return (Workout.Condition.Calories c)
+      string_ci "calories" *> lwsp *> Calories.t >>| fun c ->
+      Workout.Condition.Calories c
     in
     let power_condition =
-      let* p = string_ci "power" *> lwsp *> both relation Power.t in
-      return (Workout.Condition.Power p)
+      string_ci "power" *> lwsp *> both relation Power.t >>| fun p ->
+      Workout.Condition.Power p
     in
     lwsp
     *> (time_condition <|> distance_condition <|> heart_rate_condition
