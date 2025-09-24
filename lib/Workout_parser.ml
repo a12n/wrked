@@ -298,6 +298,14 @@ module Step = struct
                target = None;
                intensity = None;
              })
+
+  let non_empty_list =
+    let* list =
+      lwsp *> char '[' *> sep_by1 (lwsp *> char ';') t <* lwsp <* char ']'
+    in
+    match list with
+    | [] -> fail "empty step list"
+    | s0 :: steps -> return (s0, steps)
 end
 
 let t =
