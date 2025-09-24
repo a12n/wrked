@@ -1,10 +1,15 @@
 type 'a non_empty_list = 'a * 'a list
 
-(* TODO: Escape *)
 let name_to_buffer b name =
   Buffer.(
     add_char b '"';
-    add_string b name;
+    String.iter
+      (function
+        | '"' ->
+            (* TODO: Escape? *)
+            add_char b ' '
+        | c -> add_char b c)
+      name;
     add_char b '"';
     add_char b ':')
 
