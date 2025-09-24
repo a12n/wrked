@@ -189,39 +189,65 @@ module Repeat = struct
 end
 
 module Target = struct
-  let t =
-    let hr_target =
-      string_ci "hr"
-      *> ((lwsp
-          *>
-          let* z = string_ci "zone" *> Heart_rate.zone in
-          return (Workout.Target.Heart_rate (Workout.Target.Heart_rate.Zone z))
-          )
-         <|>
-         let* r = both Heart_rate.t (lwsp *> char '-' *> Heart_rate.t) in
-         return
-           (Workout.Target.Heart_rate
-              (Workout.Target.Heart_rate.Range
-                 (Workout.Target.Heart_rate.range_of_pair r))))
-    in
-    let speed_target =
+  module Cadence = struct
+    let t =
       let zone =
-        let* z = lwsp *> string_ci "zone" *> Speed.zone in
-        return (Workout.Target.Speed.Zone z)
+        lwsp *> string_ci "zone" *> Cadence.zone >>| fun z ->
+        Workout.Target.Cadence.Zone z
       in
       let range =
-        let* r =
-          both Speed.t (lwsp *> char '-' *> Speed.t)
-          >>| Workout.Target.Speed.range_of_pair
-        in
-        return (Workout.Target.Speed.Range r)
+        both Cadence.t (lwsp *> char '-' *> Cadence.t)
+        >>| Workout.Target.Cadence.range_of_pair
+        >>| fun r -> Workout.Target.Cadence.Range r
       in
-      let* s =
-        string_ci "speed" *> (zone <?> "speed zone" <|> range <?> "speed range")
+      string_ci "cadence" *> (zone <|> range) >>| fun c ->
+      Workout.Target.Cadence c
+  end
+
+  module Heart_rate = struct
+    let t =
+      let zone =
+        lwsp *> string_ci "zone" *> Heart_rate.zone >>| fun z ->
+        Workout.Target.Heart_rate.Zone z
       in
-      return (Workout.Target.Speed s)
-    in
-    lwsp *> (hr_target <|> speed_target)
+      let range =
+        both Heart_rate.t (lwsp *> char '-' *> Heart_rate.t)
+        >>| Workout.Target.Heart_rate.range_of_pair
+        >>| fun r -> Workout.Target.Heart_rate.Range r
+      in
+      string_ci "hr" *> (zone <|> range) >>| fun h ->
+      Workout.Target.Heart_rate h
+  end
+
+  module Power = struct
+    let t =
+      let zone =
+        lwsp *> string_ci "zone" *> Power.zone >>| fun z ->
+        Workout.Target.Power.Zone z
+      in
+      let range =
+        both Power.t (lwsp *> char '-' *> Power.t)
+        >>| Workout.Target.Power.range_of_pair
+        >>| fun r -> Workout.Target.Power.Range r
+      in
+      string_ci "power" *> (zone <|> range) >>| fun p -> Workout.Target.Power p
+  end
+
+  module Speed = struct
+    let t =
+      let zone =
+        lwsp *> string_ci "zone" *> Speed.zone >>| fun z ->
+        Workout.Target.Speed.Zone z
+      in
+      let range =
+        both Speed.t (lwsp *> char '-' *> Speed.t)
+        >>| Workout.Target.Speed.range_of_pair
+        >>| fun r -> Workout.Target.Speed.Range r
+      in
+      string_ci "speed" *> (zone <|> range) >>| fun s -> Workout.Target.Speed s
+  end
+
+  let t = lwsp *> (Speed.t <|> Heart_rate.t <|> Cadence.t <|> Power.t)
 end
 
 module Step = struct
