@@ -180,17 +180,11 @@ end
 module Repeat = struct
   let times =
     lift Workout.Repeat.times_of_int
-      (int <* lwsp *> (char 'x' <|> char 'X' <|> char '*'))
+      (int <* (char 'x' <|> char 'X' <|> char '*'))
 
   let t =
-    let times_repeat =
-      let* t = lwsp *> times in
-      return (Workout.Repeat.Times t)
-    in
-    let until_repeat =
-      let* c = Condition.condition in
-      return (Workout.Repeat.Until c)
-    in
+    let times_repeat = lwsp *> times >>| fun t -> Workout.Repeat.Times t in
+    let until_repeat = Condition.t >>| fun c -> Workout.Repeat.Until c in
     times_repeat <|> until_repeat
 end
 
