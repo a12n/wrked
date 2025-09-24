@@ -306,6 +306,12 @@ module Step = struct
     match list with
     | [] -> fail "empty step list"
     | s0 :: steps -> return (s0, steps)
+
+  let repeat step =
+    lift2
+      (fun repeat steps -> Workout.Step.{ repeat; steps })
+      (lwsp *> char '(' *> Repeat.t <* lwsp <* char ')')
+      (non_empty_list step)
 end
 
 let t =
