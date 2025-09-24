@@ -309,5 +309,10 @@ module Step = struct
 end
 
 let t =
-  let consume = Consume.All in
-  parse_string ~consume (Step.single <* lwsp <* end_of_input)
+  lift3
+    (fun name sport steps -> Workout.{ name; descr = None; sport; steps })
+    (lwsp *> option None (quoted_string <* lwsp <* char ':' >>| Option.some))
+    (option None (Sport.t >>| Option.some))
+    (Step.non_empty_list <* lwsp <* end_of_input)
+
+let parse = parse_string ~consume:Consume.All t
