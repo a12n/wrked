@@ -44,9 +44,7 @@ module Speed : sig
   type zone = private int (* 1–10 *)
 
   val of_float : float -> t
-  val to_buffer : Buffer.t -> t -> unit
   val zone_of_int : int -> zone
-  val zone_to_buffer : Buffer.t -> zone -> unit
 end
 
 module Cadence : sig
@@ -54,9 +52,7 @@ module Cadence : sig
   type zone = private int (* 1–? *)
 
   val of_int : int -> t
-  val to_buffer : Buffer.t -> t -> unit
   val zone_of_int : int -> zone
-  val zone_to_buffer : Buffer.t -> zone -> unit
 end
 
 module Heart_rate : sig
@@ -68,9 +64,7 @@ module Heart_rate : sig
 
   val of_int : int -> t
   val of_int_relative : int -> t
-  val to_buffer : Buffer.t -> t -> unit
   val zone_of_int : int -> zone
-  val zone_to_buffer : Buffer.t -> zone -> unit
 end
 
 module Power : sig
@@ -82,30 +76,25 @@ module Power : sig
 
   val of_int : int -> t
   val of_int_relative : int -> t
-  val to_buffer : Buffer.t -> t -> unit
   val zone_of_int : int -> zone
-  val zone_to_buffer : Buffer.t -> zone -> unit
 end
 
 module Time : sig
   type t = private int (* s *)
 
   val of_int : int -> t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 module Distance : sig
   type t = private int (* m *)
 
   val of_int : int -> t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 module Calories : sig
   type t = private int (* kcal *)
 
   val of_int : int -> t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 module Condition : sig
@@ -119,7 +108,6 @@ module Condition : sig
     | Power of (relation * Power.t)
 
   val caps : t -> Capabilities.t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 module Repeat : sig
@@ -130,7 +118,6 @@ module Repeat : sig
   type t = Times of times | Until of Condition.t
 
   val caps : t -> Capabilities.t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 module Target : sig
@@ -138,16 +125,12 @@ module Target : sig
     (S : sig
        type t
        type zone
-
-       val to_buffer : Buffer.t -> t -> unit
-       val zone_to_buffer : Buffer.t -> zone -> unit
      end)
     -> sig
     type range = private S.t * S.t
     type t = Zone of S.zone | Range of range
 
     val range_of_pair : S.t * S.t -> range
-    val to_buffer : Buffer.t -> t -> unit
   end
 
   module Cadence_target : module type of Make (Cadence)
@@ -162,7 +145,6 @@ module Target : sig
     | Power of Power_target.t
 
   val caps : t -> Capabilities.t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 module Step : sig
@@ -187,7 +169,6 @@ module Step : sig
   and t = Single of single | Repeat of repeat
 
   val caps : t -> Capabilities.t
-  val to_buffer : Buffer.t -> t -> unit
 end
 
 type t = {
@@ -198,7 +179,6 @@ type t = {
 }
 
 val caps : t -> Capabilities.t
-val to_buffer : Buffer.t -> t -> unit
 
 module Printer : sig
   module Make : functor
