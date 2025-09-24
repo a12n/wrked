@@ -1,6 +1,7 @@
 open Angstrom
 
-(* let name = char '"' *> take_while (( <> ) '"') <* char '"' *)
+let quoted_string = char '"' *> take_while (( <> ) '"') <* char '"'
+
 (* let step = take_while (fun d -> d >= '0' && d <= '9') *)
 (* let step_list = char '[' *> both step (many (char ';' *> step)) <* char ']' *)
 let is_digit = function '0' .. '9' -> true | _ -> false
