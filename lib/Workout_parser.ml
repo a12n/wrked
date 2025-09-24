@@ -91,6 +91,8 @@ module Speed = struct
 end
 
 module Cadence = struct
+  let zone = lwsp *> int >>| Workout.Cadence.zone_of_int
+
   let t =
     let rpm = lwsp *> option "rpm" (string_ci "rpm") in
     lift Workout.Cadence.of_int (lwsp *> int <* rpm)
@@ -108,6 +110,8 @@ module Heart_rate = struct
 end
 
 module Power = struct
+  let zone = lwsp *> int >>| Workout.Power.zone_of_int
+
   let t =
     let w = lwsp *> option "W" (string_ci "W") in
     let pct = lwsp *> char '%' in
