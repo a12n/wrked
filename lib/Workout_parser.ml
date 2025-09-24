@@ -313,4 +313,4 @@ let t =
     (option None (Sport.t >>| Option.some))
     (Step.non_empty_list Step.t <* lwsp <* end_of_input)
 
-let parse = parse_string ~consume:Consume.All t
+let parse_string = Angstrom.parse_string ~consume:Consume.All t
