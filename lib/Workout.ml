@@ -296,16 +296,16 @@ module Target = struct
           S.to_buffer b h
   end
 
-  module Cadence = Make (Cadence)
-  module Heart_rate = Make (Heart_rate)
-  module Power = Make (Power)
-  module Speed = Make (Speed)
+  module Cadence_target = Make (Cadence)
+  module Heart_rate_target = Make (Heart_rate)
+  module Power_target = Make (Power)
+  module Speed_target = Make (Speed)
 
   type t =
-    | Speed of Speed.t
-    | Heart_rate of Heart_rate.t
-    | Cadence of Cadence.t
-    | Power of Power.t
+    | Speed of Speed_target.t
+    | Heart_rate of Heart_rate_target.t
+    | Cadence of Cadence_target.t
+    | Power of Power_target.t
 
   let caps = function
     | Speed _ -> Capabilities.{ zero with speed = true }
@@ -316,16 +316,16 @@ module Target = struct
   let to_buffer b = function
     | Speed s ->
         Buffer.add_string b "speed";
-        Speed.to_buffer b s
+        Speed_target.to_buffer b s
     | Heart_rate h ->
         Buffer.add_string b "hr";
-        Heart_rate.to_buffer b h
+        Heart_rate_target.to_buffer b h
     | Cadence c ->
         Buffer.add_string b "cadence";
-        Cadence.to_buffer b c
+        Cadence_target.to_buffer b c
     | Power p ->
         Buffer.add_string b "power";
-        Power.to_buffer b p
+        Power_target.to_buffer b p
 end
 
 module Step = struct

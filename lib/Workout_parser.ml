@@ -203,12 +203,12 @@ module Target = struct
     let t =
       let zone =
         lwsp *> string_ci "zone" *> Cadence.zone >>| fun z ->
-        Workout.Target.Cadence.Zone z
+        Workout.Target.Cadence_target.Zone z
       in
       let range =
         both Cadence.t (lwsp *> char '-' *> Cadence.t)
-        >>| Workout.Target.Cadence.range_of_pair
-        >>| fun r -> Workout.Target.Cadence.Range r
+        >>| Workout.Target.Cadence_target.range_of_pair
+        >>| fun r -> Workout.Target.Cadence_target.Range r
       in
       string_ci "cadence" *> (zone <|> range) >>| fun c ->
       Workout.Target.Cadence c
@@ -218,12 +218,12 @@ module Target = struct
     let t =
       let zone =
         lwsp *> string_ci "zone" *> Heart_rate.zone >>| fun z ->
-        Workout.Target.Heart_rate.Zone z
+        Workout.Target.Heart_rate_target.Zone z
       in
       let range =
         both Heart_rate.t (lwsp *> char '-' *> Heart_rate.t)
-        >>| Workout.Target.Heart_rate.range_of_pair
-        >>| fun r -> Workout.Target.Heart_rate.Range r
+        >>| Workout.Target.Heart_rate_target.range_of_pair
+        >>| fun r -> Workout.Target.Heart_rate_target.Range r
       in
       string_ci "hr" *> (zone <|> range) >>| fun h ->
       Workout.Target.Heart_rate h
@@ -233,12 +233,12 @@ module Target = struct
     let t =
       let zone =
         lwsp *> string_ci "zone" *> Power.zone >>| fun z ->
-        Workout.Target.Power.Zone z
+        Workout.Target.Power_target.Zone z
       in
       let range =
         both Power.t (lwsp *> char '-' *> Power.t)
-        >>| Workout.Target.Power.range_of_pair
-        >>| fun r -> Workout.Target.Power.Range r
+        >>| Workout.Target.Power_target.range_of_pair
+        >>| fun r -> Workout.Target.Power_target.Range r
       in
       string_ci "power" *> (zone <|> range) >>| fun p -> Workout.Target.Power p
   end
@@ -247,12 +247,12 @@ module Target = struct
     let t =
       let zone =
         lwsp *> string_ci "zone" *> Speed.zone >>| fun z ->
-        Workout.Target.Speed.Zone z
+        Workout.Target.Speed_target.Zone z
       in
       let range =
         both Speed.t (lwsp *> char '-' *> Speed.t)
-        >>| Workout.Target.Speed.range_of_pair
-        >>| fun r -> Workout.Target.Speed.Range r
+        >>| Workout.Target.Speed_target.range_of_pair
+        >>| fun r -> Workout.Target.Speed_target.Range r
       in
       string_ci "speed" *> (zone <|> range) >>| fun s -> Workout.Target.Speed s
   end

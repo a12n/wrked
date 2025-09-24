@@ -150,16 +150,16 @@ module Target : sig
     val to_buffer : Buffer.t -> t -> unit
   end
 
-  module Cadence : module type of Make (Cadence)
-  module Heart_rate : module type of Make (Heart_rate)
-  module Power : module type of Make (Power)
-  module Speed : module type of Make (Speed)
+  module Cadence_target : module type of Make (Cadence)
+  module Heart_rate_target : module type of Make (Heart_rate)
+  module Power_target : module type of Make (Power)
+  module Speed_target : module type of Make (Speed)
 
   type t =
-    | Speed of Speed.t
-    | Heart_rate of Heart_rate.t
-    | Cadence of Cadence.t
-    | Power of Power.t
+    | Speed of Speed_target.t
+    | Heart_rate of Heart_rate_target.t
+    | Cadence of Cadence_target.t
+    | Power of Power_target.t
 
   val caps : t -> Capabilities.t
   val to_buffer : Buffer.t -> t -> unit
