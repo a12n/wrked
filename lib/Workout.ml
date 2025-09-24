@@ -427,3 +427,275 @@ let to_buffer b { name; sport; steps = step0, steps; _ } =
       Step.to_buffer b step)
     steps;
   Buffer.add_char b ']'
+
+module Printer = struct
+  module Make (Print : sig
+    type t
+
+    val char : t -> char -> unit
+    val float : t -> float -> unit
+    val int : t -> int -> unit
+    val string : t -> string -> unit
+  end) =
+  struct
+    let print_name out name =
+      Print.char out '"';
+      String.iter
+        (function
+          | '"' ->
+              (* TODO: Escape? *)
+              Print.char out ' '
+          | c -> Print.char out c)
+        name;
+      Print.char out '"';
+      Print.char out ':'
+
+    module Sport_printer = struct
+      let cycling_to_string = function
+        | Sport.Spin -> "spin"
+        | Indoor -> "indoor"
+        | Road -> "road"
+        | Mountain -> "mountain"
+        | Downhill -> "downhill"
+        | Recumbent -> "recumbent"
+        | Cyclocross -> "cyclocross"
+        | Hand -> "hand"
+        | Track -> "track"
+        | BMX -> "bmx"
+        | Gravel -> "gravel"
+        | Commuting -> "commuting"
+        | Mixed_surface -> "mixed_surface"
+
+      let running_to_string = function
+        | Sport.Treadmill -> "treadmill"
+        | Street -> "street"
+        | Trail -> "trail"
+        | Track -> "track"
+        | Indoor -> "indoor"
+
+      let swimming_to_string = function
+        | Sport.Lap -> "lap"
+        | Open_water -> "open_water"
+
+      let print out = function
+        | Sport.Cycling c ->
+            Print.string out "cycling";
+            Option.iter
+              (fun c ->
+                Print.char out '/';
+                Print.string out (cycling_to_string c))
+              c
+        | Running r ->
+            Print.string out "running";
+            Option.iter
+              (fun r ->
+                Print.char out '/';
+                Print.string out (running_to_string r))
+              r
+        | Swimming s ->
+            Print.string out "swimming";
+            Option.iter
+              (fun s ->
+                Print.char out '/';
+                Print.string out (swimming_to_string s))
+              s
+    end
+
+    module Speed_printer = struct
+      (* While speed is in m/s internally, it's in km/h in the text format *)
+      let print out mps = Print.float out (Speed.to_float_kmph mps)
+      let print_zone = Print.int
+    end
+
+    module Cadence_printer = struct
+      let print = Print.int
+      let print_zone = Print.int
+    end
+
+    module Heart_rate_printer = struct
+      let print out = function
+        | Heart_rate.Absolute bpm -> Print.int out bpm
+        | Relative percent ->
+            Print.(
+              int out percent;
+              char out '%')
+
+      let print_zone = Print.int
+    end
+
+    module Power_printer = struct
+      let print out = function
+        | Power.Absolute w -> Print.int out w
+        | Relative percent ->
+            Print.(
+              int out percent;
+              char out '%')
+
+      let print_zone = Print.int
+    end
+
+    module Time_printer = struct
+      let print out s =
+        let min, s = (s / 60, s mod 60) in
+        let h, min = (min / 60, min mod 60) in
+        if h <> 0 then (
+          Print.(
+            int out h;
+            char out 'h'));
+        if min <> 0 then (
+          Print.(
+            int out min;
+            string out "min"));
+        if s <> 0 then (
+          Print.(
+            int out s;
+            char out 's'))
+    end
+
+    module Distance_printer = struct
+      let print = Print.int
+    end
+
+    module Calories_printer = struct
+      let print = Print.int
+    end
+
+    module Condition_printer = struct
+      let relation_to_char = function Condition.Less -> '<' | Greater -> '>'
+
+      let print out = function
+        | Condition.Time t ->
+            Print.string out "time";
+            Time_printer.print out t
+        | Distance dist ->
+            Print.string out "distance";
+            Distance_printer.print out dist
+        | Heart_rate (rel, hr) ->
+            Print.string out "hr";
+            Print.char out (relation_to_char rel);
+            Heart_rate_printer.print out hr
+        | Power (rel, pwr) ->
+            Print.string out "power";
+            Print.char out (relation_to_char rel);
+            Power_printer.print out pwr
+        | Calories cal ->
+            Print.string out "calories";
+            Calories_printer.print out cal
+    end
+
+    module Repeat_printer = struct
+      let print out = function
+        | Repeat.Times n ->
+            Print.int out n;
+            Print.char out 'x'
+        | Until cond -> Condition_printer.print out cond
+    end
+
+    module Target_printer = struct
+      module Make (S : sig
+        type t
+        type zone
+      end) (Target : sig
+        type t = Zone of S.zone | Range of (S.t * S.t)
+      end) (Printer : sig
+        val print : Print.t -> S.t -> unit
+        val print_zone : Print.t -> S.zone -> unit
+      end) =
+      struct
+        let print out = function
+          | Target.Zone z -> Printer.print_zone out z
+          | Target.Range (lo, hi) ->
+              Printer.print out lo;
+              Print.char out '-';
+              Printer.print out hi
+      end
+
+      module Speed = Make (Speed) (Target.Speed_target) (Speed_printer)
+
+      module Heart_rate =
+        Make (Heart_rate) (Target.Heart_rate_target) (Heart_rate_printer)
+
+      module Cadence = Make (Cadence) (Target.Cadence_target) (Cadence_printer)
+      module Power = Make (Power) (Target.Power_target) (Power_printer)
+
+      let print out = function
+        | Target.Speed spd ->
+            Print.string out "speed";
+            Speed.print out spd
+        | Heart_rate hr ->
+            Print.string out "hr";
+            Heart_rate.print out hr
+        | Cadence cad ->
+            Print.string out "cadence";
+            Cadence.print out cad
+        | Power pwr ->
+            Print.string out "power";
+            Power.print out pwr
+    end
+
+    module Step_printer = struct
+      let intensity_to_string = function
+        | Step.Active -> "active"
+        | Rest -> "rest"
+        | Warmup -> "warmup"
+        | Cooldown -> "cooldown"
+        | Recovery -> "recovery"
+        | Interval -> "interval"
+        | Other -> "other"
+
+      let print_single out Step.{ name; duration; target; intensity; _ } =
+        Option.iter (print_name out) name;
+        Option.iter
+          (fun intensity ->
+            Print.string out (intensity_to_string intensity);
+            Print.char out ',')
+          intensity;
+        match (duration, target) with
+        | None, None -> Print.string out "open"
+        | Some c, None -> Condition_printer.print out c
+        | None, Some t -> Target_printer.print out t
+        | Some c, Some t ->
+            Condition_printer.print out c;
+            Print.char out ',';
+            Target_printer.print out t
+
+      let rec print_repeat out Step.{ repeat; steps = step0, steps } =
+        Print.char out '(';
+        Repeat_printer.print out repeat;
+        Print.char out ')';
+        Print.char out '[';
+        print out step0;
+        List.iter
+          (fun step ->
+            Print.char out ';';
+            print out step)
+          steps;
+        Print.char out ']'
+
+      and print out = function
+        | Step.Single s -> print_single out s
+        | Repeat r -> print_repeat out r
+    end
+
+    let print out { name; sport; steps = step0, steps; _ } =
+      Option.iter (print_name out) name;
+      Option.iter (Sport_printer.print out) sport;
+      Print.char out '[';
+      Step_printer.print out step0;
+      List.iter
+        (fun step ->
+          Print.char out ';';
+          Step_printer.print out step)
+        steps;
+      Print.char out ']'
+  end
+
+  module Channel = Make (struct
+    type t = out_channel
+
+    let char = output_char
+    let float ch = Printf.fprintf ch "%f"
+    let int ch = Printf.fprintf ch "%d"
+    let string = output_string
+  end)
+end

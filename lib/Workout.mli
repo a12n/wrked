@@ -199,3 +199,86 @@ type t = {
 
 val caps : t -> Capabilities.t
 val to_buffer : Buffer.t -> t -> unit
+
+module Printer : sig
+  module Make : functor
+    (Print : sig
+       type t
+
+       val char : t -> char -> unit
+       val float : t -> float -> unit
+       val int : t -> int -> unit
+       val string : t -> string -> unit
+     end)
+    -> sig
+    module Sport_printer : sig
+      val cycling_to_string : Sport.cycling -> string
+      val running_to_string : Sport.running -> string
+      val swimming_to_string : Sport.swimming -> string
+      val print : Print.t -> Sport.t -> unit
+    end
+
+    module Speed_printer : sig
+      val print : Print.t -> Speed.t -> unit
+      val print_zone : Print.t -> Speed.zone -> unit
+    end
+
+    module Cadence_printer : sig
+      val print : Print.t -> Cadence.t -> unit
+      val print_zone : Print.t -> Cadence.zone -> unit
+    end
+
+    module Heart_rate_printer : sig
+      val print : Print.t -> Heart_rate.t -> unit
+      val print_zone : Print.t -> Heart_rate.zone -> unit
+    end
+
+    module Power_printer : sig
+      val print : Print.t -> Power.t -> unit
+      val print_zone : Print.t -> Power.zone -> unit
+    end
+
+    module Time_printer : sig
+      val print : Print.t -> Time.t -> unit
+    end
+
+    module Distance_printer : sig
+      val print : Print.t -> Distance.t -> unit
+    end
+
+    module Calories_printer : sig
+      val print : Print.t -> Calories.t -> unit
+    end
+
+    module Condition_printer : sig
+      val relation_to_char : Condition.relation -> char
+      val print : Print.t -> Condition.t -> unit
+    end
+
+    module Repeat_printer : sig
+      val print : Print.t -> Repeat.t -> unit
+    end
+
+    module Target_printer : sig
+      val print : Print.t -> Target.t -> unit
+    end
+
+    module Step_printer : sig
+      val intensity_to_string : Step.intensity -> string
+      val print_single : Print.t -> Step.single -> unit
+      val print_repeat : Print.t -> Step.repeat -> unit
+      val print : Print.t -> Step.t -> unit
+    end
+
+    val print : Print.t -> t -> unit
+  end
+
+  module Channel : module type of Make (struct
+    type t = out_channel
+
+    let char = output_char
+    let float ch = Printf.fprintf ch "%f"
+    let int ch = Printf.fprintf ch "%d"
+    let string = output_string
+  end)
+end
