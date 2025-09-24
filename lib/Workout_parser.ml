@@ -35,7 +35,7 @@ let unit_rpm = lwsp *> option "rpm" (string_ci "rpm")
 
 (* Heart rate and power units. *)
 let unit_bpm = lwsp *> option "bpm" (string_ci "bpm")
-let unit_pct = lwsp *> char '%'
+let unit_percent = lwsp *> char '%'
 let unit_w = lwsp *> option "W" (string_ci "W")
 
 (* Distance units. *)
@@ -123,7 +123,7 @@ module Heart_rate = struct
 
   let t =
     lwsp
-    *> (int <* unit_pct >>| Workout.Heart_rate.of_int_relative
+    *> (int <* unit_percent >>| Workout.Heart_rate.of_int_relative
        <|> (int <* unit_bpm >>| Workout.Heart_rate.of_int))
 end
 
@@ -132,7 +132,7 @@ module Power = struct
 
   let t =
     lwsp
-    *> (int <* unit_pct >>| Workout.Power.of_int_relative
+    *> (int <* unit_percent >>| Workout.Power.of_int_relative
        <|> (int <* unit_w >>| Workout.Power.of_int))
 end
 
