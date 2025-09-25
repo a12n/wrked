@@ -775,5 +775,9 @@ module Parser = struct
       (option None (Sport_parser.parser >>| Option.some))
       (non_empty_list Step_parser.parser <* lwsp <* end_of_input)
 
+  let parse_channel _ch =
+    (* TODO: Read blocks from channel, buffered parsing. *)
+    Error "TODO"
+
   let parse_string = parse_string ~consume:Consume.All parser
 end

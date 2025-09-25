@@ -332,5 +332,6 @@ module Parser : sig
   end
 
   val parser : t Angstrom.t
+  val parse_channel : in_channel -> (t, string) result
   val parse_string : string -> (t, string) result
 end
