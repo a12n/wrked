@@ -183,13 +183,13 @@ module Repeat = struct
 end
 
 module Target = struct
-  module Make (S : sig
+  module Make (Value : sig
     type t
     type zone
   end) =
   struct
-    type range = S.t * S.t
-    type t = Zone of S.zone | Range of range
+    type range = Value.t * Value.t
+    type t = Zone of Value.zone | Range of range
 
     let range_of_pair (a, b) = if a < b then (a, b) else (b, a)
   end

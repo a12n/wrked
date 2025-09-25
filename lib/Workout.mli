@@ -122,15 +122,15 @@ end
 
 module Target : sig
   module Make : functor
-    (S : sig
+    (Value : sig
        type t
        type zone
      end)
     -> sig
-    type range = private S.t * S.t
-    type t = Zone of S.zone | Range of range
+    type range = private Value.t * Value.t
+    type t = Zone of Value.zone | Range of range
 
-    val range_of_pair : S.t * S.t -> range
+    val range_of_pair : Value.t * Value.t -> range
   end
 
   module Cadence_target : module type of Make (Cadence)
