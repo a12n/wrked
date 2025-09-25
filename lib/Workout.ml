@@ -402,45 +402,49 @@ module Printer = struct
     end
 
     module Target_printer = struct
-      module Make (S : sig
+      module Make (Value : sig
         type t
         type zone
-      end) (Target : sig
-        type t = Zone of S.zone | Range of (S.t * S.t)
-      end) (Printer : sig
-        val print : Print.t -> S.t -> unit
-        val print_zone : Print.t -> S.zone -> unit
+      end) (Value_target : sig
+        type t = Zone of Value.zone | Range of (Value.t * Value.t)
+      end) (Value_printer : sig
+        val print : Print.t -> Value.t -> unit
+        val print_zone : Print.t -> Value.zone -> unit
       end) =
       struct
         let print out = function
-          | Target.Zone z -> Printer.print_zone out z
-          | Target.Range (lo, hi) ->
-              Printer.print out lo;
+          | Value_target.Zone z -> Value_printer.print_zone out z
+          | Range (lo, hi) ->
+              Value_printer.print out lo;
               Print.char out '-';
-              Printer.print out hi
+              Value_printer.print out hi
       end
 
-      module Speed = Make (Speed) (Target.Speed_target) (Speed_printer)
+      module Cadence_target_printer =
+        Make (Cadence) (Target.Cadence_target) (Cadence_printer)
 
-      module Heart_rate =
+      module Heart_rate_target_printer =
         Make (Heart_rate) (Target.Heart_rate_target) (Heart_rate_printer)
 
-      module Cadence = Make (Cadence) (Target.Cadence_target) (Cadence_printer)
-      module Power = Make (Power) (Target.Power_target) (Power_printer)
+      module Power_target_printer =
+        Make (Power) (Target.Power_target) (Power_printer)
+
+      module Speed_target_printer =
+        Make (Speed) (Target.Speed_target) (Speed_printer)
 
       let print out = function
         | Target.Speed spd ->
             Print.string out "speed";
-            Speed.print out spd
+            Speed_target_printer.print out spd
         | Heart_rate hr ->
             Print.string out "hr";
-            Heart_rate.print out hr
+            Heart_rate_target_printer.print out hr
         | Cadence cad ->
             Print.string out "cadence";
-            Cadence.print out cad
+            Cadence_target_printer.print out cad
         | Power pwr ->
             Print.string out "power";
-            Power.print out pwr
+            Power_target_printer.print out pwr
     end
 
     module Step_printer = struct
