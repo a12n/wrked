@@ -504,3 +504,276 @@ module Printer = struct
     let string = output_string
   end)
 end
+
+module Parser = struct
+  open Angstrom
+
+  let is_digit = function '0' .. '9' -> true | _ -> false
+
+  let is_space = function
+    | ' ' | '\x0c' | '\n' | '\r' | '\t' | '\x0b' -> true
+    | _ -> false
+
+  let comment = char '{' *> take_while (( <> ) '}') <* char '}'
+  let string = char '"' *> take_while (( <> ) '"') <* char '"'
+  let int = take_while1 is_digit >>| int_of_string
+
+  let float =
+    lift2
+      (fun a b -> float_of_string (a ^ "." ^ b))
+      (take_while1 is_digit)
+      (char '.' *> take_while1 is_digit)
+
+  let number = float <|> (int >>| float_of_int)
+
+  let lwsp =
+    skip_while is_space *> option () (comment >>| ignore) <* skip_while is_space
+
+  let non_empty_list elt =
+    lwsp *> char '[' *> sep_by1 (lwsp *> char ';') elt <* lwsp <* char ']'
+    >>= function
+    | [] -> fail "empty list"
+    | elt0 :: elts -> return (elt0, elts)
+
+  module Sport_parser = struct
+    let cycling =
+      lwsp
+      *> Sport.(
+           string_ci "spin" *> return Spin
+           <|> string_ci "indoor" *> return (Indoor : cycling)
+           <|> string_ci "road" *> return Road
+           <|> string_ci "mountain" *> return Mountain
+           <|> string_ci "downhill" *> return Downhill
+           <|> string_ci "recumbent" *> return Recumbent
+           <|> string_ci "cyclocross" *> return Cyclocross
+           <|> string_ci "hand" *> return Hand
+           <|> string_ci "track" *> return (Track : cycling)
+           <|> string_ci "bmx" *> return BMX
+           <|> string_ci "gravel" *> return Gravel
+           <|> string_ci "commuting" *> return Commuting
+           <|> string_ci "mixed_surface" *> return Mixed_surface)
+
+    let running =
+      lwsp
+      *> Sport.(
+           string_ci "treadmill" *> return Treadmill
+           <|> string_ci "street" *> return Street
+           <|> string_ci "trail" *> return Trail
+           <|> string_ci "track" *> return (Track : running)
+           <|> string_ci "indoor" *> return (Indoor : running))
+
+    let swimming =
+      lwsp
+      *> Sport.(
+           string_ci "lap" *> return Lap
+           <|> string_ci "open_water" *> return Open_water)
+
+    let parser =
+      lwsp
+      *> (string_ci "cycling"
+          *> option None (lwsp *> char '/' *> cycling >>| Option.some)
+         >>| (fun c -> Sport.Cycling c)
+         <|> ( string_ci "running"
+             *> option None (lwsp *> char '/' *> running >>| Option.some)
+             >>| fun r -> Sport.Running r )
+         <|> ( string_ci "swimming"
+             *> option None (lwsp *> char '/' *> swimming >>| Option.some)
+             >>| fun s -> Sport.Swimming s ))
+  end
+
+  module Speed_parser = struct
+    let zone = lwsp *> int >>| Speed.zone_of_int
+
+    let parser =
+      let kmph = lwsp *> option "km/h" (string_ci "km/h") in
+      let mps = lwsp *> string_ci "m/s" in
+      lwsp *> (number <* mps <|> (number <* kmph >>| Speed.of_float_kmph))
+      >>| Speed.of_float
+  end
+
+  module Cadence_parser = struct
+    let zone = lwsp *> int >>| Cadence.zone_of_int
+
+    let parser =
+      let rpm = lwsp *> option "rpm" (string_ci "rpm") in
+      lwsp *> int <* rpm >>| Cadence.of_int
+  end
+
+  module Heart_rate_parser = struct
+    let zone = lwsp *> int >>| Heart_rate.zone_of_int
+
+    let parser =
+      let percent = lwsp *> char '%' in
+      let bpm = lwsp *> option "bpm" (string_ci "bpm") in
+      lwsp
+      *> (int <* percent >>| Heart_rate.of_int_relative
+         <|> (int <* bpm >>| Heart_rate.of_int))
+  end
+
+  module Power_parser = struct
+    let zone = lwsp *> int >>| Power.zone_of_int
+
+    let parser =
+      let percent = lwsp *> char '%' in
+      let w = lwsp *> option "W" (string_ci "W") in
+      lwsp
+      *> (int <* percent >>| Power.of_int_relative
+         <|> (int <* w >>| Power.of_int))
+  end
+
+  module Time_parser = struct
+    let parser =
+      let h = lwsp *> string_ci "h" in
+      let min = lwsp *> string_ci "min" in
+      let s = lwsp *> option "s" (string_ci "s") in
+      lift3
+        (fun h min s ->
+          let s_h = 3600.0 *. h |> Float.round |> Float.to_int in
+          let s_min = 60.0 *. min |> Float.round |> Float.to_int in
+          Time.of_int (s_h + s_min + s))
+        (option 0.0 (lwsp *> number <* h))
+        (option 0.0 (lwsp *> number <* min))
+        (option 0 (lwsp *> int <* s))
+  end
+
+  module Distance_parser = struct
+    let parser =
+      let km = lwsp *> string_ci "km" in
+      let m = lwsp *> option "m" (string_ci "m") in
+      lwsp *> (int <* km >>| ( * ) 1000 <|> (int <* m)) >>| Distance.of_int
+  end
+
+  module Calories_parser = struct
+    let parser =
+      let kcal = lwsp *> option "kcal" (string_ci "kcal") in
+      lwsp *> int <* kcal >>| Calories.of_int
+  end
+
+  module Condition_parser = struct
+    let relation =
+      lwsp
+      *> (char '<' *> return Condition.Less
+         <|> char '>' *> return Condition.Greater)
+
+    let parser =
+      lwsp
+      *> (string_ci "time" *> lwsp *> Time_parser.parser
+         >>| (fun t -> Condition.Time t)
+         <|> ( string_ci "distance" *> lwsp *> Distance_parser.parser
+             >>| fun d -> Condition.Distance d )
+         <|> ( string_ci "hr" *> lwsp *> both relation Heart_rate_parser.parser
+             >>| fun h -> Condition.Heart_rate h )
+         <|> ( string_ci "calories" *> lwsp *> Calories_parser.parser
+             >>| fun c -> Condition.Calories c )
+         <|> ( string_ci "power" *> lwsp *> both relation Power_parser.parser
+             >>| fun p -> Condition.Power p ))
+  end
+
+  module Repeat_parser = struct
+    let times =
+      lift Repeat.times_of_int (int <* (char 'x' <|> char 'X' <|> char '*'))
+
+    let parser =
+      lwsp *> times
+      >>| (fun t -> Repeat.Times t)
+      <|> (Condition_parser.parser >>| fun c -> Repeat.Until c)
+  end
+
+  module Target_parser = struct
+    module Make (Value : sig
+      type t
+      type zone
+    end) (Value_target : sig
+      type range = Value.t * Value.t
+      type t = Zone of Value.zone | Range of range
+
+      val range_of_pair : Value.t * Value.t -> range
+    end) (Value_parser : sig
+      val zone : Value.zone Angstrom.t
+      val parser : Value.t Angstrom.t
+    end) =
+    struct
+      let parser =
+        let zone =
+          lwsp *> string_ci "zone" *> Value_parser.zone >>| fun z ->
+          Value_target.Zone z
+        in
+        let range =
+          both Value_parser.parser (lwsp *> char '-' *> Value_parser.parser)
+          >>| Value_target.range_of_pair
+          >>| fun r -> Value_target.Range r
+        in
+        zone <|> range
+    end
+
+    module Cadence_target_parser =
+      Make (Cadence) (Target.Cadence_target) (Cadence_parser)
+
+    module Heart_rate_target_parser =
+      Make (Heart_rate) (Target.Heart_rate_target) (Heart_rate_parser)
+
+    module Power_target_parser =
+      Make (Power) (Target.Power_target) (Power_parser)
+
+    module Speed_target_parser =
+      Make (Speed) (Target.Speed_target) (Speed_parser)
+
+    let parser =
+      string_ci "speed" *> Speed_target_parser.parser
+      >>| (fun s -> Target.Speed s)
+      <|> ( string_ci "hr" *> Heart_rate_target_parser.parser >>| fun h ->
+            Target.Heart_rate h )
+      <|> ( string_ci "cadence" *> Cadence_target_parser.parser >>| fun c ->
+            Target.Cadence c )
+      <|> ( string_ci "power" *> Power_target_parser.parser >>| fun p ->
+            Target.Power p )
+  end
+
+  module Step_parser = struct
+    let intensity =
+      lwsp
+      *> Step.(
+           string_ci "active" *> return Active
+           <|> string_ci "rest" *> return Rest
+           <|> string_ci "warmup" *> return Warmup
+           <|> string_ci "cooldown" *> return Cooldown
+           <|> string_ci "recovery" *> return Recovery
+           <|> string_ci "interval" *> return Interval
+           <|> string_ci "other" *> return Other)
+
+    let single =
+      lift3
+        (fun name intensity (duration, target) ->
+          Step.{ name; descr = None; duration; target; intensity })
+        (lwsp *> option None (string <* lwsp <* char ':' >>| Option.some))
+        (option None (intensity <* lwsp <* char ',' >>| Option.some))
+        (lwsp *> string_ci "open"
+        >>| (fun _ -> (None, None))
+        <|> ( both Condition_parser.parser
+                (lwsp *> char ',' *> Target_parser.parser)
+            >>| fun (c, t) -> (Some c, Some t) )
+        <|> (Condition_parser.parser >>| fun c -> (Some c, None))
+        <|> (Target_parser.parser >>| fun t -> (None, Some t)))
+
+    let repeat step =
+      lift2
+        (fun repeat steps -> Step.{ repeat; steps })
+        (lwsp *> char '(' *> Repeat_parser.parser <* lwsp <* char ')')
+        (non_empty_list step)
+
+    let parser =
+      fix (fun step ->
+          single
+          >>| (fun s -> Step.Single s)
+          <|> (repeat step >>| fun r -> Step.Repeat r))
+  end
+
+  let parser =
+    lift3
+      (fun name sport steps -> { name; descr = None; sport; steps })
+      (lwsp *> option None (string <* lwsp <* char ':' >>| Option.some))
+      (option None (Sport_parser.parser >>| Option.some))
+      (non_empty_list Step_parser.parser <* lwsp <* end_of_input)
+
+  let parse_string = parse_string ~consume:Consume.All parser
+end

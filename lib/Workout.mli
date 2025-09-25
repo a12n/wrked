@@ -180,6 +180,10 @@ type t = {
 
 val caps : t -> Capabilities.t
 
+(***********)
+(* Printer *)
+(***********)
+
 module Printer : sig
   module Make : functor
     (Print : sig
@@ -257,4 +261,76 @@ module Printer : sig
     let int ch = Printf.fprintf ch "%d"
     let string = output_string
   end)
+end
+
+(**********)
+(* Parser *)
+(**********)
+
+module Parser : sig
+  val non_empty_list : 'a Angstrom.t -> 'a non_empty_list Angstrom.t
+
+  module Sport_parser : sig
+    val cycling : Sport.cycling Angstrom.t
+    val running : Sport.running Angstrom.t
+    val swimming : Sport.swimming Angstrom.t
+    val parser : Sport.t Angstrom.t
+  end
+
+  module Speed_parser : sig
+    val zone : Speed.zone Angstrom.t
+    val parser : Speed.t Angstrom.t
+  end
+
+  module Cadence_parser : sig
+    val zone : Cadence.zone Angstrom.t
+    val parser : Cadence.t Angstrom.t
+  end
+
+  module Heart_rate_parser : sig
+    val zone : Heart_rate.zone Angstrom.t
+    val parser : Heart_rate.t Angstrom.t
+  end
+
+  module Power_parser : sig
+    val zone : Power.zone Angstrom.t
+    val parser : Power.t Angstrom.t
+  end
+
+  module Time_parser : sig
+    val parser : Time.t Angstrom.t
+  end
+
+  module Distance_parser : sig
+    val parser : Distance.t Angstrom.t
+  end
+
+  module Calories_parser : sig
+    val parser : Calories.t Angstrom.t
+  end
+
+  module Condition_parser : sig
+    val relation : Condition.relation Angstrom.t
+    val parser : Condition.t Angstrom.t
+  end
+
+  module Repeat_parser : sig
+    val times : Repeat.times Angstrom.t
+    val parser : Repeat.t Angstrom.t
+  end
+
+  module Target_parser : sig
+    (* TODO: Export separate Value_target_parser modules? *)
+    val parser : Target.t Angstrom.t
+  end
+
+  module Step_parser : sig
+    val intensity : Step.intensity Angstrom.t
+    val single : Step.single Angstrom.t
+    val repeat : Step.t Angstrom.t -> Step.repeat Angstrom.t
+    val parser : Step.t Angstrom.t
+  end
+
+  val parser : t Angstrom.t
+  val parse_string : string -> (t, string) result
 end

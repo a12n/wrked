@@ -1,6 +1,7 @@
 (library
  (name workout)
- (modules Workout))
+ (modules Workout)
+ (libraries angstrom))
 
 (library
  (name workout_parser)
