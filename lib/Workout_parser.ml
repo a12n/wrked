@@ -8,7 +8,12 @@ let is_space = function
   | ' ' | '\x0c' | '\n' | '\r' | '\t' | '\x0b' -> true
   | _ -> false
 
-let lwsp = skip_while is_space
+let comment =
+  char '{' *> take_while (function '}' -> false | _ -> true) <* char '}'
+
+let lwsp =
+  skip_while is_space *> option () (comment >>| ignore) <* skip_while is_space
+
 let int = take_while1 is_digit >>| int_of_string
 
 let float =
