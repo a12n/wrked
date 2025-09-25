@@ -1,0 +1,9 @@
+(executable
+ (name wrk2fit)
+ (libraries workout)
+ (flags (-cc musl-gcc -ccopt -static)))
+
+(executable
+ (name wrked_server)
+ (libraries workout)
+ (flags (-cc musl-gcc -ccopt -static)))
