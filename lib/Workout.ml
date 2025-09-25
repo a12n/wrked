@@ -784,9 +784,22 @@ module Parser = struct
       (option None (Sport_parser.parser >>| Option.some))
       (non_empty_list Step_parser.parser <* lwsp <* end_of_input)
 
-  let parse_channel _ch =
-    (* TODO: Read blocks from channel, buffered parsing. *)
-    Error "TODO"
+  let parse_channel ch =
+    let len = 1024 in
+    let buf = Bytes.create len in
+    let rec loop state =
+      match input ch buf 0 len with
+      | 0 -> Buffered.feed state `Eof
+      | n when n = len ->
+          Buffered.feed state (`String Bytes.(unsafe_to_string buf)) |> loop
+      | n ->
+          Buffered.feed state (`String Bytes.(unsafe_to_string (sub buf 0 n)))
+          |> loop
+    in
+    match loop (Buffered.parse ~initial_buffer_size:len parser) with
+    | Done (_, w) -> Ok w
+    | Fail (_, _, msg) -> Error msg
+    | Partial _ -> Error "partial"
 
   let parse_string = parse_string ~consume:Consume.All parser
 end
