@@ -236,6 +236,7 @@ module Printer : sig
     end
 
     module Target_printer : sig
+      (* TODO: Export separate Value_target_printer modules? *)
       val print : Print.t -> Target.t -> unit
     end
 
