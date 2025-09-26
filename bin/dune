@@ -5,5 +5,5 @@
 
 (executable
  (name wrked_server)
- (libraries workout)
+ (libraries cohttp-eio eio_main workout)
  (flags (-cc musl-gcc -ccopt -static)))
