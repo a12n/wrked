@@ -253,6 +253,15 @@ module Printer : sig
     val print : Print.t -> t -> unit
   end
 
+  module Buffer : module type of Make (struct
+    type t = Buffer.t
+
+    let char = Buffer.add_char
+    let float b = Printf.bprintf b "%f"
+    let int b = Printf.bprintf b "%d"
+    let string = Buffer.add_string
+  end)
+
   module Channel : module type of Make (struct
     type t = out_channel
 

@@ -495,6 +495,15 @@ module Printer = struct
       Print.char out ']'
   end
 
+  module Buffer = Make (struct
+    type t = Buffer.t
+
+    let char = Buffer.add_char
+    let float b = Printf.bprintf b "%f"
+    let int b = Printf.bprintf b "%d"
+    let string = Buffer.add_string
+  end)
+
   module Channel = Make (struct
     type t = out_channel
 
