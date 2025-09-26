@@ -1,15 +1,13 @@
 (* https://ninenines.eu/docs/en/cowboy/2.12/guide/rest_flowcharts/ *)
 
-let allowed_methods (req : Http.Request.t) :
-    (unit, Http.(Status.t * Header.t option)) result =
+let allowed_methods req =
   (* known_methods *)
   match Http.Request.meth req with
   | `GET -> Ok ()
   | `Other _ -> Error (`Not_implemented, None)
   | _ -> Error (`Method_not_allowed, None)
 
-let resource_exists (req : Http.Request.t) :
-    (string, Http.(Status.t * Header.t option)) result =
+let resource_exists req =
   match
     Http.Request.resource req |> String.split_on_char '/'
     |> List.filter (( <> ) "")
@@ -17,14 +15,12 @@ let resource_exists (req : Http.Request.t) :
   | [ "v1"; resource ] -> Ok (Uri.pct_decode resource)
   | _ -> Error (`Not_found, None)
 
-let uri_too_long (workout_descr : string) :
-    (unit, Http.(Status.t * Header.t option)) result =
+let uri_too_long workout_descr =
   if String.length workout_descr > 32 * 1024 then
     Error (`Request_uri_too_long, None)
   else Ok ()
 
-let content_types_provided (req : Http.Request.t) :
-    (unit, Http.(Status.t * Header.t option)) result =
+let content_types_provided req =
   if
     List.exists
       (function
@@ -38,13 +34,11 @@ let content_types_provided (req : Http.Request.t) :
   then Ok ()
   else Error (`Not_acceptable, None)
 
-let malformed_request (workout_descr : string) :
-    (Workout.t, Http.(Status.t * Header.t option)) result =
+let malformed_request workout_descr =
   Workout.Parser.parse_string workout_descr
   |> Result.map_error (fun _ -> (`Bad_request, None))
 
-let moved_permanently (workout_descr : string) (workout : Workout.t) :
-    (unit, Http.(Status.t * Header.t option)) result =
+let moved_permanently workout_descr workout =
   let min_workout_descr =
     let b = Buffer.create (String.length workout_descr) in
     Workout.Printer.Buffer.print b workout;
@@ -55,12 +49,11 @@ let moved_permanently (workout_descr : string) (workout : Workout.t) :
     Error (`Moved_permanently, Some (Http.Header.init_with "location" location))
   else Ok ()
 
-let last_modified (_req : Http.Request.t) :
-    (unit, Http.(Status.t * Header.t option)) result =
+let last_modified _req =
   (* TODO *)
   Ok ()
 
-let to_fit (_workout : Workout.t) : bytes =
+let to_fit _workout =
   (* TODO *)
   Bytes.empty
 
